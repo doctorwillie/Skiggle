@@ -31,7 +31,6 @@ import android.graphics.Paint;
 // PenCharacterEn is a class representing the English character written.  It has:
 //    - one or more PenSegment representing the strokes that make up the character
 //    - one or more PenSegment representing the basic segments (building blocks like '-', 'C', '|') that make up a character
-//public class PenCharacterEn extends PenCharacter {
 public class PenCharacterEn {
 
 	// Method for getting candidate characters
@@ -108,26 +107,6 @@ public class PenCharacterEn {
 
 		pChar.penCharacterCandidates = sBitSet0.getCharacters();
 		//}
-	}
-
-	public void getCharacterCandidates(Canvas canvas, Paint textPaint, PenCharacter pChar) {
-
-		switch (pChar.penSegments.size()) {
-		case 1: 
-			get1SegmentCharacterCandidates(pChar);
-			break;
-		case 2: 
-			get2SegmentCharacterCandidates(pChar);
-			break;
-		case 3: 
-			get3SegmentCharacterCandidates(pChar);
-			break;
-		case 4: 
-			get4SegmentCharacterCandidates(pChar);
-			break;
-		default:
-			pChar.penCharacterCandidates = "???";
-		}
 	}
 
 	// Check to see if a float is greater than the low and less than high thresholds
@@ -3135,7 +3114,7 @@ public class PenCharacterEn {
 	// Check for  '`'
 	
 	// Check for  '{'
-	// *************TO BE COMPLETED*************//
+	// TODO: TO BE COMPLETED //
 	private boolean checkForLeftCurlyBrace(PenCharacter pChar) {
 		boolean matchedP = false;
 //		if (pChar.penSegments.size() == 2) // Left curly brace has two strokes - two "c" stacked on top of one another
@@ -3156,7 +3135,12 @@ public class PenCharacterEn {
 	// Check for  '}'
 	// Check for  '~'
 
-	// Match the pen strokes to the given character c
+	/**
+	 * Matches the pen strokes to the given English character c
+	 * @param c: character to match
+	 * @param pChar: PenCharacter object containing the pen strokes
+	 * @return
+	 */
 	public boolean matchCharacter(char c, PenCharacter pChar) {
 		boolean foundP = false;
 		char penChar = '?';
@@ -3528,6 +3512,32 @@ public class PenCharacterEn {
 		return foundP;
 	}
 
+	/**
+	 * Gets the candidate characters
+	 * @param pChar: PenCharacter object with the strokes (as the character is being built up)
+	 */
+
+	public void getCharacterCandidates(PenCharacter pChar) {
+
+		switch (pChar.penSegments.size()) {
+		case 1: 
+			get1SegmentCharacterCandidates(pChar);
+			break;
+		case 2: 
+			get2SegmentCharacterCandidates(pChar);
+			break;
+		case 3: 
+			get3SegmentCharacterCandidates(pChar);
+			break;
+		case 4: 
+			get4SegmentCharacterCandidates(pChar);
+			break;
+		default:
+			pChar.penCharacterCandidates = "???";
+		}
+	}
+	
+	/*
 	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar) {
 		getCharacterCandidates(canvas, textPaint, pChar);
 
@@ -3554,6 +3564,6 @@ public class PenCharacterEn {
 		// PenSegment pSegment = pChar.penSegments.elementAt(0);
 		// pSegment.printSegmentStats(canvas, textPaint);
 	}
-
+*/
 
 }

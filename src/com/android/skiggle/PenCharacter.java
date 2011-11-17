@@ -96,7 +96,7 @@ public class PenCharacter {
 		// TODO: Test sLanguage flag to determine which PenCharacterEn class to instantiate
 		PenCharacterEn langChar = new PenCharacterEn();
 
-		langChar.getCharacterCandidates(canvas, textPaint, pChar);
+		langChar.getCharacterCandidates(pChar);
 
 		int len = pChar.penCharacterCandidates.length();
 		for (int i = 0; i < len; i++) {
