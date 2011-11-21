@@ -22,23 +22,24 @@ import com.android.skiggle.Skiggle;
 import com.android.skiggle.PenCharacter;
 import com.android.skiggle.PenSegment;
 import com.android.skiggle.PenUtil;
-import com.android.skiggle.en.SegmentBitSetEn;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
+/**
+ * Represents the handwritten English character.
+ * @author Willie
+ *
+ * PenCharacterEn is a class representing the English character written.  It has:
+ *    - one or more PenSegment representing the strokes that make up the character
+ *    - one or more PenSegment representing the basic segments (building blocks like '-', 'C', '|') that make up a character
+ */
+public class PenCharacterEn extends PenCharacter {
 
-
-// PenCharacterEn is a class representing the English character written.  It has:
-//    - one or more PenSegment representing the strokes that make up the character
-//    - one or more PenSegment representing the basic segments (building blocks like '-', 'C', '|') that make up a character
-public class PenCharacterEn {
-
+	/*
 	// Method for getting candidate characters
 	// Get candidates for 1-stroke character
 	private void get1SegmentCharacterCandidates(PenCharacter pChar) {
 		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
 		SegmentBitSetEn sBitSet0 = SegmentBitSetEn.getSegmentBitSetForChar(strokeChar0);
-		sBitSet0.mSegmentBitSet.and(SegmentBitSetEn.ONE_SEGMENT_BITSET.mSegmentBitSet);
+		sBitSet0.mSegmentBitSet.and(SegmentBitSetEn.sOneSegmentBitset.mSegmentBitSet);
 		pChar.penCharacterCandidates = sBitSet0.getCharacters();
 		// penCharacter = pChar.penSegments.elementAt(0).mPenSegmentCharacter;
 	}
@@ -50,7 +51,7 @@ public class PenCharacterEn {
 		SegmentBitSetEn sBitSet0 = SegmentBitSetEn.getSegmentBitSetForChar(strokeChar0);
 		SegmentBitSetEn sBitSet1 = SegmentBitSetEn.getSegmentBitSetForChar(strokeChar1);
 		SegmentBitSetEn s2SegmentsBitSet = new SegmentBitSetEn();
-		s2SegmentsBitSet.copy(SegmentBitSetEn.TWO_SEGMENTS_BITSET);
+		s2SegmentsBitSet.copy(SegmentBitSetEn.sTwoSegmentsBitset);
 
 		sBitSet0.mSegmentBitSet.and(sBitSet1.mSegmentBitSet);
 
@@ -70,7 +71,7 @@ public class PenCharacterEn {
 		SegmentBitSetEn sBitSet1 = SegmentBitSetEn.getSegmentBitSetForChar(strokeChar1);
 		SegmentBitSetEn sBitSet2 = SegmentBitSetEn.getSegmentBitSetForChar(strokeChar2);
 		SegmentBitSetEn s3SegmentsBitSet = new SegmentBitSetEn();
-		s3SegmentsBitSet.copy(SegmentBitSetEn.THREE_SEGMENTS_BITSET);
+		s3SegmentsBitSet.copy(SegmentBitSetEn.sThreeSegmentsBitset);
 
 		sBitSet0.mSegmentBitSet.and(sBitSet1.mSegmentBitSet);
 		sBitSet0.mSegmentBitSet.and(sBitSet2.mSegmentBitSet);
@@ -87,12 +88,11 @@ public class PenCharacterEn {
 		char strokeChar2 = pChar.penSegments.elementAt(2).penSegmentCharacter;
 		char strokeChar3 = pChar.penSegments.elementAt(3).penSegmentCharacter;
 
-		/*
-		  if ((strokeChar0 != strokeChar1) & (strokeChar0 != strokeChar2) 
-				& (strokeChar0 != strokeChar2) & (strokeChar0 != strokeChar3)
-				& (strokeChar1 != strokeChar2) & (strokeChar1 != strokeChar3)
-				& (strokeChar2 != strokeChar3)) {
-		 */
+//		  if ((strokeChar0 != strokeChar1) & (strokeChar0 != strokeChar2) 
+//				& (strokeChar0 != strokeChar2) & (strokeChar0 != strokeChar3)
+//				& (strokeChar1 != strokeChar2) & (strokeChar1 != strokeChar3)
+//				& (strokeChar2 != strokeChar3)) {
+
 		SegmentBitSetEn sBitSet0 = SegmentBitSetEn.getSegmentBitSetForChar(strokeChar0);
 		SegmentBitSetEn sBitSet1 = SegmentBitSetEn.getSegmentBitSetForChar(strokeChar1);
 		SegmentBitSetEn sBitSet2 = SegmentBitSetEn.getSegmentBitSetForChar(strokeChar2);
@@ -108,6 +108,7 @@ public class PenCharacterEn {
 		pChar.penCharacterCandidates = sBitSet0.getCharacters();
 		//}
 	}
+	*/
 
 	// Check to see if a float is greater than the low and less than high thresholds
 	private boolean isBetweenThresholds(double num, double lowThreshold, double highThreshold) {
@@ -429,8 +430,12 @@ public class PenCharacterEn {
 		return c;
 	} // End of checkForKShape()
 
-
-	// Check to see if the stroke is a 'O' or 'o'.  Both is made up of a single stroke, FC.
+	/**
+	 *  Checks to see if the stroke is a 'O' or 'o', both made up of a single stroke, CIRCLE.
+	 * Is used as checkForOShape method in PenCharacterCn
+	 * @param pChar - PenCharacter object to check
+	 * @return - true if matched, false otherwise
+	 */
 	private boolean checkForOShape(PenCharacter pChar) {
 		boolean matchedP = false;
 
@@ -441,7 +446,7 @@ public class PenCharacterEn {
 			matchedP = (pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.CIRCLE_CHAR);
 		}
 		return matchedP;
-	}  // End of checkForOShape()
+	}  // End of checkForOShape() method
 
 	// Check to see if the two strokes (VLINE and BC) form the shape of a 'P'.   
 	// This method is used by the methods checking for capital 'P' and small 'p'.
@@ -2808,16 +2813,18 @@ public class PenCharacterEn {
 	} // End of checkForPlusSign()
 
 
-
 	// Check for ',' is done in the same check for ')'
 
-	// Check for  '-' or '_'
-	// Check for the HLINE stroke that form '-' or '_' and return either '-', '_' or NUL (Ascii value 0)
+	/**
+	 *  Checks for the HLINE stroke that forms the '-' (dash) or '_' (underscore) character.
+	 * @param pChar - PenCharacter to check
+	 * @return - the dash or underscore character depending on vertical position of horizontal line or NUL (Ascii value 0) if no match
+	 */
 	private char checkForDashOrUnderscore(PenCharacter pChar) {
 		char c = '\0';
 
 		if (pChar.penSegments.size() == 1) // '-' or '_' has only one stroke
-			if (pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.FSLASH_CHAR) {
+			if (true /* pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.HLINE_CHAR */) {
 				// Check to see the HLINE is no more than one third the height of the screen from the bottom of the screen
 				if (pChar.penSegments.elementAt(0).avgY > Skiggle.sDefaultWritePadHeight * (2.0/3))
 					c = '_';   // If so then it is an underscore '_'
@@ -2825,7 +2832,7 @@ public class PenCharacterEn {
 			}
 
 		return c;
-	} // End of checkForDashOrUnderscore()
+	} // End of checkForDashOrUnderscore() method
 
 	// Check for  '.'
 	private boolean checkForPeriod(PenCharacter pChar) {
@@ -3517,6 +3524,7 @@ public class PenCharacterEn {
 	 * @param pChar: PenCharacter object with the strokes (as the character is being built up)
 	 */
 
+	/*
 	public void getCharacterCandidates(PenCharacter pChar) {
 
 		switch (pChar.penSegments.size()) {
@@ -3536,6 +3544,7 @@ public class PenCharacterEn {
 			pChar.penCharacterCandidates = "???";
 		}
 	}
+	*/
 	
 	/*
 	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar) {

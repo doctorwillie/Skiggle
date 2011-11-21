@@ -38,54 +38,54 @@ public class SegmentBitSet {
 	// Class constants set to English by default.  Use set methods to change them specific to the language (other than English).
 	// Note: " and \ are escaped with backslash - "\"" and "\\"
 
-	private static String sAllCharactersString = new String("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~");
-//	private static SegmentBitSet sAllCharactersStringBitset = new SegmentBitSet(sAllCharactersString);
+	protected static String sAllCharactersString = new String("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~");
+//	protected static SegmentBitSet sAllCharactersStringBitset = new SegmentBitSet(sAllCharactersString);
 
 	// 42 characters with VLINE - 1, 4, 5, 9, B, D, E, F, G, H, I, J, K, L, M, N, P, R, T, Y, a, b, d, h, i, k, l, m, n, p, q, r, t, <space>, !, ", $, ', +, [, ], | 
-	private static SegmentBitSet sVlineBitset           = new SegmentBitSet("01001100010101111111111101010100001011010001101111011101000000111010010001000000000001010000100");
+	protected static SegmentBitSet sVLineBitset           = new SegmentBitSet("01001100010101111111111101010100001011010001101111011101000000111010010001000000000001010000100");
 
 	// 28 characters with HLINE - 1, 2, 4, 5, 7, A, E, F, G, H, I, J, L, T, Z, e, f, t, z, <space>, #, *, +, -, =, [, ], _ 
-	private static SegmentBitSet sHLineBitset           = new SegmentBitSet("01101101001000111111010000000100000100001100000000000001000001100100000011010000010001010100000");
+	protected static SegmentBitSet sHLineBitset           = new SegmentBitSet("01101101001000111111010000000100000100001100000000000001000001100100000011010000010001010100000");
 
 	// 24 characters with FSLASH - 1, 4, 7, A, K, M, V, W, X, Y, Z, k, v, w, x, y, z, #, %, *, /, <, >, ^ 
-	private static SegmentBitSet sFSlashBitset          = new SegmentBitSet("01001001001000000000101000000001111100000000001000000000011111000101000010000100101000001000000");
+	protected static SegmentBitSet sFSlashBitset          = new SegmentBitSet("01001001001000000000101000000001111100000000001000000000011111000101000010000100101000001000000");
 
 	// 21 characters with BSLASH - A, K, M, N, Q, R, V, W, X, Y, k, v, w, x, y, *, <, >, \, ^, ` 
-	private static SegmentBitSet sBSlashBitset          = new SegmentBitSet("00000000001000000000101100110001111000000000001000000000011110000000000010000000101000101010000");
+	protected static SegmentBitSet sBSlashBitset          = new SegmentBitSet("00000000001000000000101100110001111000000000001000000000011110000000000010000000101000101010000");
 
 	// 16 characters with BC (back C) - 2, 3, 5, B, D, P, R, S, b, p, s, $, ), ,, ;, ? 
-	private static SegmentBitSet sBcBitset              = new SegmentBitSet("00110100000101000000000001011000000001000000000000010010000000000010000100100001000100000000000");
+	protected static SegmentBitSet sBcBitset              = new SegmentBitSet("00110100000101000000000001011000000001000000000000010010000000000010000100100001000100000000000");
 
 	// 7 characters with CIRCLE - 0, 6, 8, O, Q, o, % 
-	private static SegmentBitSet sCircleBitset          = new SegmentBitSet("10000010100000000000000010100000000000000000000000100000000000000001000000000000000000000000000");
+	protected static SegmentBitSet sCircleBitset          = new SegmentBitSet("10000010100000000000000010100000000000000000000000100000000000000001000000000000000000000000000");
 
 	// 13 characters with FC (regular C) - 6, 9, C, G, S, a, c, d, e, q, s, $, ( 
-	private static SegmentBitSet sFcBitset              = new SegmentBitSet("00000010010010001000000000001000000010111000000000001010000000000010001000000000000000000000000");
+	protected static SegmentBitSet sFcBitset              = new SegmentBitSet("00000010010010001000000000001000000010111000000000001010000000000010001000000000000000000000000");
 
 	// 7 (capital letters) characters with DOT - i, j, !, ., :, ;, ? 
-	private static SegmentBitSet sDotBitset             = new SegmentBitSet("00000000000000000000000000000000000000000000110000000000000000010000000000001011000100000000000");
+	protected static SegmentBitSet sDotBitset             = new SegmentBitSet("00000000000000000000000000000000000000000000110000000000000000010000000000001011000100000000000");
 
 	// 4 characters with U - J, U, j, u
-	private static SegmentBitSet sUBitset	            = new SegmentBitSet("00000000000000000001000000000010000000000000010000000000100000000000000000000000000000000000000");
+	protected static SegmentBitSet sUBitset	            = new SegmentBitSet("00000000000000000001000000000010000000000000010000000000100000000000000000000000000000000000000");
 
 	// 23 one-segment characters - 0, C, O, U, c, f, h, l, n, o, r, u, ', (, ), ,, -, ., /, \, _, `, | 
-	public static SegmentBitSet sOneSegmentBitset      = new SegmentBitSet("10000000000010000000000010000010000000100101000101100100100000000000011100111100000000100110100");
+	protected static SegmentBitSet sOneSegmentBitset      = new SegmentBitSet("10000000000010000000000010000010000000100101000101100100100000000000011100111100000000100110100");
 
 	// 39 two-segment characters - 2, 3, 6, 7, 8, 9, D, G, L, P, Q, S, T, V, X, a, b, d, e, i, j, m, p, q, s, t, v, x, y, !, ", +, :, ;, <, =, >, ?, ^ 
-	public static SegmentBitSet sTwoSegmentsBitset     = new SegmentBitSet("00110011110001000000010001101101010011011000110010011011010110011000000001000011111100001000000");
+	protected static SegmentBitSet sTwoSegmentsBitset     = new SegmentBitSet("00110011110001000000010001101101010011011000110010011011010110011000000001000011111100001000000");
 
 	// 22 three-segment characters - 1, 4, 5, A, B, F, H, I, J, K, N, R, Y, Z, k, z, <space>, $, %, *, [, ] 
-	public static SegmentBitSet sThreeSegmentsBitset   = new SegmentBitSet("01001100001100011111100100010000001100000000001000000000000001100011000010000000000001010000000");
+	protected static SegmentBitSet sThreeSegmentsBitset   = new SegmentBitSet("01001100001100011111100100010000001100000000001000000000000001100011000010000000000001010000000");
 
 	// 5 four-segment characters - E, M, W, w, # 
-	public static SegmentBitSet sFourSegmentsBitset    = new SegmentBitSet("00000000000000100000001000000000100000000000000000000000001000000100000000000000000000000000000");
+	protected static SegmentBitSet sFourSegmentsBitset    = new SegmentBitSet("00000000000000100000001000000000100000000000000000000000001000000100000000000000000000000000000");
 
 	/*
 	private static String sAllCharactersString;
 	private static SegmentBitSet sAllCharactersStringBitset;
 
 	// 42 characters with VLINE - 1, 4, 5, 9, B, D, E, F, G, H, I, J, K, L, M, N, P, R, T, Y, a, b, d, h, i, k, l, m, n, p, q, r, t, <space>, !, ", $, ', +, [, ], | 
-	private static SegmentBitSet sVlineBitset;
+	private static SegmentBitSet sVLineBitset;
 
 	// 28 characters with HLINE - 1, 2, 4, 5, 7, A, E, F, G, H, I, J, L, T, Z, e, f, t, z, <space>, #, *, +, -, =, [, ], _ 
 	private static SegmentBitSet sHLineBitset;
@@ -147,7 +147,7 @@ public class SegmentBitSet {
 //	}
 	
 	public static void setSVLineBitset(SegmentBitSet s) {
-	    sVlineBitset = s;
+	    sVLineBitset = s;
 	}
 
 	public static void setSHLineBitset(SegmentBitSet s) {
@@ -203,7 +203,7 @@ public class SegmentBitSet {
 		this.mSegmentBitSet = (BitSet) sBitSet.mSegmentBitSet.clone();
 	}
 
-	private SegmentBitSet clone(SegmentBitSet sBitSet) {
+	protected SegmentBitSet clone(SegmentBitSet sBitSet) {
 		SegmentBitSet nBitSet = new SegmentBitSet();
 		nBitSet.copy(sBitSet);
 		return nBitSet;
@@ -225,12 +225,12 @@ public class SegmentBitSet {
 		return characters;
 	}
 
-	private void printCharSet(SegmentBitSet bitSet) {
+	protected void printCharSet(SegmentBitSet bitSet) {
 		System.out.println(bitSet.getCharacters());
 		System.out.println();
 	}
 
-	private String getCharSetForSegment(char segmentChar) {
+	protected String getCharSetForSegment(char segmentChar) {
 		String chars = "";
 		switch (segmentChar) {
 		case PenSegment.HLINE_CHAR:
@@ -240,7 +240,7 @@ public class SegmentBitSet {
 			chars = sFSlashBitset.getCharacters();
 			break;
 		case PenSegment.VLINE_CHAR:
-			chars = sVlineBitset.getCharacters();
+			chars = sVLineBitset.getCharacters();
 			break;
 		case PenSegment.BSLASH_CHAR:
 			chars = sBSlashBitset.getCharacters();
@@ -266,7 +266,7 @@ public class SegmentBitSet {
 		return chars;
 	}
 
-	private void printCharSetForSegment(char segmentChar) {
+	protected void printCharSetForSegment(char segmentChar) {
 		switch (segmentChar) {
 		case PenSegment.HLINE_CHAR:
 			printCharSet(sHLineBitset);
@@ -275,7 +275,7 @@ public class SegmentBitSet {
 			printCharSet(sFSlashBitset);
 			break;
 		case PenSegment.VLINE_CHAR:
-			printCharSet(sVlineBitset);
+			printCharSet(sVLineBitset);
 			break;
 		case PenSegment.BSLASH_CHAR:
 			printCharSet(sBSlashBitset);
@@ -311,7 +311,7 @@ public class SegmentBitSet {
 			sBitSet.copy(sFSlashBitset);
 			break;
 		case PenSegment.VLINE_CHAR:
-			sBitSet.copy(sVlineBitset);
+			sBitSet.copy(sVLineBitset);
 			break;
 		case PenSegment.BSLASH_CHAR:
 			sBitSet.copy(sBSlashBitset);
@@ -340,9 +340,9 @@ public class SegmentBitSet {
 	}
 
 	public static void testPrintSegmentBitSet() {
-		SegmentBitSet s = SegmentBitSet.sVlineBitset;
+		SegmentBitSet s = SegmentBitSet.sVLineBitset;
 		System.out.println("VLINE" + s.mSegmentBitSet.toString() + s.mSegmentBitSet.cardinality());
-		s.printCharSet(sVlineBitset);
+		s.printCharSet(sVLineBitset);
 
 		s = SegmentBitSet.sHLineBitset;
 		System.out.println("HLINE" + s.mSegmentBitSet.toString() + s.mSegmentBitSet.cardinality());

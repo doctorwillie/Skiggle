@@ -19,7 +19,13 @@
 package com.android.skiggle;
 
 import com.android.skiggle.PenStroke;
+import com.android.skiggle.SegmentBitSet;
+
+import com.android.skiggle.cn.PenCharacterCn;
+import com.android.skiggle.cn.SegmentBitSetCn;
+
 import com.android.skiggle.en.PenCharacterEn;
+import com.android.skiggle.en.SegmentBitSetEn;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -92,11 +98,116 @@ public class PenCharacter {
 		}
 	}
 	
-	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar, String lang) {
-		// TODO: Test sLanguage flag to determine which PenCharacterEn class to instantiate
-		PenCharacterEn langChar = new PenCharacterEn();
+	// Method for getting candidate characters
+	// Get candidates for 1-stroke character
+	private void get1SegmentCharacterCandidates(PenCharacter pChar) {
+		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
+		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
+		sBitSet0.mSegmentBitSet.and(SegmentBitSet.sOneSegmentBitset.mSegmentBitSet);
+		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+		// penCharacter = pChar.penSegments.elementAt(0).mPenSegmentCharacter;
+	}
 
-		langChar.getCharacterCandidates(pChar);
+	// Get candidates for 2-stroke character
+	private void get2SegmentCharacterCandidates(PenCharacter pChar) {
+		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
+		char strokeChar1 = pChar.penSegments.elementAt(1).penSegmentCharacter;
+		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
+		SegmentBitSet sBitSet1 = SegmentBitSet.getSegmentBitSetForChar(strokeChar1);
+		SegmentBitSet s2SegmentsBitSet = new SegmentBitSet();
+		s2SegmentsBitSet.copy(SegmentBitSet.sTwoSegmentsBitset);
+
+		sBitSet0.mSegmentBitSet.and(sBitSet1.mSegmentBitSet);
+
+		sBitSet0.mSegmentBitSet.and(s2SegmentsBitSet.mSegmentBitSet);
+
+		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+
+		//		}
+	}
+
+	// Get candidates for 3-stroke character
+	private void get3SegmentCharacterCandidates(PenCharacter pChar) {
+		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
+		char strokeChar1 = pChar.penSegments.elementAt(1).penSegmentCharacter;
+		char strokeChar2 = pChar.penSegments.elementAt(2).penSegmentCharacter;
+		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
+		SegmentBitSet sBitSet1 = SegmentBitSet.getSegmentBitSetForChar(strokeChar1);
+		SegmentBitSet sBitSet2 = SegmentBitSet.getSegmentBitSetForChar(strokeChar2);
+		SegmentBitSet s3SegmentsBitSet = new SegmentBitSet();
+		s3SegmentsBitSet.copy(SegmentBitSet.sThreeSegmentsBitset);
+
+		sBitSet0.mSegmentBitSet.and(sBitSet1.mSegmentBitSet);
+		sBitSet0.mSegmentBitSet.and(sBitSet2.mSegmentBitSet);
+		sBitSet0.mSegmentBitSet.and(s3SegmentsBitSet.mSegmentBitSet);
+
+		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+		//		}
+	}
+
+	// Get candidates for 4-stroke character
+	private void get4SegmentCharacterCandidates(PenCharacter pChar) {
+		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
+		char strokeChar1 = pChar.penSegments.elementAt(1).penSegmentCharacter;
+		char strokeChar2 = pChar.penSegments.elementAt(2).penSegmentCharacter;
+		char strokeChar3 = pChar.penSegments.elementAt(3).penSegmentCharacter;
+
+		/*
+		  if ((strokeChar0 != strokeChar1) & (strokeChar0 != strokeChar2) 
+				& (strokeChar0 != strokeChar2) & (strokeChar0 != strokeChar3)
+				& (strokeChar1 != strokeChar2) & (strokeChar1 != strokeChar3)
+				& (strokeChar2 != strokeChar3)) {
+		 */
+		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
+		SegmentBitSet sBitSet1 = SegmentBitSet.getSegmentBitSetForChar(strokeChar1);
+		SegmentBitSet sBitSet2 = SegmentBitSet.getSegmentBitSetForChar(strokeChar2);
+		SegmentBitSet sBitSet3 = SegmentBitSet.getSegmentBitSetForChar(strokeChar3);
+		SegmentBitSet s4SegmentsBitSet = new SegmentBitSet();
+		s4SegmentsBitSet.copy(SegmentBitSet.sFourSegmentsBitset);
+
+		sBitSet0.mSegmentBitSet.and(sBitSet1.mSegmentBitSet);
+		sBitSet0.mSegmentBitSet.and(sBitSet2.mSegmentBitSet);
+		sBitSet0.mSegmentBitSet.and(sBitSet3.mSegmentBitSet);
+		sBitSet0.mSegmentBitSet.and(s4SegmentsBitSet.mSegmentBitSet);
+
+		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+		//}
+	}
+	
+	/**
+	 * Gets the candidate characters
+	 * @param pChar: PenCharacter object with the strokes (as the character is being built up)
+	 */	
+	public void getCharacterCandidates(PenCharacter pChar) {
+
+		switch (pChar.penSegments.size()) {
+		case 1: 
+			get1SegmentCharacterCandidates(pChar);
+			break;
+		case 2: 
+			get2SegmentCharacterCandidates(pChar);
+			break;
+		case 3: 
+			get3SegmentCharacterCandidates(pChar);
+			break;
+		case 4: 
+			get4SegmentCharacterCandidates(pChar);
+			break;
+		default:
+			pChar.penCharacterCandidates = "???";
+		}
+	}
+	
+	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar, String lang) {
+		// TODO: Check for language type
+		PenCharacterEn langChar = new PenCharacterEn();
+		
+		// Remember to set the global variable sLanguage to "Cn" 
+		// to invoke SegmentBitSetCn.initializeSegmentBitSetGlobals();		
+		//PenCharacterCn langChar = new PenCharacterCn();
+
+//		langChar.getCharacterCandidates(pChar);
+		getCharacterCandidates(pChar);
 
 		int len = pChar.penCharacterCandidates.length();
 		for (int i = 0; i < len; i++) {

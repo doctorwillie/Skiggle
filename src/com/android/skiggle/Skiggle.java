@@ -19,8 +19,7 @@
 package com.android.skiggle;
 
 
-
-import com.android.skiggle.en.PenCharacterEn;
+import com.android.skiggle.cn.SegmentBitSetCn;
 
 import android.app.Activity;
 import android.content.Context;
@@ -68,7 +67,10 @@ public class Skiggle extends Activity {
 		mTextPaint = new Paint();
 		mTextPaint.setTextSize(sDefaultFontSize);
 
-
+		// Set language specifics globals
+		if (sLanguage == "Cn") {
+			SegmentBitSetCn.initializeSegmentBitSetGlobals();
+		}
 
 	}
 
