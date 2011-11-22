@@ -20,6 +20,7 @@ package com.android.skiggle;
 
 
 import com.android.skiggle.cn.SegmentBitSetCn;
+import com.android.skiggle.en.SegmentBitSetEn;
 
 import android.app.Activity;
 import android.content.Context;
@@ -36,7 +37,10 @@ import android.view.View;
 public class Skiggle extends Activity {
 	//	 implements ColorPickerDialog.OnColorChangedListener {
 	
-	public static String sLanguage = "En"; // Set default language to English
+	public static final String CHINESE_MODE = "Cn"; // Code for Chinese handwriting mode
+	public static final String ENGLISH_MODE = "En"; // Code for English handwriting mode
+	
+	public static String sLanguage = CHINESE_MODE; //ENGLISH_MODE; // Set default language to English
 
 	public static int sDefaultPenColor = 0xFF00FFFF;   //;
 	public static int sDefaultCanvasColor = 0xFFFFFFFF;  //0xFFAAAAAA);
@@ -68,8 +72,11 @@ public class Skiggle extends Activity {
 		mTextPaint.setTextSize(sDefaultFontSize);
 
 		// Set language specifics globals
-		if (sLanguage == "Cn") {
+		if (sLanguage == CHINESE_MODE) {
 			SegmentBitSetCn.initializeSegmentBitSetGlobals();
+		}
+		else if (sLanguage == ENGLISH_MODE) {
+			SegmentBitSetEn.initializeSegmentBitSetGlobals();
 		}
 
 	}

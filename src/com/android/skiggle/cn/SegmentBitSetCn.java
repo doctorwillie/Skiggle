@@ -19,11 +19,7 @@
 
 package com.android.skiggle.cn;
 
-import com.android.skiggle.PenSegment;
 import com.android.skiggle.SegmentBitSet;
-import com.android.skiggle.en.SegmentBitSetEn;
-
-import java.util.BitSet;
 
 /**
  * SegmentBitSetCn contains the character bit sets for Chinese Characters
@@ -55,7 +51,6 @@ public class SegmentBitSetCn extends SegmentBitSet {
 		SegmentBitSet.setSThreeSegmentsBitset(new SegmentBitSet("00010000000"));
 		SegmentBitSet.setSFourSegmentsBitset(new SegmentBitSet("00000000000"));
 	}
-
 
 	public SegmentBitSetCn() {};
 

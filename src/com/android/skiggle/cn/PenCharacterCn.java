@@ -20,6 +20,7 @@ package com.android.skiggle.cn;
 
 import com.android.skiggle.PenCharacter;
 import com.android.skiggle.PenSegment;
+import com.android.skiggle.PenUtil;
 
 
 /**
@@ -53,23 +54,95 @@ public class PenCharacterCn extends PenCharacter {
 	}  // End of checkForOShape() method
 
 
-	private boolean checkForHorizontalStroke(PenCharacter pChar) {
+	private boolean checkForHorizontalStrokes(PenCharacter pChar, int numSegs) {
 		//boolean matchedP = false;
 		boolean matchedP = true;
 
 		int numOfSegments = pChar.penSegments.size();
 
-		/*
-		if (numOfSegments == 1) {
-			char c = pChar.penSegments.elementAt(0).penSegmentCharacter;
-			matchedP = (pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.HLINE_CHAR);
-		}
-		*/
-		for (int i = 0; i < numOfSegments; i++ ) {
-			matchedP = matchedP & (pChar.penSegments.elementAt(i).penSegmentCharacter == PenSegment.HLINE_CHAR);
+		if (numOfSegments == numSegs) {
+			for (int i = 0; i < numOfSegments; i++ ) {
+				matchedP = matchedP & (pChar.penSegments.elementAt(i).penSegmentCharacter == PenSegment.HLINE_CHAR);
+			}
 		}
 		return matchedP;
 	} // End of checkForHorizontalStroke() method
+	
+	// TODO: Exact copy of the same method from PenCharacterEn.   Need to replace with a single common method.
+	// Get the x,y coordinates of the top and bottom of a stroke (like a '/', '\', or '|')
+	// and return a 4-element array containing the topX, topY, bottomX and bottomY respectively
+	private float[] getTopBottomCoordsOfSegment(PenSegment pSegment) {
+		// Initially assume the start of the stroke is the top
+		float topX = pSegment.posStart[0]; // x-coord of top end of the stroke
+		float topY = pSegment.posStart[1]; // y-coord of top end of the stroke
+		float bottomX = pSegment.posEnd[0]; // x-coord of bottom end of the stroke
+		float bottomY = pSegment.posEnd[1]; // y-coord of bottom end of the stroke
+		// Swap the top and bottom ends of the stroke if necessary
+		if (bottomY < topY) {
+			topX = bottomX;
+			topY = bottomY;
+			bottomX = pSegment.posStart[0];
+			bottomY = pSegment.posStart[1];
+		}
+		float coords[] = {topX, topY, bottomX, bottomY};
+		return coords;
+	}
+	
+	// TODO: Exact copy of the same method from PenCharacterEn.   Need to replace with a single common method.
+	// Check for  '+'
+	private boolean checkForPlusSign(PenCharacter pChar) {
+		boolean matchedP = false;
+		int numOfSegments = pChar.penSegments.size();
+
+
+		if (numOfSegments == 2) {
+			int hLineIndex = -1; // first stroke E to W
+			int vLineIndex = -1; // second stroke N to S
+
+			for (int i = 0; i < numOfSegments; i++) {
+				// '+' has only two pen stroke characters
+				switch (pChar.penSegments.elementAt(i).penSegmentCharacter) {
+				case PenSegment.HLINE_CHAR:
+					hLineIndex = i;
+					break;
+				case PenSegment.VLINE_CHAR:
+					vLineIndex = i;
+					break;
+				default:
+					break;
+				}
+			}
+			// Check to make sure that the two component strokes for '+' are there, i.e.,
+			// vLineIndex and hLineIndex are both not negative
+			if ((hLineIndex >= 0) & (vLineIndex >= 0)) {
+				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(hLineIndex));		
+				float hLineTopX = coords[0]; // x-coord of top end of the HLINE stroke
+				float hLineTopY = coords[1]; // y-coord of top end of the HLINE stroke
+				float hLineBottomX = coords[2]; // x-coord of bottom end of the HLINE stroke
+				float hLineBottomY = coords[3]; // y-coord of bottom end of the HLINE stroke
+				float hLineAvgX = (hLineTopX + hLineBottomX)/2; // average of x-coord (mid-point) of HLINE stroke
+				float hLineAvgY = (hLineTopY + hLineBottomY)/2; // average of y-coord (mid-point) of HLINE stroke
+
+				coords = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(vLineIndex));		
+				float vLineTopX = coords[0]; // x-coord of top end of the VLINE stroke
+				float vLineTopY = coords[1]; // y-coord of top end of the VLINE stroke
+				float vLineBottomX = coords[2]; // x-coord of bottom end of the VLINE stroke
+				float vLineBottomY = coords[3]; // y-coord of bottom end of the VLLINE stroke
+				float vLineAvgX = (vLineTopX + vLineBottomX)/2; // average of x-coord (mid-point) of VLINE stroke
+				float vLineAvgY = (vLineTopY + vLineBottomY)/2; // average of y-coord (mid-point) of VLINE stroke
+
+				float topGap = PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, hLineTopX, hLineTopY);
+				float bottomGap = PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, hLineBottomX, hLineBottomY);
+				float midGap = PenUtil.distanceBetween2Points(vLineAvgX, vLineAvgY, hLineAvgX, hLineAvgY);
+				float maxGap = Math.max(topGap, bottomGap);
+
+				// Check to make sure HLINE and VLINE cross sufficiently to form the '+'
+				matchedP = (midGap < (.25 * maxGap)); // gap between the mid points of HLINE and VLINE must be small enough
+			}
+		}
+		return matchedP;
+	} // End of checkForPlusSign() method
+
 	
 	/**
 	 * Matches the pen strokes to the given Chinese character c
@@ -90,14 +163,15 @@ public class PenCharacterCn extends PenCharacter {
 			if (foundP) penChar = '〇';
 			break;
 		case '一':
-			foundP = checkForHorizontalStroke(pChar);
-			if (foundP) penChar = '一';			
+			foundP = checkForHorizontalStrokes(pChar, 1);
+			if (foundP) penChar = '一';
+			break;
 		case '二':
-			foundP = checkForHorizontalStroke(pChar);
+			foundP = checkForHorizontalStrokes(pChar, 2);
 			if (foundP) penChar = '二';
 			break;
 		case '三':
-			foundP = checkForHorizontalStroke(pChar);
+			foundP = checkForHorizontalStrokes(pChar, 3);
 			if (foundP) penChar = '三';
 			break;
 		case '四':
@@ -121,15 +195,11 @@ public class PenCharacterCn extends PenCharacter {
 //			if (foundP) penChar = '9';
 			break;
 		case '十':
-//			foundP = checkFor9(pChar);
-//			if (foundP) penChar = '9';
+			foundP = checkForPlusSign(pChar);
+			if (foundP) penChar = '十';
 			break;
-
-			/**********************************************/
-			/* Letters A-Z, c, k, o, p, u, v, w, x, and z */
-			/**********************************************/
-
 		default:
+			break;
 
 		}
 		pChar.penCharacter = penChar;

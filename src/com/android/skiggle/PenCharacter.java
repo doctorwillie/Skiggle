@@ -200,11 +200,11 @@ public class PenCharacter {
 	
 	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar, String lang) {
 		// TODO: Check for language type
-		PenCharacterEn langChar = new PenCharacterEn();
+		//PenCharacterEn langChar = new PenCharacterEn();
 		
 		// Remember to set the global variable sLanguage to "Cn" 
 		// to invoke SegmentBitSetCn.initializeSegmentBitSetGlobals();		
-		//PenCharacterCn langChar = new PenCharacterCn();
+		PenCharacterCn langChar = new PenCharacterCn();
 
 //		langChar.getCharacterCandidates(pChar);
 		getCharacterCandidates(pChar);
