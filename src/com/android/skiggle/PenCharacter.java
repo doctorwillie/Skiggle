@@ -63,7 +63,7 @@ public class PenCharacter {
 		mPenStrokes = new Vector<PenStroke>();
 		penSegments = new Vector<PenSegment>();
 		//		mPenStrokes = new Vector<PenSegment>();
-	}
+	} // End of PenCharacter() constructor
 
 	public void addStroke (PenStroke penStroke) {
 
@@ -74,7 +74,7 @@ public class PenCharacter {
 		penStrokesMaxY = Math.max(penStrokesMaxY, penStroke.boundingRectF.bottom);
 
 		mPenStrokes.add(penStroke);
-	}
+	} // End of addStroke() method
 
 	// Break up stroke into one or more segments
 	public void addSegments (PenStroke penStroke, Canvas canvas, Paint textPaint) {
@@ -82,21 +82,21 @@ public class PenCharacter {
 		penSegments.addAll(penStroke.segmentStroke(canvas, textPaint));
 		
 		printSegmentCharacters(penSegments.elementAt(0).boundingRectF, canvas, textPaint);
-	}
+	} // End of addSegments() method
 
 	// Reset mPenStrokes
 	public void resetStrokes() {
 		for (Iterator<PenStroke> i = mPenStrokes.iterator(); i.hasNext();) {
 			i.next().reset();
 		}
-	}
+	} // End of resetStrokes() method
 
 	// Reset penSegments
 	public void resetSegments() {
 		for (Iterator<PenSegment> i = penSegments.iterator(); i.hasNext();) {
 			i.next().reset();
 		}
-	}
+	} // End of resetSegments() method
 	
 	// Method for getting candidate characters
 	// Get candidates for 1-stroke character
@@ -106,7 +106,7 @@ public class PenCharacter {
 		sBitSet0.mSegmentBitSet.and(SegmentBitSet.sOneSegmentBitset.mSegmentBitSet);
 		pChar.penCharacterCandidates = sBitSet0.getCharacters();
 		// penCharacter = pChar.penSegments.elementAt(0).mPenSegmentCharacter;
-	}
+	} // End of get1SegmentCharacterCandidates() method
 
 	// Get candidates for 2-stroke character
 	private void get2SegmentCharacterCandidates(PenCharacter pChar) {
@@ -123,8 +123,7 @@ public class PenCharacter {
 
 		pChar.penCharacterCandidates = sBitSet0.getCharacters();
 
-		//		}
-	}
+	} // End of get2SegmentCharacterCandidates() method
 
 	// Get candidates for 3-stroke character
 	private void get3SegmentCharacterCandidates(PenCharacter pChar) {
@@ -142,8 +141,8 @@ public class PenCharacter {
 		sBitSet0.mSegmentBitSet.and(s3SegmentsBitSet.mSegmentBitSet);
 
 		pChar.penCharacterCandidates = sBitSet0.getCharacters();
-		//		}
-	}
+		
+	} // End of get3SegmentCharacterCandidates() method
 
 	// Get candidates for 4-stroke character
 	private void get4SegmentCharacterCandidates(PenCharacter pChar) {
@@ -152,12 +151,6 @@ public class PenCharacter {
 		char strokeChar2 = pChar.penSegments.elementAt(2).penSegmentCharacter;
 		char strokeChar3 = pChar.penSegments.elementAt(3).penSegmentCharacter;
 
-		/*
-		  if ((strokeChar0 != strokeChar1) & (strokeChar0 != strokeChar2) 
-				& (strokeChar0 != strokeChar2) & (strokeChar0 != strokeChar3)
-				& (strokeChar1 != strokeChar2) & (strokeChar1 != strokeChar3)
-				& (strokeChar2 != strokeChar3)) {
-		 */
 		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
 		SegmentBitSet sBitSet1 = SegmentBitSet.getSegmentBitSetForChar(strokeChar1);
 		SegmentBitSet sBitSet2 = SegmentBitSet.getSegmentBitSetForChar(strokeChar2);
@@ -172,7 +165,7 @@ public class PenCharacter {
 
 		pChar.penCharacterCandidates = sBitSet0.getCharacters();
 		//}
-	}
+	} // End of get4SegmentCharacterCandidates() method
 	
 	/**
 	 * Gets the candidate characters
@@ -196,7 +189,7 @@ public class PenCharacter {
 		default:
 			pChar.penCharacterCandidates = "???";
 		}
-	}
+	} // ENd of getCharacterCandidates() method
 	
 	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar, String lang) {
 		// TODO: Check for language type
@@ -204,34 +197,30 @@ public class PenCharacter {
 		
 		// Remember to set the global variable sLanguage to "Cn" 
 		// to invoke SegmentBitSetCn.initializeSegmentBitSetGlobals();		
-		PenCharacterCn langChar = new PenCharacterCn();
+//		PenCharacterCn langChar = new PenCharacterCn();
 
 //		langChar.getCharacterCandidates(pChar);
 		getCharacterCandidates(pChar);
 
 		int len = pChar.penCharacterCandidates.length();
 		for (int i = 0; i < len; i++) {
-			if (langChar.matchCharacter(pChar.penCharacterCandidates.charAt(i), pChar))
+//			if (langChar.matchCharacter(pChar.penCharacterCandidates.charAt(i), pChar))
+			if (Skiggle.sLanguage == Skiggle.ENGLISH_MODE) {
+				if (PenCharacterEn.matchCharacter(pChar.penCharacterCandidates.charAt(i), pChar))
+				break;				
+			}
+			else if (Skiggle.sLanguage == Skiggle.CHINESE_MODE) {
+				if (PenCharacterCn.matchCharacter(pChar.penCharacterCandidates.charAt(i), pChar))
 				break;
+			}
 		}
 
-		// penCharacter.showStrokes(mCanvas);
-		// Print the stroke statistics on the screen
-		// mPenStroke.printPenStrokeStatsOnScreen(this, mCanvas, mPaint, mTextPaint);
-		// Reset the pen color back to default
-		// mPaint.setColor(sDefaultPenColor);
-		// mPenStroke.printMatchedCharacter(mCanvas, penCharacter.mPenCharacter, 100.0F, 300.0F, mTextPaint);
 		pChar.printPenCharacter(canvas, 50.0F, 400.0F, textPaint);
 		pChar.printPenCharacterCandidates(canvas, 60.0F, 400.0F, textPaint);
 		
 		pChar.printCharacterSegmentsData();
 
-		//		PenUtil.printString(Float.toString(pChar.penSegments.elementAt(0).mPointsY[0]), 50.0F, 410.F,
-		//				pChar.penSegments.elementAt(0).mBoundingRectF, canvas, textPaint);
-
-		// PenSegment pSegment = pChar.penSegments.elementAt(0);
-		// pSegment.printSegmentStats(canvas, textPaint);
-	}
+	} // End of findMatchingCharacter() method
 	
 	// Methods for printing PenCharacterEn
 	private void printString(String str, Canvas canvas, float x, float y, Paint paint) {
@@ -252,21 +241,21 @@ public class PenCharacter {
 			tempPaint.setColor(0xFFFF0000);
 			canvas.drawText(str, x, y, tempPaint);
 		}
-	}
+	} // End of printString() method
 
 	public void printPenCharacter(Canvas canvas, float x, float y, Paint paint) {
 
 		if (penCharacter != null) {
 			printString(penCharacter.toString(), canvas, x, y, paint);
 		}
-	}
+	} // End of prinPenCharacter() method
 
 	public void printPenCharacterCandidates(Canvas canvas, float x, float y, Paint paint) {
 
 		if (penCharacterCandidates != null) {
 			printString(penCharacterCandidates, canvas, x, y, paint);
 		}
-	}
+	} // End of printPenCharacter() method
 	
 	
 	public void printSegmentCharacters(RectF mBoundingRectF, Canvas canvas, Paint textPaint) {
@@ -283,25 +272,8 @@ public class PenCharacter {
 		}
 		
 		PenUtil.printString(str, 10, 15, mBoundingRectF, canvas, textPaint);
-	/*	
-		ConsoleHandler cons = new ConsoleHandler();
-		cons.publish(new LogRecord(Level.SEVERE, "abcde"));
-		cons.flush();
-		System.out.print("ABCDEFG");
-		Log.i(PenCharacterEn.TAG, "ABBBB");
-		try {
-		BufferedWriter f = new BufferedWriter(new FileWriter("c:\\Users\\Willie\\Programming\\android.log"));
-		f.write("ABCDEFGH");
-		f.close();
-		} 
-		catch (IOException e) {
-			System.out.println("IO Error");
 
-		}
-	*/	
-		
-
-	}
+	} // End of printSegmentCharacters() method
 	
 	public void printCharacterSegmentsData() {
 
@@ -316,5 +288,6 @@ public class PenCharacter {
 			//segment.printSegmentPointsData();
 			
 		}
-	}
+	} // End of printCharacters() method
+	
 }

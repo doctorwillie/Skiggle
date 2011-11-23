@@ -39,16 +39,16 @@ public class SegmentBitSetCn extends SegmentBitSet {
 //		SegmentBitSet.setSAllCharactersStringBitset();
 		SegmentBitSet.setSVLineBitset(new SegmentBitSet("00001000001"));
 		SegmentBitSet.setSHLineBitset(new SegmentBitSet("01111110001"));
-		SegmentBitSet.setSFSlashBitset(new SegmentBitSet("00000000000"));
-		SegmentBitSet.setSBSlashBitset(new SegmentBitSet("00000000000"));
+		SegmentBitSet.setSFSlashBitset(new SegmentBitSet("00001000100"));
+		SegmentBitSet.setSBSlashBitset(new SegmentBitSet("00000000100"));
 		SegmentBitSet.setSBcBitset(new SegmentBitSet("00000000000"));
 		SegmentBitSet.setSCircleBitset(new SegmentBitSet("10000000000"));
 		SegmentBitSet.setSFcBitset(new SegmentBitSet("00000000000"));
 		SegmentBitSet.setSDotBitset(new SegmentBitSet("00000000000"));
 		SegmentBitSet.setSUBitset(new SegmentBitSet("00000000000"));
-		SegmentBitSet.setSOneSegmentBitset(new SegmentBitSet("11000000000"));
+		SegmentBitSet.setSOneSegmentBitset(new SegmentBitSet("11000110000"));
 		SegmentBitSet.setSTwoSegmentsBitset(new SegmentBitSet("00100000101"));
-		SegmentBitSet.setSThreeSegmentsBitset(new SegmentBitSet("00010000000"));
+		SegmentBitSet.setSThreeSegmentsBitset(new SegmentBitSet("00011000000"));
 		SegmentBitSet.setSFourSegmentsBitset(new SegmentBitSet("00000000000"));
 	}
 

@@ -34,12 +34,12 @@ import com.android.skiggle.PenUtil;
 public class PenCharacterEn extends PenCharacter {
 
 	// Check to see if a float is greater than the low and less than high thresholds
-	private boolean isBetweenThresholds(double num, double lowThreshold, double highThreshold) {
+	private static boolean isBetweenThresholds(double num, double lowThreshold, double highThreshold) {
 		return ((lowThreshold < num) & (num < highThreshold));
 	}
 
 	// Check to see if the strokes form a small letter (that is the rectangle bounding them is small enough for a small letter)
-	private boolean isSmallLetter(PenCharacter pChar) {
+	private static boolean isSmallLetter(PenCharacter pChar) {
 
 		return isBetweenThresholds(pChar.penStrokesMaxY - pChar.penStrokesMinY, 0, (float) (0.4 * Skiggle.sDefaultWritePadHeight));
 
@@ -47,7 +47,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Get the x,y coordinates of the left and right of a stroke (like a '-')
 	// and return a 4-element array containing the leftX, leftY, rightX and rightY respectively
-	private float[] getLeftRightCoordsOfSegment(PenSegment pSegment) {
+	private static float[] getLeftRightCoordsOfSegment(PenSegment pSegment) {
 		// Initially assume the start of the stroke
 		float leftX = pSegment.posStart[0]; // x-coord of top end of the stroke
 		float leftY = pSegment.posStart[1]; // y-coord of top end of the stroke
@@ -66,7 +66,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Get the x,y coordinates of the top and bottom of a stroke (like a '/', '\', or '|')
 	// and return a 4-element array containing the topX, topY, bottomX and bottomY respectively
-	private float[] getTopBottomCoordsOfSegment(PenSegment pSegment) {
+	private static float[] getTopBottomCoordsOfSegment(PenSegment pSegment) {
 		// Initially assume the start of the stroke is the top
 		float topX = pSegment.posStart[0]; // x-coord of top end of the stroke
 		float topY = pSegment.posStart[1]; // y-coord of top end of the stroke
@@ -85,7 +85,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Get the gaps between the tops and bottoms of two strokes
 	// and return a 2-element array containing the top gap and bottom gap
-	private float[] getTopBottomGapsBetween2Segments(PenSegment pSegment1, PenSegment pSegment2) {
+	private static float[] getTopBottomGapsBetween2Segments(PenSegment pSegment1, PenSegment pSegment2) {
 		float coords[] = getTopBottomCoordsOfSegment(pSegment1);
 		float stroke1TopX = coords[0]; // x-coord of top end of FSLASH stroke
 		float stroke1TopY = coords[1]; // y-coord of top end of FSLASH stroke
@@ -106,7 +106,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Get the x, y coordinates of points at 1/3 and 2/3 from the left (or top) line between the points (left or top
 	// coordinates first
-	private float[] getPointsAt1stAnd2ndThirdMarks(float leftOrTopX, float leftOrTopY, float rightOrBottomX, float rightOrBottomY) {
+	private static float[] getPointsAt1stAnd2ndThirdMarks(float leftOrTopX, float leftOrTopY, float rightOrBottomX, float rightOrBottomY) {
 		// Get the x,y coordinates at the one-third and two-third marks of the line between
 		// the points (leftOrTopX, leftOrTopY) and  (rightOrBottomX, rightOrBottomY)
 
@@ -124,7 +124,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Order a pair of PenSegments into the left and right and return them as an array of 2 with
 	// left PenSegment as first element and right PenSegment as the second element.
-	private PenSegment[] order2PenSegmentsIntoLeftRight(PenSegment pSegment1, PenSegment pSegment2) {
+	private static PenSegment[] order2PenSegmentsIntoLeftRight(PenSegment pSegment1, PenSegment pSegment2) {
 		PenSegment leftRightPenSegments[] = {pSegment1, pSegment2}; // Assume pSegment1 is on left of pSegment2 initially.
 
 		// Determine which of the 2 HLINE strokes is on the left and which is on the right.
@@ -150,7 +150,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Order a pair of PenSegments into the Right and bottom and return them as an array of 2 with
 	// top PenSegment as first element and bottom PenSegment as the second element.
-	private PenSegment[] order2PenSegmentsIntoTopBottom(PenSegment pSegment1, PenSegment pSegment2) {
+	private static PenSegment[] order2PenSegmentsIntoTopBottom(PenSegment pSegment1, PenSegment pSegment2) {
 		PenSegment topBottomPenSegments[] = {pSegment1, pSegment2}; // Assume pSegment1 is on top of pSegment2 initially.
 
 		// Determine which of the 2 HLINE strokes is at the top and which is at the bottom.
@@ -178,14 +178,14 @@ public class PenCharacterEn extends PenCharacter {
 	// Check to see if the gap between the top (bottom) of a caret ('/' and '\') or V ('\' or '/') are close enough
 	// That is, the gap between the tops for caret (or bottoms for 'V') of FSLASH and BSLASH are less than one
 	// quarter the distance between their bases
-	private boolean gapCheckForCaretShape(PenSegment pSegment1, PenSegment pSegment2) {
+	private static boolean gapCheckForCaretShape(PenSegment pSegment1, PenSegment pSegment2) {
 		float gaps[] = getTopBottomGapsBetween2Segments(pSegment1, pSegment2);
 		float gapBetweenTops = gaps[0];
 		float gapBetweenBottoms = gaps[1];
 		return 	(gapBetweenTops < 0.25 * gapBetweenBottoms);
 	}
 
-	private boolean gapCheckForVShape(PenSegment pSegment1, PenSegment pSegment2) {
+	private static boolean gapCheckForVShape(PenSegment pSegment1, PenSegment pSegment2) {
 		float gaps[] = getTopBottomGapsBetween2Segments(pSegment1, pSegment2);
 		float gapBetweenTops = gaps[0];
 		float gapBetweenBottoms = gaps[1];
@@ -193,7 +193,7 @@ public class PenCharacterEn extends PenCharacter {
 	}
 
 	// '9' or 'q' has a FC and a dot2Index on the right joining the VLINE at the top and middle
-	private boolean checkFor9OrSmallQ(float vLineTopYMin, float vLineTopYMax, PenCharacter pChar) {
+	private static boolean checkFor9OrSmallQ(float vLineTopYMin, float vLineTopYMax, PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -252,7 +252,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkFor9OrSmallQ()
 
 	// Check to see if the stroke is a 'C' or 'c'.  Both is made up of a single stroke, FC.
-	private boolean checkForCShape(PenCharacter pChar) { //float minSize, float maxSize) {
+	private static boolean checkForCShape(PenCharacter pChar) { //float minSize, float maxSize) {
 		boolean matchedP = false;
 
 		int numOfSegments = pChar.penSegments.size();
@@ -282,7 +282,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForCShape()
 
 	// Check for the three strokes that form 'K' or 'k' and return either 'K', 'k' or NUL (Ascii value 0)
-	private char checkForCapitalOrSmallK(PenCharacter pChar) {
+	private static char checkForCapitalOrSmallK(PenCharacter pChar) {
 		char c = '\0';
 		int numOfSegments = pChar.penSegments.size();
 
@@ -359,7 +359,7 @@ public class PenCharacterEn extends PenCharacter {
 	 * @param pChar - PenCharacter object to check
 	 * @return - true if matched, false otherwise
 	 */
-	private boolean checkForOShape(PenCharacter pChar) {
+	private static boolean checkForOShape(PenCharacter pChar) {
 		boolean matchedP = false;
 
 		int numOfSegments = pChar.penSegments.size();
@@ -376,7 +376,7 @@ public class PenCharacterEn extends PenCharacter {
 	// Capital 'P' has a height larger than 2/3 the height of the writing space.
 	// The height of a small 'p' is less 2/3 the height of the writing space.
 	// 'P' has a VLINE and a BC (backward C or ')') on the right joining the VLINE at the top and mid-point
-	private boolean checkForPShape(PenCharacter pChar) {
+	private static boolean checkForPShape(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -432,7 +432,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForPShape()
 
 	// Check for 'S' for capital 'S' and small 's'
-	private boolean checkForSShape(PenCharacter pChar) {
+	private static boolean checkForSShape(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -479,7 +479,7 @@ public class PenCharacterEn extends PenCharacter {
 
 
 	// Check to see if the stroke is a 'U' or 'u'.  Both is made up of a single stroke, U.
-	private boolean checkForUShape(PenCharacter pChar) {
+	private static boolean checkForUShape(PenCharacter pChar) {
 		boolean matchedP = false;
 
 		int numOfSegments = pChar.penSegments.size();
@@ -492,7 +492,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForUShape()
 
 	// 'V' or 'v' is made up of a back slash ('\') and a forward slash ('/')
-	private boolean checkForVShape(PenCharacter pChar) {
+	private static boolean checkForVShape(PenCharacter pChar) {
 		boolean matchedP = false;
 
 		int numOfSegments = pChar.penSegments.size();
@@ -506,7 +506,7 @@ public class PenCharacterEn extends PenCharacter {
 	} // End of checkForVShape()
 
 	// 'W' or 'w' has two pairs of BSLASH's ('\') and a FSLASH's ('/') or V's, side by side
-	private boolean checkForWShape(PenCharacter pChar) {
+	private static boolean checkForWShape(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -568,7 +568,7 @@ public class PenCharacterEn extends PenCharacter {
 	} // End of checkForWShape()
 
 	// Check for 'X' for capital 'X' and small 'x'
-	private boolean checkForXShape(PenCharacter pChar) {
+	private static boolean checkForXShape(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -626,7 +626,7 @@ public class PenCharacterEn extends PenCharacter {
 	} // End of checkForXShape()
 
 	// 'Z' or 'z' has an HLINE ('-') at the top and bottom of a FSLASH ('/')
-	private boolean checkForZShape(PenCharacter pChar) {
+	private static boolean checkForZShape(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -686,13 +686,13 @@ public class PenCharacterEn extends PenCharacter {
 			}
 		}
 		return matchedP;
-	} // End of checkForZShape()
+	} // End of checkForZShape() method
 
 
 	// Check for specific characters
 
 	// Caret character (or inverted V) is made up of a forward slash ('/') and a back slash ('\')
-	private boolean checkForCaret(PenCharacter pChar) {
+	private static boolean checkForCaret(PenCharacter pChar) {
 		boolean matchedP = false;
 
 		int numOfSegments = pChar.penSegments.size();
@@ -703,7 +703,7 @@ public class PenCharacterEn extends PenCharacter {
 		}
 
 		return matchedP;
-	}  // End of checkForCaret()
+	}  // End of checkForCaret() method
 
 	/*****************
 	 *               *
@@ -712,7 +712,7 @@ public class PenCharacterEn extends PenCharacter {
 	 *****************/
 
 	// ???
-	private void checkForNumber1(PenCharacter pChar) {
+	private static void checkForNumber1(PenCharacter pChar) {
 		if (pChar.penSegments.size() == 1) {
 			PenSegment firstSegment = pChar.penSegments.elementAt(0);	
 
@@ -725,7 +725,7 @@ public class PenCharacterEn extends PenCharacter {
 	}
 
 	// 3 has two strokes - two BC (backward C or ')') strokes stacked on top of one another.
-	private boolean checkFor3(PenCharacter pChar) {
+	private static boolean checkFor3(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -776,7 +776,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkFor3()
 
 	// 4 has three strokes - a HLINE, a VLINE, and a FSLASH.
-	private boolean checkFor4(PenCharacter pChar) {
+	private static boolean checkFor4(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -843,7 +843,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkFor4()
 
 	// 5 has three strokes - a HLINE, a VLINE, and a BC (backward C or ')') strokes stacked on top of one another.
-	private boolean checkFor5(PenCharacter pChar) {
+	private static boolean checkFor5(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -905,7 +905,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkFor5()
 
 	// 7 has two strokes - a HLINE above a FSLASH.
-	private boolean checkFor7(PenCharacter pChar) {
+	private static boolean checkFor7(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -959,7 +959,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkFor7()
 
 	// '9' has a VLINE and a FC on the right joining the VLINE at the top and middle
-	private boolean checkFor9(PenCharacter pChar) {
+	private static boolean checkFor9(PenCharacter pChar) {
 		boolean matchedP = false;
 
 		double vLineTopYMin = -1.0;
@@ -981,7 +981,7 @@ public class PenCharacterEn extends PenCharacter {
 	 ******************/
 
 	// 'A' is made up of a forward slash ('/'), a back slash ('\'), and a horizontal line ('-')
-	private boolean checkForCapitalA(PenCharacter pChar) {
+	private static boolean checkForCapitalA(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1054,7 +1054,7 @@ public class PenCharacterEn extends PenCharacter {
 	// 'B' has three strokes - a VLINE and two BC (backward C or ')') strokes on the right.
 	// The top BC joins the VLINE at the top and around mid-point and the bottom BC joins the VLINE
 	// at around the mid-point and the bottom
-	private boolean checkForCapitalB(PenCharacter pChar) {
+	private static boolean checkForCapitalB(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1129,7 +1129,7 @@ public class PenCharacterEn extends PenCharacter {
 	// 'C' is checked using the checkForCShape() and the isSmallLetter() methods
 
 	// 'D' has a VLINE and a BC (backward C or ')') on the right joining the VLINE at the top and bottom
-	private boolean checkForCapitalD(PenCharacter pChar) {
+	private static boolean checkForCapitalD(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1183,7 +1183,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForCapitalD()
 
 	// Check for 'E'
-	private boolean checkForCapitalE(PenCharacter pChar) {
+	private static boolean checkForCapitalE(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1293,7 +1293,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForCapitalE()
 
 	// Check for 'F'
-	private boolean checkForCapitalF(PenCharacter pChar) {
+	private static boolean checkForCapitalF(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1361,7 +1361,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// 'G' has a FC (forward C or '('), a HLINE and a VLINE.  The HLINE touches the top of the VLINE which
 	// in turn is touched by the lower right end of the FC.
-	private boolean checkForCapitalG(PenCharacter pChar) {
+	private static boolean checkForCapitalG(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 		// G can have 3 strokes - FC and HLINE and an optional VLINE
@@ -1439,7 +1439,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForCapitalG()
 
 	// 'H' has a HLINE ('-') between two VLINE's ('|')
-	private boolean checkForCapitalH(PenCharacter pChar) {
+	private static boolean checkForCapitalH(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1499,7 +1499,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForCapitalH()
 
 	// 'I' has an HLINE ('-') at the top and bottom of a VLINE ('|')
-	private boolean checkForCapitalI(PenCharacter pChar) {
+	private static boolean checkForCapitalI(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1558,7 +1558,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForCapitalI()
 
 	// 'J' has an HLINE ('-') at the top of a VLINE ('|') and a U below the VLINE
-	private boolean checkForCapitalJ(PenCharacter pChar) {
+	private static boolean checkForCapitalJ(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1621,7 +1621,7 @@ public class PenCharacterEn extends PenCharacter {
 	// 'K' is checked using checkForCapitalOrSmallK() which returns a 'k', 'K', or '\0' and not a boolean
 
 	// 'L' has a VLINE and an HLINE at the bottom
-	private boolean checkForCapitalL(PenCharacter pChar) {
+	private static boolean checkForCapitalL(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1671,7 +1671,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForCapitalL()
 
 	// 'M' has a BSLASH ('\') and a FSLASH ('/') between two VLINE's ('|')
-	private boolean checkForCapitalM(PenCharacter pChar) {
+	private static boolean checkForCapitalM(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1749,7 +1749,7 @@ public class PenCharacterEn extends PenCharacter {
 	} // End of checkForCapitalM()
 
 	// 'N' has a BSLASH ('\') between two VLINE's ('|')
-	private boolean checkForCapitalN(PenCharacter pChar) {
+	private static boolean checkForCapitalN(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1819,7 +1819,7 @@ public class PenCharacterEn extends PenCharacter {
 	// 'P' is checked using checkForPShape() and letter size check
 
 	// 'Q' has a CIRCLE and a BSLASH cutting the circle at the bottom right
-	private boolean checkForCapitalQ(PenCharacter pChar) {
+	private static boolean checkForCapitalQ(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1868,7 +1868,7 @@ public class PenCharacterEn extends PenCharacter {
 	// 'R' has three strokes - a VLINE, a BC (backward C or ')') and a BSLASH on the right.
 	// The BC joins the VLINE at the top and around mid-point and the BSLASH joins the VLINE
 	// at around the mid-point and the bottom.
-	private boolean checkForCapitalR(PenCharacter pChar) {
+	private static boolean checkForCapitalR(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1935,7 +1935,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForCapitalR()
 
 	// 'T' has an HLINE ('-') at the top of a VLINE ('|')
-	private boolean checkForCapitalT(PenCharacter pChar) {
+	private static boolean checkForCapitalT(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -1992,7 +1992,7 @@ public class PenCharacterEn extends PenCharacter {
 	// 'X' is checked using the checkForCShape() and the isSmallLetter() methods
 
 	// 'Y' is made up of a back slash ('\'), a forward slash ('/') and a vertical line ('|')
-	private boolean checkForCapitalY(PenCharacter pChar) {
+	private static boolean checkForCapitalY(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2060,7 +2060,7 @@ public class PenCharacterEn extends PenCharacter {
 	 ************************/
 
 	// 'a' has a FC and VLINE on the right joining the VLINE almost at the top and bottom
-	private boolean checkForSmallA(PenCharacter pChar) {
+	private static boolean checkForSmallA(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2115,7 +2115,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForSmallA()
 
 	// 'b' has a VLINE and a BC on the right joining the VLINE at the middle and bottom
-	private boolean checkForSmallB(PenCharacter pChar) {
+	private static boolean checkForSmallB(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2178,7 +2178,7 @@ public class PenCharacterEn extends PenCharacter {
 	// 'c' is checked using the checkForCShape() and the isSmallLetter() methods
 
 	// 'd' has a FC and VLINE on the right joining the VLINE at the middle and bottom
-	private boolean checkForSmallD(PenCharacter pChar) {
+	private static boolean checkForSmallD(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2236,7 +2236,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForSmallD()
 
 	// 'i' has a VLINE and a DOT above it
-	private boolean checkForSmallI(PenCharacter pChar) {
+	private static boolean checkForSmallI(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2291,7 +2291,7 @@ public class PenCharacterEn extends PenCharacter {
 	// 'p' is checked using checkForPShape() and letter size check
 
 	// 'q' has a VLINE and a FC on the right joining the VLINE at the top and middle
-	private boolean checkForSmallQ(PenCharacter pChar) {
+	private static boolean checkForSmallQ(PenCharacter pChar) {
 		boolean matchedP = false;
 
 		double vLineTopYMin = .4 * Skiggle.sDefaultWritePadHeight;
@@ -2307,7 +2307,7 @@ public class PenCharacterEn extends PenCharacter {
 	}  // End of checkForSmallQ()
 
 	// 't' has a VLINE and a HLINE cutting the VLINE somewhere between .2 and .4 of the VLINE's height from the top of VLINE
-	private boolean checkForSmallT(PenCharacter pChar) {
+	private static boolean checkForSmallT(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2369,7 +2369,7 @@ public class PenCharacterEn extends PenCharacter {
 
 
 	// 'y' has a BSLASH and a FSLASH on the right with the bottom of the BSLASH touching the middle of the FSLASH
-	private boolean checkForSmallY(PenCharacter pChar) {
+	private static boolean checkForSmallY(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2428,7 +2428,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check for  '!'
 	// '!' has a VLINE and a DOT below it
-	private boolean checkForExclamationMark(PenCharacter pChar) {
+	private static boolean checkForExclamationMark(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2484,7 +2484,7 @@ public class PenCharacterEn extends PenCharacter {
 	// Check for  '#'
 	// '#' has a pair of FSLASH's ('/') next to each other and a pair of HLINE's ('-') one on top of the other
 	//  The pairs of FSLASH's and HLINE's cross each other.
-	private boolean checkForHashSymbol(PenCharacter pChar) {
+	private static boolean checkForHashSymbol(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2587,7 +2587,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check for  '%'
 	// '%' CIRCLE ('o') at the top and bottom of a FSLASH ('/')
-	private boolean checkForPercentSign(PenCharacter pChar) {
+	private static boolean checkForPercentSign(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2653,7 +2653,7 @@ public class PenCharacterEn extends PenCharacter {
 	// Check for  '\''
 
 	// Check for  '('
-	private boolean checkForLeftParenthesis(PenCharacter pChar) {
+	private static boolean checkForLeftParenthesis(PenCharacter pChar) {
 		boolean matchedP = false;
 		// In checkForCShape, a test is done to see if the C shape is curved enough.  If so it is a "c" or "C".
 		// If not it is assumed to be a left parenthesis after confirming that the it is a FC_CHAR stroke primitive.
@@ -2665,7 +2665,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check for  ')' or ','
 	// Check for the BC stroke that form ')' or ',' and return either ')', ',' or NUL (Ascii value 0)
-	private char checkForRightParenthesisOrComma(PenCharacter pChar) {
+	private static char checkForRightParenthesisOrComma(PenCharacter pChar) {
 		char c = '\0';
 
 		if (pChar.penSegments.size() == 1) // ')' or ',' has only one stroke
@@ -2682,7 +2682,7 @@ public class PenCharacterEn extends PenCharacter {
 	// Check for  '*'
 
 	// Check for  '+'
-	private boolean checkForPlusSign(PenCharacter pChar) {
+	private static boolean checkForPlusSign(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2743,7 +2743,7 @@ public class PenCharacterEn extends PenCharacter {
 	 * @param pChar - PenCharacter to check
 	 * @return - the dash or underscore character depending on vertical position of horizontal line or NUL (Ascii value 0) if no match
 	 */
-	private char checkForDashOrUnderscore(PenCharacter pChar) {
+	private static char checkForDashOrUnderscore(PenCharacter pChar) {
 		char c = '\0';
 
 		if (pChar.penSegments.size() == 1) // '-' or '_' has only one stroke
@@ -2758,7 +2758,7 @@ public class PenCharacterEn extends PenCharacter {
 	} // End of checkForDashOrUnderscore() method
 
 	// Check for  '.'
-	private boolean checkForPeriod(PenCharacter pChar) {
+	private static boolean checkForPeriod(PenCharacter pChar) {
 		boolean matchedP = false;
 		if (pChar.penSegments.size() == 1) // Back slash has only one stroke
 			matchedP = (pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.DOT_CHAR);
@@ -2767,7 +2767,7 @@ public class PenCharacterEn extends PenCharacter {
 	} // checkForPeriod()
 
 	// Check for  '/'
-	private boolean checkForForwardSlash(PenCharacter pChar) {
+	private static boolean checkForForwardSlash(PenCharacter pChar) {
 		boolean matchedP = false;
 		if (pChar.penSegments.size() == 1) // Forward slash has only one stroke
 			matchedP = (pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.FSLASH_CHAR);
@@ -2777,7 +2777,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check for  ':'
 	// ':' has a two DOT's, one on top of the other
-	private boolean checkForColon(PenCharacter pChar) {
+	private static boolean checkForColon(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2812,7 +2812,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check for  ';'
 	// ';' has a  DOT and a BC below it
-	private boolean checkForSemiColon(PenCharacter pChar) {
+	private static boolean checkForSemiColon(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2857,7 +2857,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check for  '<' or '>'
 	// Check for the two strokes that form '<' or '>' and return either '<', '>' or NUL (Ascii value 0)
-	private char checkForLessOrGreaterThanSign(PenCharacter pChar) {
+	private static char checkForLessOrGreaterThanSign(PenCharacter pChar) {
 		char c = '\0';
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2909,7 +2909,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check for  '='
 	// '=' has a two HLINE's, one on top of the other
-	private boolean checkForEqualSign(PenCharacter pChar) {
+	private static boolean checkForEqualSign(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -2949,7 +2949,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check for 'I', '[' or ']'
 	// Check for the two strokes that form 'I', '[' or ']' and return either '[', ']' or NUL (Ascii value 0)
-	private char checkForCapitalIOrLeftOrRightSquareBracket(PenCharacter pChar) {
+	private static char checkForCapitalIOrLeftOrRightSquareBracket(PenCharacter pChar) {
 		char c = '\0';
 		int numOfSegments = pChar.penSegments.size();
 
@@ -3030,7 +3030,7 @@ public class PenCharacterEn extends PenCharacter {
 	} // End of checkForCapitalILeftOrRightSquareBracket()
 
 	// Check for  '\\'
-	private boolean checkForBackSlash(PenCharacter pChar) {
+	private static boolean checkForBackSlash(PenCharacter pChar) {
 		boolean matchedP = false;
 		if (pChar.penSegments.size() == 1) // Back slash has only one stroke
 			matchedP = (pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.BSLASH_CHAR);
@@ -3045,7 +3045,7 @@ public class PenCharacterEn extends PenCharacter {
 	
 	// Check for  '{'
 	// TODO: TO BE COMPLETED //
-	private boolean checkForLeftCurlyBrace(PenCharacter pChar) {
+	private static boolean checkForLeftCurlyBrace(PenCharacter pChar) {
 		boolean matchedP = false;
 //		if (pChar.penSegments.size() == 2) // Left curly brace has two strokes - two "c" stacked on top of one another
 //			matchedP = (pChar.penSegments.elementAt(0).mPenSegmentCharacter == PenSegment.VLINE_CHAR);
@@ -3054,7 +3054,7 @@ public class PenCharacterEn extends PenCharacter {
 	} // checkForLeftCurlyBrace()
 	
 	// Check for  '|'
-	private boolean checkForVerticalBar(PenCharacter pChar) {
+	private static boolean checkForVerticalBar(PenCharacter pChar) {
 		boolean matchedP = false;
 		if (pChar.penSegments.size() == 1) // Vertical bar has only one stroke
 			matchedP = (pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.VLINE_CHAR);
@@ -3071,7 +3071,7 @@ public class PenCharacterEn extends PenCharacter {
 	 * @param pChar: PenCharacter object containing the pen strokes
 	 * @return
 	 */
-	public boolean matchCharacter(char c, PenCharacter pChar) {
+	public static boolean matchCharacter(char c, PenCharacter pChar) {
 		boolean foundP = false;
 		char penChar = '?';
 
@@ -3442,60 +3442,5 @@ public class PenCharacterEn extends PenCharacter {
 		return foundP;
 	}
 
-	/**
-	 * Gets the candidate characters
-	 * @param pChar: PenCharacter object with the strokes (as the character is being built up)
-	 */
-
-	/*
-	public void getCharacterCandidates(PenCharacter pChar) {
-
-		switch (pChar.penSegments.size()) {
-		case 1: 
-			get1SegmentCharacterCandidates(pChar);
-			break;
-		case 2: 
-			get2SegmentCharacterCandidates(pChar);
-			break;
-		case 3: 
-			get3SegmentCharacterCandidates(pChar);
-			break;
-		case 4: 
-			get4SegmentCharacterCandidates(pChar);
-			break;
-		default:
-			pChar.penCharacterCandidates = "???";
-		}
-	}
-	*/
-	
-	/*
-	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar) {
-		getCharacterCandidates(canvas, textPaint, pChar);
-
-		int len = pChar.penCharacterCandidates.length();
-		for (int i = 0; i < len; i++) {
-			if (matchCharacter(pChar.penCharacterCandidates.charAt(i), pChar))
-				break;
-		}
-
-		// penCharacter.showStrokes(mCanvas);
-		// Print the stroke statistics on the screen
-		// mPenStroke.printPenStrokeStatsOnScreen(this, mCanvas, mPaint, mTextPaint);
-		// Reset the pen color back to default
-		// mPaint.setColor(sDefaultPenColor);
-		// mPenStroke.printMatchedCharacter(mCanvas, penCharacter.mPenCharacter, 100.0F, 300.0F, mTextPaint);
-		pChar.printPenCharacter(canvas, 50.0F, 400.0F, textPaint);
-		pChar.printPenCharacterCandidates(canvas, 60.0F, 400.0F, textPaint);
-		
-		pChar.printCharacterSegmentsData();
-
-		//		PenUtil.printString(Float.toString(pChar.penSegments.elementAt(0).mPointsY[0]), 50.0F, 410.F,
-		//				pChar.penSegments.elementAt(0).mBoundingRectF, canvas, textPaint);
-
-		// PenSegment pSegment = pChar.penSegments.elementAt(0);
-		// pSegment.printSegmentStats(canvas, textPaint);
-	}
-*/
 
 }

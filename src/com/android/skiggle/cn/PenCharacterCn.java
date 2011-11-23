@@ -41,7 +41,7 @@ public class PenCharacterCn extends PenCharacter {
 	 * @param pChar - PenCharacter object to check
 	 * @return - true if matched, false otherwise
 	 */
-	private boolean checkForOShape(PenCharacter pChar) {
+	private static boolean checkForOShape(PenCharacter pChar) {
 		boolean matchedP = false;
 
 		int numOfSegments = pChar.penSegments.size();
@@ -54,7 +54,7 @@ public class PenCharacterCn extends PenCharacter {
 	}  // End of checkForOShape() method
 
 
-	private boolean checkForHorizontalStrokes(PenCharacter pChar, int numSegs) {
+	private static boolean checkForHorizontalStrokes(PenCharacter pChar, int numSegs) {
 		//boolean matchedP = false;
 		boolean matchedP = true;
 
@@ -71,7 +71,7 @@ public class PenCharacterCn extends PenCharacter {
 	// TODO: Exact copy of the same method from PenCharacterEn.   Need to replace with a single common method.
 	// Get the x,y coordinates of the top and bottom of a stroke (like a '/', '\', or '|')
 	// and return a 4-element array containing the topX, topY, bottomX and bottomY respectively
-	private float[] getTopBottomCoordsOfSegment(PenSegment pSegment) {
+	private static float[] getTopBottomCoordsOfSegment(PenSegment pSegment) {
 		// Initially assume the start of the stroke is the top
 		float topX = pSegment.posStart[0]; // x-coord of top end of the stroke
 		float topY = pSegment.posStart[1]; // y-coord of top end of the stroke
@@ -90,7 +90,7 @@ public class PenCharacterCn extends PenCharacter {
 	
 	// TODO: Exact copy of the same method from PenCharacterEn.   Need to replace with a single common method.
 	// Check for  '+'
-	private boolean checkForPlusSign(PenCharacter pChar) {
+	private static boolean checkForPlusSign(PenCharacter pChar) {
 		boolean matchedP = false;
 		int numOfSegments = pChar.penSegments.size();
 
@@ -143,6 +143,53 @@ public class PenCharacterCn extends PenCharacter {
 		return matchedP;
 	} // End of checkForPlusSign() method
 
+	// TODO: Exact copy of the same method from PenCharacterEn.   Need to replace with a single common method.	
+	// Get the gaps between the tops and bottoms of two strokes
+	// and return a 2-element array containing the top gap and bottom gap
+	private static float[] getTopBottomGapsBetween2Segments(PenSegment pSegment1, PenSegment pSegment2) {
+		float coords[] = getTopBottomCoordsOfSegment(pSegment1);
+		float stroke1TopX = coords[0]; // x-coord of top end of FSLASH stroke
+		float stroke1TopY = coords[1]; // y-coord of top end of FSLASH stroke
+		float stroke1BottomX = coords[2]; // x-coord of bottom end of FSLASH stroke
+		float stroke1BottomY = coords[3]; // y-coord of bottom end of FSLASH stroke
+
+		coords = getTopBottomCoordsOfSegment(pSegment2);
+		float stroke2TopX = coords[0]; // x-coord of top end of FSLASH stroke
+		float stroke2TopY = coords[1]; // y-coord of top end of FSLASH stroke
+		float stroke2BottomX = coords[2]; // x-coord of bottom end of FSLASH stroke
+		float stroke2BottomY = coords[3]; // y-coord of bottom end of FSLASH stroke
+
+		float gaps[] = {
+				PenUtil.distanceBetween2Points(stroke1TopX, stroke1TopY, stroke2TopX, stroke2TopY),
+				PenUtil.distanceBetween2Points(stroke1BottomX, stroke1BottomY, stroke2BottomX, stroke2BottomY)};
+		return gaps;
+	} // End of getTopBottomGapsBetween2Segments method()
+	
+	// TODO: Exact copy of the same method from PenCharacterEn.   Need to replace with a single common method.
+	// Check to see if the gap between the top (bottom) of a caret ('/' and '\') or V ('\' or '/') are close enough
+	// That is, the gap between the tops for caret (or bottoms for 'V') of FSLASH and BSLASH are less than one
+	// quarter the distance between their bases
+	private static boolean gapCheckForCaretShape(PenSegment pSegment1, PenSegment pSegment2) {
+		float gaps[] = getTopBottomGapsBetween2Segments(pSegment1, pSegment2);
+		float gapBetweenTops = gaps[0];
+		float gapBetweenBottoms = gaps[1];
+		return 	(gapBetweenTops < 0.25 * gapBetweenBottoms);
+	} // End of gapCheckForCaretShape() method
+	
+	// TODO: Exact copy of the same method from PenCharacterEn.   Need to replace with a single common method.
+	// Caret character (or inverted V) is made up of a forward slash ('/') and a back slash ('\')
+	private static boolean checkForCaret(PenCharacter pChar) {
+		boolean matchedP = false;
+
+		int numOfSegments = pChar.penSegments.size();
+
+		// Caret has only two pen stroke characters.
+		if (numOfSegments == 2) {
+			matchedP = (gapCheckForCaretShape(pChar.penSegments.elementAt(0), pChar.penSegments.elementAt(1)));
+		}
+
+		return matchedP;
+	}  // End of checkForCaret() method
 	
 	/**
 	 * Matches the pen strokes to the given Chinese character c
@@ -150,7 +197,7 @@ public class PenCharacterCn extends PenCharacter {
 	 * @param pChar: PenCharacter object containing the pen strokes
 	 * @return
 	 */
-	public boolean matchCharacter(char c, PenCharacter pChar) {
+	public static boolean matchCharacter(char c, PenCharacter pChar) {
 		boolean foundP = false;
 		char penChar = '?';
 
@@ -189,6 +236,8 @@ public class PenCharacterCn extends PenCharacter {
 //			if (foundP) penChar = '7';
 			break;
 		case '八':
+			foundP = checkForCaret(pChar);
+			if (foundP) penChar = '八';
 			break;
 		case '九':
 //			foundP = checkFor9(pChar);
