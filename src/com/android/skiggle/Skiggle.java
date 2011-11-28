@@ -37,13 +37,15 @@ import android.view.View;
 public class Skiggle extends Activity {
 	//	 implements ColorPickerDialog.OnColorChangedListener {
 	
+	public static final String APP_TITLE = "Skiggle"; // Title of the app
+	
 	public static final String CHINESE_MODE = "Cn"; // Code for Chinese handwriting mode
 	public static final String ENGLISH_MODE = "En"; // Code for English handwriting mode
 	
 	public static String sLanguage = ENGLISH_MODE; // Set default language to English
 
-	public static int sDefaultPenColor = 0xFF00FFFF;   //;
-	public static int sDefaultCanvasColor = 0xFFFFFFFF;  //0xFFAAAAAA);
+	public static int sDefaultPenColor = 0xFF00FFFF;
+	public static int sDefaultCanvasColor = 0xFFFFFFFF;
 	public static float sDefaultStrokeWidth = 12.0F;	
 	public static float sDefaultFontSize = 14.0F; //12.0F;
 
@@ -79,6 +81,7 @@ public class Skiggle extends Activity {
 			SegmentBitSetEn.initializeSegmentBitSetGlobals();
 		}
 
+		this.setTitle(APP_TITLE + "-" + sLanguage);
 	}
 
 	public class BoxView extends View {

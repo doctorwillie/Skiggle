@@ -191,26 +191,24 @@ public class PenCharacter {
 		}
 	} // ENd of getCharacterCandidates() method
 	
+	public boolean matcher(char c, PenCharacter pChar) {
+		boolean flag = false;
+		if (Skiggle.sLanguage == Skiggle.ENGLISH_MODE) {
+			flag = PenCharacterEn.matchCharacter(c, pChar);			
+		}
+		else if (Skiggle.sLanguage == Skiggle.CHINESE_MODE) {
+			flag = PenCharacterCn.matchCharacter(c, pChar);
+		}
+		return flag;
+	} // End of matchCharacter() method
+	
 	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar, String lang) {
-		// TODO: Check for language type
-		//PenCharacterEn langChar = new PenCharacterEn();
-		
-		// Remember to set the global variable sLanguage to "Cn" 
-		// to invoke SegmentBitSetCn.initializeSegmentBitSetGlobals();		
-//		PenCharacterCn langChar = new PenCharacterCn();
 
-//		langChar.getCharacterCandidates(pChar);
 		getCharacterCandidates(pChar);
 
 		int len = pChar.penCharacterCandidates.length();
 		for (int i = 0; i < len; i++) {
-//			if (langChar.matchCharacter(pChar.penCharacterCandidates.charAt(i), pChar))
-			if (Skiggle.sLanguage == Skiggle.ENGLISH_MODE) {
-				if (PenCharacterEn.matchCharacter(pChar.penCharacterCandidates.charAt(i), pChar))
-				break;				
-			}
-			else if (Skiggle.sLanguage == Skiggle.CHINESE_MODE) {
-				if (PenCharacterCn.matchCharacter(pChar.penCharacterCandidates.charAt(i), pChar))
+			if (matcher(pChar.penCharacterCandidates.charAt(i), pChar)) {
 				break;
 			}
 		}
