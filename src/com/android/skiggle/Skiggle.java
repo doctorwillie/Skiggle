@@ -19,7 +19,7 @@
 package com.android.skiggle;
 
 
-import com.android.skiggle.cn.SegmentBitSetCn;
+import com.android.skiggle.chinese.SegmentBitSetCn;
 import com.android.skiggle.en.SegmentBitSetEn;
 
 import android.app.Activity;
@@ -39,9 +39,8 @@ public class Skiggle extends Activity {
 	
 	public static final String APP_TITLE = "Skiggle"; // Title of the app
 	
-	public static final String CHINESE_MODE = "Cn"; // Code for Chinese handwriting mode
-	public static final String ENGLISH_MODE = "En"; // Code for English handwriting mode
-	
+	public static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
+	public static final String ENGLISH_MODE = "English"; // Code for 
 	public static String sLanguage = ENGLISH_MODE; // Set default language to English
 
 	public static int sDefaultPenColor = 0xFF00FFFF;

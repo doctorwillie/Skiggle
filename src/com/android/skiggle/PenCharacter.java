@@ -21,8 +21,8 @@ package com.android.skiggle;
 import com.android.skiggle.PenStroke;
 import com.android.skiggle.SegmentBitSet;
 
-import com.android.skiggle.cn.PenCharacterCn;
-import com.android.skiggle.cn.SegmentBitSetCn;
+import com.android.skiggle.chinese.PenCharacterCn;
+import com.android.skiggle.chinese.SegmentBitSetCn;
 
 import com.android.skiggle.en.PenCharacterEn;
 import com.android.skiggle.en.SegmentBitSetEn;
