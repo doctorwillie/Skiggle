@@ -16,7 +16,7 @@
 *   limitations under the License.
 */
 
-package com.android.skiggle.en;
+package com.android.skiggle.english;
 
 import com.android.skiggle.PenSegment;
 import com.android.skiggle.SegmentBitSet;

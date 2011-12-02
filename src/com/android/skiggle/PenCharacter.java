@@ -24,8 +24,8 @@ import com.android.skiggle.SegmentBitSet;
 import com.android.skiggle.chinese.PenCharacterCn;
 import com.android.skiggle.chinese.SegmentBitSetCn;
 
-import com.android.skiggle.en.PenCharacterEn;
-import com.android.skiggle.en.SegmentBitSetEn;
+import com.android.skiggle.english.PenCharacterEn;
+import com.android.skiggle.english.SegmentBitSetEn;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

@@ -20,7 +20,7 @@ package com.android.skiggle;
 
 
 import com.android.skiggle.chinese.SegmentBitSetCn;
-import com.android.skiggle.en.SegmentBitSetEn;
+import com.android.skiggle.english.SegmentBitSetEn;
 
 import android.app.Activity;
 import android.content.Context;
