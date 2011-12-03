@@ -147,8 +147,14 @@ public class PenUtil
 			//tempPaint.setTextSize(Math.max(boundingRectHeight, boundingRectWidth));
 
 			canvas.drawText(s, x, y, tempPaint);
+
 		}
 	}
 
+	public static void displayCandidateCharacterKeys(String str, Canvas canvas) {
+		CandidateCharacterKeysView candidateKeys = new CandidateCharacterKeysView(str);
+		candidateKeys.draw(canvas);
+		
+	}
 
 }

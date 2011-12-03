@@ -213,8 +213,9 @@ public class PenCharacter {
 			}
 		}
 
-		pChar.printPenCharacter(canvas, 50.0F, 400.0F, textPaint);
-		pChar.printPenCharacterCandidates(canvas, 60.0F, 400.0F, textPaint);
+//		pChar.printPenCharacter(canvas, 50.0F, 400.0F, textPaint);
+//		pChar.printPenCharacterCandidates(canvas, 60.0F, 400.0F, textPaint);
+		drawPenCharactersInStringKeys(pChar.penCharacter + pChar.penCharacterCandidates, canvas);
 		
 		pChar.printCharacterSegmentsData();
 
@@ -241,6 +242,11 @@ public class PenCharacter {
 		}
 	} // End of printString() method
 
+	public void drawPenCharactersInStringKeys(String str, Canvas canvas) {
+		PenUtil.displayCandidateCharacterKeys(str, canvas);
+		
+	} // End of drawPenCharacterCandidatesKeys() method
+	
 	public void printPenCharacter(Canvas canvas, float x, float y, Paint paint) {
 
 		if (penCharacter != null) {
