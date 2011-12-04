@@ -26,7 +26,8 @@ public class CandidateCharacterKeysView extends Drawable {
 		int width = str.length() * (mKeyWidth + mKeySpacing);
 
 		mDrawable = new ShapeDrawable(new RectShape());
-		mDrawable.getPaint().setColor(0xffcccccc); // Light Gray
+		//mDrawable.getPaint().setColor(0xffcccccc); // Light Gray
+		mDrawable.getPaint().setColor(Skiggle.sDefaultCanvasColor); // Light Gray
 		mDrawable.setBounds(mX, mY, mX + width, mY + mKeyHeight);
 	} // End of CandidateCharacterKeysView() constructor
 
@@ -39,9 +40,15 @@ public class CandidateCharacterKeysView extends Drawable {
 		mDrawable.draw(canvas);
 		Rect rect = mDrawable.getBounds();
 		int baseX = rect.left;
-		int y = rect.bottom - 5;
+		int baseY = rect.bottom - 5;
 		for (int i = 0; i < mCandidateCharacters.length(); i++) {
+
 			Paint tempPaint = new Paint();
+			int xI = baseX + (mKeyWidth + mKeySpacing) * i;
+			tempPaint.setColor(0xffcccccc); // Light Gray
+			canvas.drawRect(xI, baseY - mKeyHeight, xI + mKeyWidth, baseY, tempPaint);
+
+			//Paint tempPaint = new Paint();
 			if (i == 0) { // First character is the best candidate
 				tempPaint.setColor(0xffff0000); // Red
 			}
@@ -53,7 +60,8 @@ public class CandidateCharacterKeysView extends Drawable {
 			float[] widths = {15};
 			//tempPaint.getTextWidths(mCandidateCharacters, widths);
 
-			canvas.drawText(mCandidateCharacters.substring(i, i+1), (float) (baseX + (mKeyWidth * i + mKeySpacing)  + Math.floor((mKeyWidth - widths[0]))/2), y, tempPaint);	
+//			canvas.drawText(mCandidateCharacters.substring(i, i+1), (float) (baseX + (mKeyWidth * i + mKeySpacing)  + Math.floor((mKeyWidth - widths[0]))/2), y, tempPaint);	
+			canvas.drawText(mCandidateCharacters.substring(i, i+1), (float) (xI  + Math.floor((mKeyWidth - widths[0]))/2), baseY - 5, tempPaint);	
 		}
 	} // End of draw() method
 

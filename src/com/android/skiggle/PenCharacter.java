@@ -215,7 +215,8 @@ public class PenCharacter {
 
 //		pChar.printPenCharacter(canvas, 50.0F, 400.0F, textPaint);
 //		pChar.printPenCharacterCandidates(canvas, 60.0F, 400.0F, textPaint);
-		drawPenCharactersInStringKeys(pChar.penCharacter + pChar.penCharacterCandidates, canvas);
+		String str = pChar.penCharacter + penCharacterCandidates.replace(pChar.penCharacter.toString(), "");
+		drawPenCharactersInStringKeys(str, canvas);
 		
 		pChar.printCharacterSegmentsData();
 
