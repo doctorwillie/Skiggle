@@ -41,21 +41,33 @@ public class CandidateCharacterKeysView extends Drawable {
 		Rect rect = mDrawable.getBounds();
 		int baseX = rect.left;
 		int baseY = rect.bottom - 5;
-		for (int i = 0; i < mCandidateCharacters.length(); i++) {
+		int maxNumOfCandidateKeys = Math.min(5, mCandidateCharacters.length());
+		for (int i = 0; i < maxNumOfCandidateKeys; i++) {
 
 			Paint tempPaint = new Paint();
 			int xI = baseX + (mKeyWidth + mKeySpacing) * i;
-			tempPaint.setColor(0xffcccccc); // Light Gray
-			canvas.drawRect(xI, baseY - mKeyHeight, xI + mKeyWidth, baseY, tempPaint);
-
+			// tempPaint.setColor(0xffcccccc); // Light Gray
+			
 			//Paint tempPaint = new Paint();
+			if (i == 0) { // First character is the best candidate
+				tempPaint.setColor(0xff33cc33); // Green;    0xff33ff00); // Bright Green
+			}
+			else {
+				tempPaint.setColor(0xffcccccc); // Gray
+			}
+			
+			canvas.drawRect(xI, baseY - mKeyHeight, xI + mKeyWidth, baseY, tempPaint);
+			tempPaint.setColor(0xff444444); // Gray
+
+			/*
 			if (i == 0) { // First character is the best candidate
 				tempPaint.setColor(0xffff0000); // Red
 			}
 			else {
 				tempPaint.setColor(0xff444444); // Gray
 			}
-
+			 */
+			
 			tempPaint.setTextSize(20);
 			float[] widths = {15};
 			//tempPaint.getTextWidths(mCandidateCharacters, widths);
