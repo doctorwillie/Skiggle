@@ -131,6 +131,26 @@ public class PenUtil
 		return (float) kappa;
 	}
 
+	/**
+	 * Removes the first occurrence of the given character from the string
+	 * @param c - character to remove (first occurrence)
+	 * @param str- string to search
+	 * @return - a copy of str without the character c
+	 */
+	public static String removeCharFromString(char c, String str) {
+		StringBuilder resultStrBuilder = new StringBuilder(str);
+		String returnStr = "";
+		int charPos = str.indexOf(c);
+		int strLen = str.length();
+		if ((charPos >= 0) & (strLen > 0)) {
+			resultStrBuilder.deleteCharAt(charPos);			
+		}
+		if (resultStrBuilder.length() > 0) {
+			returnStr = resultStrBuilder.toString();
+		}
+		return returnStr;
+	}
+	
 	public static void printString(String s, float x, float y, RectF boundingRectF, Canvas canvas, Paint paint) {
 
 

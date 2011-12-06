@@ -41,7 +41,7 @@ public class Skiggle extends Activity {
 	
 	public static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
 	public static final String ENGLISH_MODE = "English"; // Code for 
-	public static String sLanguage = ENGLISH_MODE; // Set default language to English
+	public static String sLanguage = CHINESE_MODE; // Set default language to English
 
 	public static int sDefaultPenColor = 0xFF00FFFF;
 	public static int sDefaultCanvasColor = 0xFFFFFFFF;

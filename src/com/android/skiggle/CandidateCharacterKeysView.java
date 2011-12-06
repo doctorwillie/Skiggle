@@ -43,12 +43,10 @@ public class CandidateCharacterKeysView extends Drawable {
 		int baseY = rect.bottom - 5;
 		int maxNumOfCandidateKeys = Math.min(5, mCandidateCharacters.length());
 		for (int i = 0; i < maxNumOfCandidateKeys; i++) {
-
 			Paint tempPaint = new Paint();
 			int xI = baseX + (mKeyWidth + mKeySpacing) * i;
-			// tempPaint.setColor(0xffcccccc); // Light Gray
-			
-			//Paint tempPaint = new Paint();
+			int charWidth = 15; // TODO - Need to compute this dynamically
+
 			if (i == 0) { // First character is the best candidate
 				tempPaint.setColor(0xff33cc33); // Green;    0xff33ff00); // Bright Green
 			}
@@ -59,21 +57,10 @@ public class CandidateCharacterKeysView extends Drawable {
 			canvas.drawRect(xI, baseY - mKeyHeight, xI + mKeyWidth, baseY, tempPaint);
 			tempPaint.setColor(0xff444444); // Gray
 
-			/*
-			if (i == 0) { // First character is the best candidate
-				tempPaint.setColor(0xffff0000); // Red
-			}
-			else {
-				tempPaint.setColor(0xff444444); // Gray
-			}
-			 */
 			
 			tempPaint.setTextSize(20);
-			float[] widths = {15};
-			//tempPaint.getTextWidths(mCandidateCharacters, widths);
-
-//			canvas.drawText(mCandidateCharacters.substring(i, i+1), (float) (baseX + (mKeyWidth * i + mKeySpacing)  + Math.floor((mKeyWidth - widths[0]))/2), y, tempPaint);	
-			canvas.drawText(mCandidateCharacters.substring(i, i+1), (float) (xI  + Math.floor((mKeyWidth - widths[0]))/2), baseY - 5, tempPaint);	
+			//float[] widths = {15};
+			canvas.drawText(mCandidateCharacters.substring(i, i+1), (float) (xI  + Math.floor((mKeyWidth - charWidth))/2), baseY - 5, tempPaint);	
 		}
 	} // End of draw() method
 

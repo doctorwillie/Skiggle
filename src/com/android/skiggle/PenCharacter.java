@@ -215,8 +215,12 @@ public class PenCharacter {
 
 //		pChar.printPenCharacter(canvas, 50.0F, 400.0F, textPaint);
 //		pChar.printPenCharacterCandidates(canvas, 60.0F, 400.0F, textPaint);
-		String str = pChar.penCharacter + penCharacterCandidates.replace(pChar.penCharacter.toString(), "");
-		drawPenCharactersInStringKeys(str, canvas);
+//		String str = pChar.penCharacter + penCharacterCandidates.replace(pChar.penCharacter.toString(), "");  // Doesn't work with some strings
+//		String str = pChar.penCharacter + penCharacterCandidates;
+		if (pChar.penCharacter != null) {
+			String str = pChar.penCharacter + PenUtil.removeCharFromString(pChar.penCharacter, penCharacterCandidates);
+			drawPenCharactersInStringKeys(str, canvas);
+		}
 		
 		pChar.printCharacterSegmentsData();
 
