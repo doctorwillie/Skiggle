@@ -41,23 +41,29 @@ public class Skiggle extends Activity {
 	
 	public static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
 	public static final String ENGLISH_MODE = "English"; // Code for 
-	public static String sLanguage = CHINESE_MODE; // Set default language to English
+	public static String sLanguage = ENGLISH_MODE; // Set default language to English
 
 	public static int sDefaultPenColor = 0xFF00FFFF;
-	public static int sDefaultCanvasColor = 0xFFFFFFFF;
+	public static int sDefaultCanvasColor = 0xFFFFFFFF;  // White color
 	public static float sDefaultStrokeWidth = 12.0F;	
 	public static float sDefaultFontSize = 14.0F; //12.0F;
 
 	public static int sDefaultWritePadWidth = 320;
 	public static int sDefaultWritePadHeight = 480;
+	
+	public static int sVirtualKeyboardLeft = 5; // Location of left edge of virtual keyboard (for candidate characters recognized)
+	public static int sVirutalKeyhoardTop = 5; // Location of top edge of virtual keyboard (for candidate characters recognized)
 
+	public static Canvas sCanvas;
 	private Paint mPaint;
 	private Paint mTextPaint;
+	public static Context sContext;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		sContext = this.getApplication().getBaseContext();
 		setContentView(new BoxView(this));
 
 		mPaint = new Paint();
@@ -82,12 +88,12 @@ public class Skiggle extends Activity {
 
 		this.setTitle(APP_TITLE + "-" + sLanguage);
 	}
-
+	
 	public class BoxView extends View {
 
 		private Bitmap mBitmap;
 
-		private Canvas mCanvas;
+//		private Canvas mCanvas;
 		private Path mPath;
 		private Paint mBitmapPaint;
 		private float mX, mY;
@@ -103,7 +109,8 @@ public class Skiggle extends Activity {
 			super(c);
 
 			mBitmap = Bitmap.createBitmap(sDefaultWritePadWidth, sDefaultWritePadHeight, Bitmap.Config.ARGB_8888);
-			mCanvas = new Canvas(mBitmap);
+//			mCanvas = new Canvas(mBitmap);
+			sCanvas = new Canvas(mBitmap);
 			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 			mPath = new Path();
 		}
@@ -117,14 +124,14 @@ public class Skiggle extends Activity {
 			canvas.drawPath(mPath, mPaint);
 		}
 
-		private void touch_start(float x, float y) {
+		private void touchStart(float x, float y) {
 			mPath.reset();
 			mPath.moveTo(x, y);
 			mX = x;
 			mY = y;
 		}
 
-		private void touch_move(float x, float y) {
+		private void touchMove(float x, float y) {
 			float dx = Math.abs(x - mX);
 			float dy = Math.abs(y - mY);
 			if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
@@ -134,11 +141,12 @@ public class Skiggle extends Activity {
 			}
 		}
 
-		private void touch_up() {
+		private void touchUp() {
 			mPath.lineTo(mX, mY);
 
 			// commit the path to our off screen
-			mCanvas.drawPath(mPath, mPaint);
+//			mCanvas.drawPath(mPath, mPaint);
+			sCanvas.drawPath(mPath, mPaint);
 
 			// If the stroke is a point of zero length , make it a filled circle of
 			// diameter Skiggle.sDefaultStrokeWidth and add it to the path
@@ -163,7 +171,8 @@ public class Skiggle extends Activity {
 			// if ( penStrokeMeasure.isClosed())
 			//	mPaint.setColor(0xFFFF0000);
 			// Paint the copy of the stroke with the new pen color
-			mCanvas.drawPath( mPenStroke, mPaint);
+//			mCanvas.drawPath( mPenStroke, mPaint);
+			sCanvas.drawPath( mPenStroke, mPaint);
 			
 			// Check to see if the stroke is a jagged "clear screen" stroke
 			if ((mPenStroke.penStrokeLength/(mPenStroke.boundingRectWidth + mPenStroke.boundingRectHeight)) > 2) {
@@ -176,11 +185,12 @@ public class Skiggle extends Activity {
 
 				// Add segment(s) for the PenStroke
 				// mPenSegment = new PenSegment(mPenStroke);
-				penCharacter.addSegments(mPenStroke, mCanvas, mTextPaint);
+//				penCharacter.addSegments(mPenStroke, mCanvas, mTextPaint);
+				penCharacter.addSegments(mPenStroke, sCanvas, mTextPaint);
 				//				mSegmentNumber = mSegmentNumber + 1;
 				
-				penCharacter.findMatchingCharacter(mCanvas, mTextPaint, penCharacter, sLanguage);
-
+//				penCharacter.findMatchingCharacter(mCanvas, mTextPaint, penCharacter, sLanguage);
+				penCharacter.findMatchingCharacter(sCanvas, mTextPaint, penCharacter, sLanguage);
 			}
 
 			// kill this so we don't double draw
@@ -194,15 +204,15 @@ public class Skiggle extends Activity {
 			float y = event.getY();
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				touch_start(x, y);
+				touchStart(x, y);
 				invalidate();
 				break;
 			case MotionEvent.ACTION_MOVE:
-				touch_move(x, y);
+				touchMove(x, y);
 				invalidate();
 				break;
 			case MotionEvent.ACTION_UP:
-				touch_up();
+				touchUp();
 				invalidate();
 				break;
 			}

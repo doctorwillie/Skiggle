@@ -8,35 +8,76 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.view.View;
 
-public class CandidateCharacterKeysView extends Drawable {
+public class CandidatesKeyBoard extends Drawable {
 	private ShapeDrawable mDrawable;
 	private String mCandidateCharacters;
-	private int mX = 5;
-	private int mY = 400;
+	private CandidateKey[] mKeys;
+	private int mX = Skiggle.sVirtualKeyboardLeft;
+	private int mY = Skiggle.sVirutalKeyhoardTop;
 	private int mKeyWidth = 30;
 	private int mKeyHeight = 30;
 	private int mKeySpacing = 2;
+	
+//	private TestView mTestView;
 
-	public CandidateCharacterKeysView(String str) {
+	public CandidatesKeyBoard(Character c, String str) {
 		super();
-
+		int keyColor = 0xffcccccc; // Gray (default key color)
 		mCandidateCharacters = str;
+		
+//		mTestView = new TestView(Skiggle.sContext);
+
+		
 		int width = str.length() * (mKeyWidth + mKeySpacing);
 
 		mDrawable = new ShapeDrawable(new RectShape());
 		//mDrawable.getPaint().setColor(0xffcccccc); // Light Gray
 		mDrawable.getPaint().setColor(Skiggle.sDefaultCanvasColor); // Light Gray
 		mDrawable.setBounds(mX, mY, mX + width, mY + mKeyHeight);
-	} // End of CandidateCharacterKeysView() constructor
+		
+		mKeys= new CandidateKey[str.length()];
+		
+		int iBase = 0;
+		if (c != null) {
+			keyColor = 0xff33cc33; // Green for best guess (first char in the string);
+			mKeys[iBase] = new CandidateKey(mX, mY, mX + mKeyWidth, mY + mKeyHeight, c, keyColor);
+			iBase = iBase + 1;
+		}
+		
+		for (int i = iBase; i < str.length(); i++ ) {
+			int left = mX + (mKeyWidth + mKeySpacing) * i;
+			int top = mY;
+			int right = left + mKeyWidth;
+			int bottom = top + mKeyHeight;
+			/*
+			if (i == 0) { // First char is the best guess
+				keyColor = 0xff33cc33; // Green for best guess (first char in the string);
+			}
+			else {
+				keyColor = 0xffcccccc; // Gray, default color;
+			}
+			*/
+			keyColor = 0xffcccccc; // Gray, default color;
+			mKeys[i] = new CandidateKey(left, top, right, bottom, mCandidateCharacters.charAt(i), keyColor);
+			
+		}
+	} // End of CandidatesKeyBoard() constructor
 
 	/**
 	 * Draws the keys for the best candidate followed by the other candidates
 	 */
-	@Override
 
+	@Override
 	public void draw(Canvas canvas) {
+//		mTestView.draw(canvas);
+		
+		for (int i = 0; i < mKeys.length; i++) {
+			mKeys[i].draw(canvas);
+		}
+	}
+
+	public void oldDraw(Canvas canvas) {
 		mDrawable.draw(canvas);
 		Rect rect = mDrawable.getBounds();
 		int baseX = rect.left;
@@ -81,4 +122,4 @@ public class CandidateCharacterKeysView extends Drawable {
 		// TODO Auto-generated method stub
 		
 	}
-} // End of CandidateCharacterKeysView class
+} // End of CandidatesKeyBoard class

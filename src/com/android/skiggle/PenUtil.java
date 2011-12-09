@@ -171,8 +171,8 @@ public class PenUtil
 		}
 	}
 
-	public static void displayCandidateCharacterKeys(String str, Canvas canvas) {
-		CandidateCharacterKeysView candidateKeys = new CandidateCharacterKeysView(str);
+	public static void displayCandidateCharacterKeys(Character c, String str, Canvas canvas) {
+		CandidatesKeyBoard candidateKeys = new CandidatesKeyBoard(c, str);
 		candidateKeys.draw(canvas);
 		
 	}

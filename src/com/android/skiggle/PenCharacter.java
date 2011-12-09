@@ -210,19 +210,23 @@ public class PenCharacter {
 		for (int i = 0; i < len; i++) {
 			if (matcher(pChar.penCharacterCandidates.charAt(i), pChar)) {
 				break;
-			}
-		}
+			} // Found matching character so exit the for loop
 
 //		pChar.printPenCharacter(canvas, 50.0F, 400.0F, textPaint);
 //		pChar.printPenCharacterCandidates(canvas, 60.0F, 400.0F, textPaint);
 //		String str = pChar.penCharacter + penCharacterCandidates.replace(pChar.penCharacter.toString(), "");  // Doesn't work with some strings
 //		String str = pChar.penCharacter + penCharacterCandidates;
+		}
 		if (pChar.penCharacter != null) {
 			String str = pChar.penCharacter + PenUtil.removeCharFromString(pChar.penCharacter, penCharacterCandidates);
-			drawPenCharactersInStringKeys(str, canvas);
+			drawPenCharactersInStringKeys(pChar.penCharacter, str, canvas);
 		}
-		
-		pChar.printCharacterSegmentsData();
+		else {
+			drawPenCharactersInStringKeys(pChar.penCharacter, penCharacterCandidates, canvas);
+		}
+			
+//			pChar.printCharacterSegmentsData();
+
 
 	} // End of findMatchingCharacter() method
 	
@@ -247,8 +251,8 @@ public class PenCharacter {
 		}
 	} // End of printString() method
 
-	public void drawPenCharactersInStringKeys(String str, Canvas canvas) {
-		PenUtil.displayCandidateCharacterKeys(str, canvas);
+	public void drawPenCharactersInStringKeys(Character c, String str, Canvas canvas) {
+		PenUtil.displayCandidateCharacterKeys(c, str, canvas);
 		
 	} // End of drawPenCharacterCandidatesKeys() method
 	
@@ -280,7 +284,7 @@ public class PenCharacter {
 			
 		}
 		
-		PenUtil.printString(str, 10, 15, mBoundingRectF, canvas, textPaint);
+		PenUtil.printString(str, 10, 420, mBoundingRectF, canvas, textPaint);
 
 	} // End of printSegmentCharacters() method
 	

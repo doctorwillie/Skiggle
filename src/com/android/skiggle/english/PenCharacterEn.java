@@ -3073,7 +3073,7 @@ public class PenCharacterEn extends PenCharacter {
 	 */
 	public static boolean matchCharacter(char c, PenCharacter pChar) {
 		boolean foundP = false;
-		char penChar = '?';
+		Character penChar = null;
 
 		char ch = '\0'; // used in check for 'K', 'k', '>' or '<'
 
