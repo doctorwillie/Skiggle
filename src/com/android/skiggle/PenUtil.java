@@ -178,7 +178,7 @@ public class PenUtil
 		candidateKeys.draw(canvas);
 		*/
 		
-		Skiggle.sTestKeyBoard = new CandidatesKeyBoard(Skiggle.sContext, c, str);
+		Skiggle.sCharactersVirtualKeyBoard = new CandidatesKeyBoard(Skiggle.sContext, c, str);
 //		candidateKeys.draw(canvas);
 
 	}

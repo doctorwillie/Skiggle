@@ -252,6 +252,7 @@ public class PenCharacter {
 	} // End of printString() method
 
 	public void drawPenCharactersInStringKeys(Character c, String str, Canvas canvas) {
+
 		PenUtil.displayCandidateCharacterKeys(c, str, canvas);
 		
 	} // End of drawPenCharacterCandidatesKeys() method

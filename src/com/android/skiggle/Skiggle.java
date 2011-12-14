@@ -38,12 +38,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class Skiggle extends Activity {
-	//	 implements ColorPickerDialog.OnColorChangedListener {
 	
 	protected static final String APP_TITLE = "Skiggle"; // Title of the app
 	
+	// Global constants
 	protected static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
-	protected static final String ENGLISH_MODE = "English"; // Code for 
+	protected static final String ENGLISH_MODE = "English"; // English handwriting mode
+	protected static final boolean VIRTUAL_KEYBOARD_ON = false; // TEMPORARY: Used for testing the virtual keyboard
+	
+	
+	// Global variables
 	protected static String sLanguage = ENGLISH_MODE; // Set default language to English
 
 	protected static int sDefaultPenColor = 0xFF00FFFF;
@@ -57,7 +61,7 @@ public class Skiggle extends Activity {
 	protected static int sVirtualKeyboardLeft = 5; // Location of left edge of virtual keyboard (for candidate characters recognized)
 	protected static int sVirutalKeyhoardTop = 5; // Location of top edge of virtual keyboard (for candidate characters recognized)
 	
-	protected static CandidatesKeyBoard sTestKeyBoard = null;
+	protected static CandidatesKeyBoard sCharactersVirtualKeyBoard = null;
 
 //	public static BoxView sBoxView;
 	
@@ -71,10 +75,8 @@ public class Skiggle extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		sContext = this.getApplication().getBaseContext();
-//		sBoxView = new BoxView(this);
 		setContentView(new BoxView(this));
-//		setContentView(sBoxView);
-		
+
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setDither(true);
@@ -134,8 +136,8 @@ public class Skiggle extends Activity {
 
 			canvas.drawPath(mPath, mPaint);
 			
-			if (Skiggle.sTestKeyBoard != null) {
-				sTestKeyBoard.draw(canvas);			
+			if (Skiggle.sCharactersVirtualKeyBoard != null) {
+				sCharactersVirtualKeyBoard.draw(canvas);			
 			}
 
 		}
@@ -186,12 +188,7 @@ public class Skiggle extends Activity {
 			// Check to see if the stroke is a jagged "clear screen" stroke
 			if ((mPenStroke.penStrokeLength/(mPenStroke.boundingRectWidth + mPenStroke.boundingRectHeight)) > 2) {
 				this.clear();
-				
-				// Clear the virtual keyboard if there is one
-				if (sTestKeyBoard != null) sTestKeyBoard = null;
-				// Clear the Pen Character object
-				
-				penCharacter = new PenCharacter();
+
 			}
 			else {
 
@@ -208,19 +205,19 @@ public class Skiggle extends Activity {
 		public boolean onTouchEvent(MotionEvent event) {
 			float x = event.getX();
 			float y = event.getY();
-			
-			/*
-			// Trap touch event that is inside mTestView (should be taken care of by Android's nested event handlers)
-			if ((sTestKeyBoard != null) && sTestKeyBoard.mRect.contains((int) x, (int) y)) {
-				invalidate();
-				return sTestKeyBoard.onTouchEvent(event);
+
+			if (VIRTUAL_KEYBOARD_ON) {
+				// Trap touch event that is inside sCharactersVirtualKeyBoard (should be taken care of by Android's nested event handlers)
+				if ((sCharactersVirtualKeyBoard != null) && sCharactersVirtualKeyBoard.mRect.contains((int) x, (int) y)) {
+
+					boolean flag =  sCharactersVirtualKeyBoard.onTouchEvent(event);
+					invalidate();
+					return flag;
+				}
 			}
-	*/
-			
-//			mTestView.onTouchEvent(event);
 			
 			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:		
+			case MotionEvent.ACTION_DOWN:	
 				touchStart(x, y);
 				invalidate();
 				break;
@@ -239,10 +236,23 @@ public class Skiggle extends Activity {
 		
 		public void clear() {
 			mBitmap.eraseColor(sDefaultCanvasColor);
-			mPath.reset();
+			mPath.reset();		
+			
+			// Create a new PenCharacter object
+			penCharacter = new PenCharacter();
+			/*
 			penCharacter.resetStrokes();
 			penCharacter.resetSegments();
+			*/
+			
+			// Clear the virtual keyboard if there is one
+			if (sCharactersVirtualKeyBoard != null) {
+				sCharactersVirtualKeyBoard = null;
+			}
+			
 			invalidate();
+
+
 		}
 
 		/*

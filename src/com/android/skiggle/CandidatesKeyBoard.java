@@ -60,14 +60,14 @@ public class CandidatesKeyBoard extends View {
 
 			mKeys[i] = new CandidateKey(context, left, top, right, bottom, mCandidateCharacters.charAt(i), keyColor);
 			
-			
 		}
+		
 	} // End of OldCandidatesKeyBoard() constructor
 
+	
 	/**
 	 * Draws the keys for the best candidate followed by the other candidates
 	 */
-
 	@Override
 	public void onDraw(Canvas canvas) {
 

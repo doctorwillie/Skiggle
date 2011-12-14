@@ -50,12 +50,13 @@ public class CandidateKey extends View {
 
 	private void showChar() {
 		if (mChar != null) {
-			int left = 50;
-			int top = 300;
 			int textSize = 200;
+			int left = (Skiggle.sDefaultWritePadWidth - textSize)/2;
+			int top = Skiggle.sDefaultWritePadHeight - (Skiggle.sDefaultWritePadHeight - textSize)/2;
+
 			
 			Paint paint = new Paint();
-			paint.setColor(0xffeeeeee);
+			paint.setColor(mColor);
 			paint.setTextSize(textSize);
 			Skiggle.sCanvas.drawText(mChar.toString(), left, top, paint);
 			
