@@ -29,43 +29,52 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 public class Skiggle extends Activity {
 	//	 implements ColorPickerDialog.OnColorChangedListener {
 	
-	public static final String APP_TITLE = "Skiggle"; // Title of the app
+	protected static final String APP_TITLE = "Skiggle"; // Title of the app
 	
-	public static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
-	public static final String ENGLISH_MODE = "English"; // Code for 
-	public static String sLanguage = ENGLISH_MODE; // Set default language to English
+	protected static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
+	protected static final String ENGLISH_MODE = "English"; // Code for 
+	protected static String sLanguage = ENGLISH_MODE; // Set default language to English
 
-	public static int sDefaultPenColor = 0xFF00FFFF;
-	public static int sDefaultCanvasColor = 0xFFFFFFFF;  // White color
-	public static float sDefaultStrokeWidth = 12.0F;	
-	public static float sDefaultFontSize = 14.0F; //12.0F;
+	protected static int sDefaultPenColor = 0xFF00FFFF;
+	protected static int sDefaultCanvasColor = 0xFFFFFFFF;  // White color
+	protected static float sDefaultStrokeWidth = 12.0F;	
+	protected static float sDefaultFontSize = 14.0F; //12.0F;
 
-	public static int sDefaultWritePadWidth = 320;
+	protected static int sDefaultWritePadWidth = 320;
 	public static int sDefaultWritePadHeight = 480;
 	
-	public static int sVirtualKeyboardLeft = 5; // Location of left edge of virtual keyboard (for candidate characters recognized)
-	public static int sVirutalKeyhoardTop = 5; // Location of top edge of virtual keyboard (for candidate characters recognized)
+	protected static int sVirtualKeyboardLeft = 5; // Location of left edge of virtual keyboard (for candidate characters recognized)
+	protected static int sVirutalKeyhoardTop = 5; // Location of top edge of virtual keyboard (for candidate characters recognized)
+	
+	protected static CandidatesKeyBoard sTestKeyBoard = null;
 
-	public static Canvas sCanvas;
+//	public static BoxView sBoxView;
+	
+	protected static Canvas sCanvas;
 	private Paint mPaint;
 	private Paint mTextPaint;
-	public static Context sContext;
+	protected static Context sContext;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		sContext = this.getApplication().getBaseContext();
+//		sBoxView = new BoxView(this);
 		setContentView(new BoxView(this));
-
+//		setContentView(sBoxView);
+		
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setDither(true);
@@ -105,14 +114,16 @@ public class Skiggle extends Activity {
 		
 		public PenCharacter penCharacter = new PenCharacter();
 
-		public BoxView(Context c) {
-			super(c);
+		public BoxView(Context context) {
+			super(context);
 
 			mBitmap = Bitmap.createBitmap(sDefaultWritePadWidth, sDefaultWritePadHeight, Bitmap.Config.ARGB_8888);
-//			mCanvas = new Canvas(mBitmap);
 			sCanvas = new Canvas(mBitmap);
 			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 			mPath = new Path();
+
+			
+
 		}
 
 		@Override
@@ -122,6 +133,11 @@ public class Skiggle extends Activity {
 			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
 
 			canvas.drawPath(mPath, mPaint);
+			
+			if (Skiggle.sTestKeyBoard != null) {
+				sTestKeyBoard.draw(canvas);			
+			}
+
 		}
 
 		private void touchStart(float x, float y) {
@@ -145,7 +161,6 @@ public class Skiggle extends Activity {
 			mPath.lineTo(mX, mY);
 
 			// commit the path to our off screen
-//			mCanvas.drawPath(mPath, mPaint);
 			sCanvas.drawPath(mPath, mPaint);
 
 			// If the stroke is a point of zero length , make it a filled circle of
@@ -161,35 +176,26 @@ public class Skiggle extends Activity {
 			}
 
 			// Set pen stroke to a copy of the stroke
-			// mPenStroke = new PenStroke();
 			mPenStroke = new PenStroke(mPath);
 			mPenStroke.addPath(mPath);
 			penCharacter.addStroke(mPenStroke);
-			//			mStrokeNumber = mStrokeNumber + 1;
-			// Set pen color to a different color for the copy of the stroke
-			//  penStrokeMeasure = new PathMeasure( mPenStroke, false);
-			// if ( penStrokeMeasure.isClosed())
-			//	mPaint.setColor(0xFFFF0000);
+
 			// Paint the copy of the stroke with the new pen color
-//			mCanvas.drawPath( mPenStroke, mPaint);
 			sCanvas.drawPath( mPenStroke, mPaint);
 			
 			// Check to see if the stroke is a jagged "clear screen" stroke
 			if ((mPenStroke.penStrokeLength/(mPenStroke.boundingRectWidth + mPenStroke.boundingRectHeight)) > 2) {
 				this.clear();
+				
+				// Clear the virtual keyboard if there is one
+				if (sTestKeyBoard != null) sTestKeyBoard = null;
 				// Clear the Pen Character object
 				
 				penCharacter = new PenCharacter();
 			}
 			else {
 
-				// Add segment(s) for the PenStroke
-				// mPenSegment = new PenSegment(mPenStroke);
-//				penCharacter.addSegments(mPenStroke, mCanvas, mTextPaint);
-				penCharacter.addSegments(mPenStroke, sCanvas, mTextPaint);
-				//				mSegmentNumber = mSegmentNumber + 1;
-				
-//				penCharacter.findMatchingCharacter(mCanvas, mTextPaint, penCharacter, sLanguage);
+				penCharacter.addSegments(mPenStroke, sCanvas, mTextPaint);			
 				penCharacter.findMatchingCharacter(sCanvas, mTextPaint, penCharacter, sLanguage);
 			}
 
@@ -197,13 +203,24 @@ public class Skiggle extends Activity {
 			mPath.reset();
 		}
 
+
 		@Override
 		public boolean onTouchEvent(MotionEvent event) {
-
 			float x = event.getX();
 			float y = event.getY();
+			
+			/*
+			// Trap touch event that is inside mTestView (should be taken care of by Android's nested event handlers)
+			if ((sTestKeyBoard != null) && sTestKeyBoard.mRect.contains((int) x, (int) y)) {
+				invalidate();
+				return sTestKeyBoard.onTouchEvent(event);
+			}
+	*/
+			
+//			mTestView.onTouchEvent(event);
+			
 			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
+			case MotionEvent.ACTION_DOWN:		
 				touchStart(x, y);
 				invalidate();
 				break;
@@ -219,6 +236,7 @@ public class Skiggle extends Activity {
 			return true;
 		}
 
+		
 		public void clear() {
 			mBitmap.eraseColor(sDefaultCanvasColor);
 			mPath.reset();
@@ -226,6 +244,15 @@ public class Skiggle extends Activity {
 			penCharacter.resetSegments();
 			invalidate();
 		}
+
+		/*
+		@Override
+		protected void onLayout(boolean arg0, int arg1, int arg2, int arg3,
+				int arg4) {
+			// TODO Auto-generated method stub
+			
+		}
+		*/
 
 	}
 }

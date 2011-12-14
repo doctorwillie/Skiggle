@@ -62,7 +62,7 @@ public class PenCharacterCn extends PenCharacter {
 
 		if (numOfSegments == numSegs) {
 			for (int i = 0; i < numOfSegments; i++ ) {
-				matchedP = matchedP & (pChar.penSegments.elementAt(i).penSegmentCharacter == PenSegment.HLINE_CHAR);
+				matchedP = matchedP && (pChar.penSegments.elementAt(i).penSegmentCharacter == PenSegment.HLINE_CHAR);
 			}
 		}
 		return matchedP;
@@ -114,7 +114,7 @@ public class PenCharacterCn extends PenCharacter {
 			}
 			// Check to make sure that the two component strokes for '+' are there, i.e.,
 			// vLineIndex and hLineIndex are both not negative
-			if ((hLineIndex >= 0) & (vLineIndex >= 0)) {
+			if ((hLineIndex >= 0) && (vLineIndex >= 0)) {
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(hLineIndex));		
 				float hLineTopX = coords[0]; // x-coord of top end of the HLINE stroke
 				float hLineTopY = coords[1]; // y-coord of top end of the HLINE stroke

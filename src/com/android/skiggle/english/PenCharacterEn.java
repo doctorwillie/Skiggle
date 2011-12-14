@@ -35,7 +35,7 @@ public class PenCharacterEn extends PenCharacter {
 
 	// Check to see if a float is greater than the low and less than high thresholds
 	private static boolean isBetweenThresholds(double num, double lowThreshold, double highThreshold) {
-		return ((lowThreshold < num) & (num < highThreshold));
+		return ((lowThreshold < num) && (num < highThreshold));
 	}
 
 	// Check to see if the strokes form a small letter (that is the rectangle bounding them is small enough for a small letter)
@@ -218,7 +218,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'q' are there, i.e.,
 			// fCIndex and vLineIndex are both not negative
-			if ((fCIndex >= 0) & (vLineIndex >= 0)) {
+			if ((fCIndex >= 0) && (vLineIndex >= 0)) {
 				// Get the x,y of the top and bottom of FC
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(fCIndex));
 				float fCTopX = coords[0]; // x-coord of top end of the right FC stroke
@@ -243,8 +243,8 @@ public class PenCharacterEn extends PenCharacter {
 				// ii.  The gap between the bottom of FC and the mid-point of VLINE
 				// iii. Distance of the top end of the VLINE from the top of the writing area
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, fCTopX, fCTopY) < gapThreshold) &
-					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, fCBottomX, fCBottomY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, fCTopX, fCTopY) < gapThreshold) &&
+					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, fCBottomX, fCBottomY) < gapThreshold) &&
 					isBetweenThresholds(vLineTopY, vLineTopYMin, vLineTopYMax);
 			}
 		}
@@ -266,13 +266,13 @@ public class PenCharacterEn extends PenCharacter {
 
 			matchedP =
 				// Must be a forward character primitive
-				(pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.FC_CHAR) &
+				(pChar.penSegments.elementAt(0).penSegmentCharacter == PenSegment.FC_CHAR) &&
 				/*
 				// and the ends of the stroke is less than its height
 				(PenUtil.distanceBetween2Points(
 						pChar.penSegments.elementAt(0).mPosStart[0], pChar.penSegments.elementAt(0).mPosStart[1],
 						pChar.penSegments.elementAt(0).mPosEnd[0], pChar.penSegments.elementAt(0).mPosEnd[1])
-						< 0.9 * heightOfC); & */
+						< 0.9 * heightOfC); && */
 						// and the width of the stroke is more than .4 its height
 						(widthOfC > .4 * heightOfC);
 
@@ -311,7 +311,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'K' are there, i.e.,
 			// fSlashIndex, bSlashIndex, and vLineIndex are all not negative
-			if ((fSlashIndex >= 0) & (bSlashIndex >= 0) & (vLineIndex >= 0)) {
+			if ((fSlashIndex >= 0) && (bSlashIndex >= 0) && (vLineIndex >= 0)) {
 
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(fSlashIndex));
 				float fSlashTopY = coords[1]; // y-coord of top end of the FSLASH stroke (above BSLASH)
@@ -341,8 +341,8 @@ public class PenCharacterEn extends PenCharacter {
 				// ii.  The gap between the bottom of FSLASH and the VLINE mid-point 
 				// iii. The gap between the top of BSLASH and the VLINE mid-point
 
-				if	((PenUtil.distanceBetween2Points(fSlashBottomX, fSlashBottomY, bSlashTopX, bSlashTopY) < gapThreshold) &
-						(PenUtil.distanceBetween2Points(fSlashBottomX, fSlashBottomY, vLineMidX, vLineMidY) < gapThreshold) &
+				if	((PenUtil.distanceBetween2Points(fSlashBottomX, fSlashBottomY, bSlashTopX, bSlashTopY) < gapThreshold) &&
+						(PenUtil.distanceBetween2Points(fSlashBottomX, fSlashBottomY, vLineMidX, vLineMidY) < gapThreshold) &&
 						(PenUtil.distanceBetween2Points(bSlashTopX, bSlashTopY, vLineMidX, vLineMidY) < gapThreshold))
 					// If the vertical height between FSLASH and BSLASH is more than .75 the VLINE height then it is a 'K'
 					if ((bSlashBottomY - fSlashTopY) > .75 * vLineHeight) c = 'K';
@@ -401,7 +401,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'P' are there, i.e.,
 			// bCIndex and vLineIndex are both not negative
-			if ((bCIndex >= 0) & (vLineIndex >= 0)) {
+			if ((bCIndex >= 0) && (vLineIndex >= 0)) {
 				// Get x,y of the top and bottom of VLINE
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(vLineIndex));
 				float vLineTopX = coords[0]; // x-coord of top end of the VLINE stroke
@@ -424,7 +424,7 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to see if the following gaps are less their respective thresholds
 				// i.   The gap between the top ends VLINE and BC
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, bCTopX, bCTopY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, bCTopX, bCTopY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, bCBottomX, bCBottomY) < 2 * gapThreshold);
 			}
 		}
@@ -454,7 +454,7 @@ public class PenCharacterEn extends PenCharacter {
 			}
 			// Check to make sure that the two component strokes for 'S' are there, i.e.,
 			// fSlashIndex and bSlashIndex are both not negative
-			if ((fCIndex >= 0) & (bCIndex >= 0)) {
+			if ((fCIndex >= 0) && (bCIndex >= 0)) {
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(fCIndex));		
 				float fCTopX = coords[0]; // x-coord of top end of the FC stroke
 				float fCTopY = coords[1]; // y-coord of top end of the FC stroke
@@ -537,7 +537,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the four component strokes for 'W' are there, i.e.,
 			// leftFSlashIndex, leftBSlashIndex, rightFSlashIndex, and rightVLineIndex are all not negative
-			if ((leftBSlashIndex >= 0) & (leftFSlashIndex >= 0) & (rightBSlashIndex >= 0) & (rightFSlashIndex >= 0)) {
+			if ((leftBSlashIndex >= 0) && (leftFSlashIndex >= 0) && (rightBSlashIndex >= 0) && (rightFSlashIndex >= 0)) {
 				// Get the left and right BSLASH strokes of 'W'
 				PenSegment leftRightBSlashSegments[] = 
 					order2PenSegmentsIntoLeftRight(pChar.penSegments.elementAt(leftBSlashIndex),
@@ -560,8 +560,8 @@ public class PenCharacterEn extends PenCharacter {
 				// iii. Gap between the bottom of the right BSLASH and the bottom of the right FSLASH (bottom of second 'V' of 'W')
 				matchedP = 
 					(gapCheckForVShape(leftBSlashSegment, leftFSlashSegment))  // Check for left '\/' of 'W'
-					& (gapCheckForCaretShape(leftFSlashSegment, rightBSlashSegment)) // Check for middle '/\' of 'W'
-					& (gapCheckForVShape(rightBSlashSegment, rightFSlashSegment));  // Check for right '\/' of 'W'
+					&& (gapCheckForCaretShape(leftFSlashSegment, rightBSlashSegment)) // Check for middle '/\' of 'W'
+					&& (gapCheckForVShape(rightBSlashSegment, rightFSlashSegment));  // Check for right '\/' of 'W'
 			}
 		}
 		return matchedP;
@@ -591,7 +591,7 @@ public class PenCharacterEn extends PenCharacter {
 			}
 			// Check to make sure that the two component strokes for 'X' are there, i.e.,
 			// fSlashIndex and bSlashIndex are both not negative
-			if ((bSlashIndex >= 0) & (fSlashIndex >= 0)) {
+			if ((bSlashIndex >= 0) && (fSlashIndex >= 0)) {
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(bSlashIndex));		
 				float bSlashTopX = coords[0]; // x-coord of top end of the BSLASH stroke
 				float bSlashTopY = coords[1]; // y-coord of top end of the BSLASH stroke
@@ -617,9 +617,9 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to make sure FSLASH and BSLASH cross sufficiently to form the 'X'
 				matchedP = 
 					( minGap > .25 * maxGap) // min horizontal gap between FSLASH and BSLASH must be at least one quarter that of the max gap
-					& (fSlashTopX > bSlashTopX) & (fSlashTopY < bSlashBottomY) // top of FSLASH must to right of the top of BSLASH and above the bottom of BSLASH
-					& (fSlashBottomX < bSlashBottomX) & (fSlashBottomY > bSlashTopY) // bottom of FSLASH must to left of the bottom of BSLASH and below the top of BSLASH
-					& (midGap < (.25 * maxGap)); // gap between the mid points of BSLASH and FSLASH must be small enough
+					&& (fSlashTopX > bSlashTopX) && (fSlashTopY < bSlashBottomY) // top of FSLASH must to right of the top of BSLASH and above the bottom of BSLASH
+					&& (fSlashBottomX < bSlashBottomX) && (fSlashBottomY > bSlashTopY) // bottom of FSLASH must to left of the bottom of BSLASH and below the top of BSLASH
+					&& (midGap < (.25 * maxGap)); // gap between the mid points of BSLASH and FSLASH must be small enough
 			}
 		}
 		return matchedP;
@@ -653,7 +653,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'Z' are there, i.e.,
 			// topHLineIndex, vLineIndex, and bottomHLineIndex are all not negative
-			if ((topHLineIndex >= 0) & (fSlashIndex >= 0) & (bottomHLineIndex >= 0)) {
+			if ((topHLineIndex >= 0) && (fSlashIndex >= 0) && (bottomHLineIndex >= 0)) {
 				// Get the top and bottom HLINE strokes of 'Z'
 				PenSegment topBottomHLineSegments[] = 
 					order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(topHLineIndex),
@@ -681,7 +681,7 @@ public class PenCharacterEn extends PenCharacter {
 
 				// Check to see if the gaps between the mid-points of the top and bottom HLINE's are less than the gap threshold
 				matchedP =
-					(PenUtil.distanceBetween2Points(fSlashTopX, fSlashTopY, topHLineRightX, topHLineRightY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(fSlashTopX, fSlashTopY, topHLineRightX, topHLineRightY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(fSlashBottomX, fSlashBottomY, bottomHLineLeftX, bottomHLineLeftY) < gapThreshold);
 			}
 		}
@@ -747,7 +747,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for '3' are there, i.e.,
 			// topBCIndex and bottomBCIndex are both not negative
-			if ((topBCIndex >= 0) & (bottomBCIndex >= 0)) {
+			if ((topBCIndex >= 0) && (bottomBCIndex >= 0)) {
 				// Get the top and bottom BC strokes
 				PenSegment topBottomBCSegments[] = 
 					order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(topBCIndex), pChar.penSegments.elementAt(bottomBCIndex));
@@ -804,7 +804,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for '5' are there, i.e.,
 			// hLineIndex, vLineIndex, and fSlashIndex are all not negative
-			if ((hLineIndex >= 0) & (vLineIndex >= 0) & (fSlashIndex >= 0)) {
+			if ((hLineIndex >= 0) && (vLineIndex >= 0) && (fSlashIndex >= 0)) {
 				// Get the left, right x,y coords of the HLINE stroke
 				float coords[] = getLeftRightCoordsOfSegment(pChar.penSegments.elementAt(hLineIndex));
 				float hLineLeftX = coords[0]; // x-coord of left end of the HLINE stroke
@@ -835,7 +835,7 @@ public class PenCharacterEn extends PenCharacter {
 				// i.   Gap between the left end of the HLINE and the bottom end of the FSLASH
 				// ii.  Gap between the mid-points of HLINE and VLINE
 				matchedP =
-					(PenUtil.distanceBetween2Points(hLineLeftX, hLineLeftY, fSlashBottomX, fSlashBottomY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(hLineLeftX, hLineLeftY, fSlashBottomX, fSlashBottomY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, hLineMidX, hLineMidY) < gapThreshold);
 			}
 		}
@@ -871,7 +871,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for '5' are there, i.e.,
 			// hLineIndex, vLineIndex, and bCIndex are all not negative
-			if ((hLineIndex >= 0) & (vLineIndex >= 0) & (bCIndex >= 0)) {
+			if ((hLineIndex >= 0) && (vLineIndex >= 0) && (bCIndex >= 0)) {
 				// Get the left, right x,y coords of the HLINE stroke
 				float coords[] = getLeftRightCoordsOfSegment(pChar.penSegments.elementAt(hLineIndex));
 				float hLineLeftX = coords[0]; // x-coord of left end of the HLINE stroke
@@ -897,7 +897,7 @@ public class PenCharacterEn extends PenCharacter {
 				// i.   Gap between the left end of the HLINE and the top end of the VLINE
 				// ii.  Gap between the bottom end of the HLINE and the top of the BC
 				matchedP =
-					(PenUtil.distanceBetween2Points(hLineLeftX, hLineLeftY, vLineTopX, vLineTopY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(hLineLeftX, hLineLeftY, vLineTopX, vLineTopY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bCTopX, bCTopY) < gapThreshold);
 			}
 		}
@@ -929,7 +929,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for '7' are there, i.e.,
 			// hLineIndex and fSlashIndex both all not negative
-			if ((hLineIndex >= 0) & (fSlashIndex >= 0)) {
+			if ((hLineIndex >= 0) && (fSlashIndex >= 0)) {
 				// Get the left, right x,y coords of the HLINE stroke
 				float coords[] = getLeftRightCoordsOfSegment(pChar.penSegments.elementAt(hLineIndex));
 				//				float hLineLeftX = coords[0]; // x-coord of left end of the HLINE stroke
@@ -1008,7 +1008,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'A' are there, i.e.,
 			// fSlashIndex, bSlashIndex, and hLineIndex are all not negative
-			if ((fSlashIndex >= 0) & (bSlashIndex >= 0) & (hLineIndex >= 0)) {
+			if ((fSlashIndex >= 0) && (bSlashIndex >= 0) && (hLineIndex >= 0)) {
 
 				// Get x,y of top and bottom of FSLASH
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(fSlashIndex));
@@ -1043,8 +1043,8 @@ public class PenCharacterEn extends PenCharacter {
 
 				// Check for caret (or '/' and '\') forming the top of A and position of horizontal line (dash) wrt to caret
 				matchedP = 
-					gapCheckForCaretShape(pChar.penSegments.elementAt(fSlashIndex), pChar.penSegments.elementAt(bSlashIndex)) &
-					isBetweenThresholds(hLineAvgXDist, .25 * width, .75 * width) &
+					gapCheckForCaretShape(pChar.penSegments.elementAt(fSlashIndex), pChar.penSegments.elementAt(bSlashIndex)) &&
+					isBetweenThresholds(hLineAvgXDist, .25 * width, .75 * width) &&
 					isBetweenThresholds(hLineAvgYDist, .25 * height, .75 * height);
 			}
 		}
@@ -1080,7 +1080,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'B' are there, i.e.,
 			// topBCIndex, bottomBCIndex, and vLineIndex are all not negative
-			if ((topBCIndex >= 0) & (bottomBCIndex >= 0) & (vLineIndex >= 0)) {
+			if ((topBCIndex >= 0) && (bottomBCIndex >= 0) && (vLineIndex >= 0)) {
 				// Get the top and bottom BC strokes
 				PenSegment topBottomBCSegments[] = 
 					order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(topBCIndex), pChar.penSegments.elementAt(bottomBCIndex));
@@ -1117,9 +1117,9 @@ public class PenCharacterEn extends PenCharacter {
 				// iii. The gap between the top of the bottom BC and the mid-point of VLINE
 				// iv.  The gap between the bottom ends VLINE and bottom BC
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topBCTopX, topBCTopY) < gapThreshold) &
-					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, topBCBottomX, topBCBottomY) < 2 * gapThreshold) &
-					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, bottomBCTopX, bottomBCTopY) < 2 * gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topBCTopX, topBCTopY) < gapThreshold) &&
+					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, topBCBottomX, topBCBottomY) < 2 * gapThreshold) &&
+					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, bottomBCTopX, bottomBCTopY) < 2 * gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bottomBCBottomX, bottomBCBottomY) < gapThreshold);
 			}
 		}
@@ -1153,7 +1153,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'D' are there, i.e.,
 			// bCIndex and vLineIndex are both not negative
-			if ((bCIndex >= 0) & (vLineIndex >= 0)) {
+			if ((bCIndex >= 0) && (vLineIndex >= 0)) {
 				// Get the x,y of the top and bottom of BC
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(bCIndex));
 				float bCTopX = coords[0]; // x-coord of top end of the BC stroke
@@ -1174,7 +1174,7 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to see if the gap between the top ends VLINE and BC that between
 				// the bottom ends of VLINE and BC are less than the gap threshold
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, bCTopX, bCTopY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, bCTopX, bCTopY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bCBottomX, bCBottomY) < gapThreshold);
 			}
 		}
@@ -1214,7 +1214,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the four component strokes for 'E' are there, i.e.,
 			// topHLineIndex, midHLineIndex, bottomHLineIndex, and vLineIndex are all not negative
-			if ((topHLineIndex >= 0) & (midHLineIndex >= 0) & (bottomHLineIndex >= 0) & (vLineIndex >= 0)) {
+			if ((topHLineIndex >= 0) && (midHLineIndex >= 0) && (bottomHLineIndex >= 0) && (vLineIndex >= 0)) {
 				float coords[] = getLeftRightCoordsOfSegment(pChar.penSegments.elementAt(topHLineIndex));
 				float topHLineLeftX = coords[0]; // x-coord of left point of the top HLINE stroke
 				float topHLineLeftY = coords[1]; // y-coord of left point of the top HLINE stroke
@@ -1284,8 +1284,8 @@ public class PenCharacterEn extends PenCharacter {
 				// iii. The gap between the top of the VLINE and left of the bottom HLINE is less than the gap threshold
 
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineLeftX, topHLineLeftY) < gapThreshold) &
-					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bottomHLineLeftX, bottomHLineLeftY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineLeftX, topHLineLeftY) < gapThreshold) &&
+					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bottomHLineLeftX, bottomHLineLeftY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, midHLineLeftX, midHLineLeftY) < gapThreshold);
 			}
 		}
@@ -1322,7 +1322,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'F' are there, i.e.,
 			// topHLineIndex, midHLineIndex, and vLineIndex are all not negative
-			if ((topHLineIndex >= 0) & (midHLineIndex >= 0) & (vLineIndex >= 0)) {
+			if ((topHLineIndex >= 0) && (midHLineIndex >= 0) && (vLineIndex >= 0)) {
 				// Check to see which of the two HLINE is the top one (the one with lower y-coord value)
 				if (pChar.penSegments.elementAt(midHLineIndex).posStart[1] < pChar.penSegments.elementAt(topHLineIndex).posStart[1]) {
 					int temp = topHLineIndex;
@@ -1352,7 +1352,7 @@ public class PenCharacterEn extends PenCharacter {
 				// is less than the gap threshold and the gap between the top and mid HLINE's
 				// are less than the gap threshold
 				matchedP =
-					(isBetweenThresholds(gapBetweenTopAndMidHLine, gapThreshold, .75 * vLineHeight )) &
+					(isBetweenThresholds(gapBetweenTopAndMidHLine, gapThreshold, .75 * vLineHeight )) &&
 					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineLeftX, topHLineLeftY) < gapThreshold);
 			}
 		}
@@ -1389,7 +1389,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'G' are there, i.e.,
 			// fCIndex, vLineIndex, and hLineIndex are all not negative.
-			if ((fCIndex >= 0) & (vLineIndex >= 0) & (hLineIndex >= 0)) {
+			if ((fCIndex >= 0) && (vLineIndex >= 0) && (hLineIndex >= 0)) {
 				// Get the x,y of the top and bottom of FC.
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(fCIndex));
 				float fCBottomX = coords[2]; // x-coord of bottom end of the BC stroke.
@@ -1420,13 +1420,13 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to see if the following gaps are less than their respective gap thresholds.
 				matchedP =
 					// i.  Gap between the y-coord of the mid-point of HLINE and the y-coord of the top end of VLINE.
-					(Math.abs(hLineMidY - vLineTopY) <= .25 * refLineLength) &
+					(Math.abs(hLineMidY - vLineTopY) <= .25 * refLineLength) &&
 					
 					// ii. Gap between the x-coord of the mid-point of HLINE and the x-coord of the top end of FC
-					Math.abs(hLineMidX - vLineTopX) <= .5 * refLineLength &
+					Math.abs(hLineMidX - vLineTopX) <= .5 * refLineLength &&
 					
 					// iii.  Gap between the y-coord of the mid-point of VLINE and the y-coord of the bottom end of FC.
-					(Math.abs(vLineMidY - fCBottomY) <= .5 * refLineLength) &
+					(Math.abs(vLineMidY - fCBottomY) <= .5 * refLineLength) &&
 					
 					// ii. Gap between the x-coord of the mid-point of VLINE and the x-coord of the bottom end of FC
 					Math.abs(vLineMidX - fCBottomX) <= .25 * refLineLength;
@@ -1464,7 +1464,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'H' are there, i.e.,
 			// leftVLineIndex, hLineIndex, and rightVLineIndex are all not negative
-			if ((leftVLineIndex >= 0) & (hLineIndex >= 0) & (rightVLineIndex >= 0)) {
+			if ((leftVLineIndex >= 0) && (hLineIndex >= 0) && (rightVLineIndex >= 0)) {
 				// Get the left and left VLINE strokes of 'I'
 				PenSegment leftRightVLineSegments[] = 
 					order2PenSegmentsIntoLeftRight(pChar.penSegments.elementAt(leftVLineIndex),
@@ -1491,7 +1491,7 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to see if the gaps between the mid-points of the left and right VLINE's and
 				// the left and right, respectively, of HLINE are less than the gap threshold
 				matchedP =
-					(PenUtil.distanceBetween2Points(hLineLeftX, hLineLeftY, leftVLineMidX, leftVLineMidY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(hLineLeftX, hLineLeftY, leftVLineMidX, leftVLineMidY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(hLineRightX, hLineRightY, rightVLineMidX, rightVLineMidY) < gapThreshold);
 			}
 		}
@@ -1526,7 +1526,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'I' are there, i.e.,
 			// topHLineIndex, vLineIndex, and bottomHLineIndex are all not negative
-			if ((topHLineIndex >= 0) & (vLineIndex >= 0) & (bottomHLineIndex >= 0)) {
+			if ((topHLineIndex >= 0) && (vLineIndex >= 0) && (bottomHLineIndex >= 0)) {
 				// Get the top and bottom HLINE strokes of 'I'
 				PenSegment topBottomHLineSegments[] = 
 					order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(topHLineIndex),
@@ -1550,7 +1550,7 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to see if the gaps between the mid-points of the top and bottom HLINE's 
 				// and top and bottom, respectively, of VLINE are less than the gap threshold
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineMidX, topHLineMidY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineMidX, topHLineMidY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bottomHLineMidX, bottomHLineMidY) < gapThreshold);
 			}
 		}
@@ -1585,7 +1585,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'J' are there, i.e.,
 			// topHLineIndex, vLineIndex, and bottomUIndex are all not negative
-			if ((topHLineIndex >= 0) & (vLineIndex >= 0) & (bottomUIndex >= 0)) {
+			if ((topHLineIndex >= 0) && (vLineIndex >= 0) && (bottomUIndex >= 0)) {
 				// Get the top HLINE stroke of 'J'
 				PenSegment topHLineSegment = pChar.penSegments.elementAt(topHLineIndex);
 				float topHLineMidX = (topHLineSegment.posStart[0] + topHLineSegment.posEnd[0])/2;
@@ -1610,7 +1610,7 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to see if the gaps between the mid-points of the top and bottom HLINE's 
 				// and top and bottom, respectively, of VLINE are less than the gap threshold
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineMidX, topHLineMidY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineMidX, topHLineMidY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, rightUX, rightUY) < gapThreshold);
 			}
 		}
@@ -1645,7 +1645,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'L' are there, i.e.,
 			// bottomHLineIndex and vLineIndex are both not negative
-			if ((bottomHLineIndex >= 0) & (vLineIndex >= 0)) {
+			if ((bottomHLineIndex >= 0) && (vLineIndex >= 0)) {
 				float coords[] = getLeftRightCoordsOfSegment(pChar.penSegments.elementAt(bottomHLineIndex));
 				float bottomHLineLeftX = coords[0]; // x-coord of left point of the bottom HLINE stroke
 				float bottomHLineLeftY = coords[1]; // y-coord of left point of the bottom HLINE stroke
@@ -1702,7 +1702,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the four component strokes for 'M' are there, i.e.,
 			// leftVLineIndex, bSlashIndex, fSlashIndex, and rightVLineIndex are all not negative
-			if ((leftVLineIndex >= 0) & (bSlashIndex >= 0) & (fSlashIndex >= 0) & (rightVLineIndex >= 0)) {
+			if ((leftVLineIndex >= 0) && (bSlashIndex >= 0) && (fSlashIndex >= 0) && (rightVLineIndex >= 0)) {
 				// Get the left and left VLINE strokes of 'M'
 				PenSegment leftRightVLineSegments[] = 
 					order2PenSegmentsIntoLeftRight(pChar.penSegments.elementAt(leftVLineIndex),
@@ -1740,8 +1740,8 @@ public class PenCharacterEn extends PenCharacter {
 				// ii.  Gap between the bottom of the BSLASH and the bottom of FSLASH (bottom of middle 'V' of 'M')
 				// iii. Gap between the top of the right HLINE and the top of the FSLASH (right top of 'M')
 				matchedP =
-					(PenUtil.distanceBetween2Points(bSlashTopX, bSlashTopY, leftVLineTopX, leftVLineTopY) < bSlashGapThreshold) &
-					gapCheckForVShape(pChar.penSegments.elementAt(fSlashIndex), pChar.penSegments.elementAt(bSlashIndex)) &					
+					(PenUtil.distanceBetween2Points(bSlashTopX, bSlashTopY, leftVLineTopX, leftVLineTopY) < bSlashGapThreshold) &&
+					gapCheckForVShape(pChar.penSegments.elementAt(fSlashIndex), pChar.penSegments.elementAt(bSlashIndex)) &&					
 					(PenUtil.distanceBetween2Points(fSlashTopX, fSlashTopY, rightVLineTopX, rightVLineTopY) < fSlashGapThreshold);
 			}
 		}
@@ -1776,7 +1776,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'N' are there, i.e.,
 			// leftVLineIndex, bSlashIndex, and rightVLineIndex are all not negative
-			if ((leftVLineIndex >= 0) & (bSlashIndex >= 0) & (rightVLineIndex >= 0)) {
+			if ((leftVLineIndex >= 0) && (bSlashIndex >= 0) && (rightVLineIndex >= 0)) {
 				// Get the left and right VLINE strokes of 'N'
 				PenSegment leftRightVLineSegments[] = 
 					order2PenSegmentsIntoLeftRight(pChar.penSegments.elementAt(leftVLineIndex),
@@ -1808,7 +1808,7 @@ public class PenCharacterEn extends PenCharacter {
 				// between the bottom of the right VLINE and the bottom of the BSLASH are less than
 				// the gap threshold
 				matchedP =
-					(PenUtil.distanceBetween2Points(bSlashTopX, bSlashTopY, leftVLineTopX, leftVLineTopY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(bSlashTopX, bSlashTopY, leftVLineTopX, leftVLineTopY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(bSlashBottomX, bSlashBottomY, rightVLineBottomX, rightVLineBottomY) < gapThreshold);
 			}
 		}
@@ -1843,7 +1843,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'Q' are there, i.e.,
 			// circleIndex and vLineIndex are both not negative
-			if ((circleIndex >= 0) & (bSlashIndex >= 0)) {
+			if ((circleIndex >= 0) && (bSlashIndex >= 0)) {
 				// Get the x,y of the top and bottom of BC
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(bSlashIndex));
 				float bSlashTopX = coords[0]; // x-coord of top end of the BSLASH stroke
@@ -1896,7 +1896,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'P' are there, i.e.,
 			// bCIndex, bSlashIndex and vLineIndex are both not negative.
-			if ((bCIndex >= 0) & (bSlashIndex >= 0) & (vLineIndex >= 0)) {
+			if ((bCIndex >= 0) && (bSlashIndex >= 0) && (vLineIndex >= 0)) {
 				// Get x,y coords of the BC stroke
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(bCIndex));
 				float bCTopX = coords[0]; // x-coord of top end of the BC stroke
@@ -1926,8 +1926,8 @@ public class PenCharacterEn extends PenCharacter {
 				// ii.  The gap between the bottom of the BC and the mid-point of VLINE
 				// iii. The gap between the top of the BSLASH and the mid-point of VLINE
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, bCTopX, bCTopY) < gapThreshold) &
-					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, bCBottomX, bCBottomY) < 2 * gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, bCTopX, bCTopY) < gapThreshold) &&
+					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, bCBottomX, bCBottomY) < 2 * gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, bSlashTopX, bSlashTopY) < 2 * gapThreshold);
 			}
 		}
@@ -1959,7 +1959,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'T' are there, i.e.,
 			// topHLineIndex and vLineIndex are both not negative
-			if ((topHLineIndex >= 0) & (vLineIndex >= 0)) {
+			if ((topHLineIndex >= 0) && (vLineIndex >= 0)) {
 				// Assume the HLINE found to be top HLINE of the 'T'
 				float topHLineStartX = pChar.penSegments.elementAt(topHLineIndex).posStart[0]; // x-coord of top end of the HLINE stroke
 				float topHLineStartY = pChar.penSegments.elementAt(topHLineIndex).posStart[1]; // y-coord of top end of the HLINE stroke
@@ -2019,7 +2019,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'Y' are there, i.e.,
 			// fSlashIndex, bSlashIndex, and vLineIndex are all not negative
-			if ((fSlashIndex >= 0) & (bSlashIndex >= 0) & (vLineIndex >= 0)) {
+			if ((fSlashIndex >= 0) && (bSlashIndex >= 0) && (vLineIndex >= 0)) {
 
 				// Get the bottom coords of FSLASH and BSLASH
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(fSlashIndex));		
@@ -2043,7 +2043,7 @@ public class PenCharacterEn extends PenCharacter {
 				// between their tops and the bottom of FSLASH and BSLASH is less than half the HLINE height from the
 				// top of HLINE
 				matchedP = 
-					(gapCheckForVShape(pChar.penSegments.elementAt(fSlashIndex), pChar.penSegments.elementAt(bSlashIndex))) &
+					(gapCheckForVShape(pChar.penSegments.elementAt(fSlashIndex), pChar.penSegments.elementAt(bSlashIndex))) &&
 					(PenUtil.distanceBetween2Points(avgSlashBottomX, avgSlashBottomY, hLineTopX, hLineTopY) < .5 * hLineHeight);
 
 			}
@@ -2085,7 +2085,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'a' are there, i.e.,
 			// fCIndex and vLineIndex are both not negative
-			if ((fCIndex >= 0) & (vLineIndex >= 0)) {
+			if ((fCIndex >= 0) && (vLineIndex >= 0)) {
 				// Get the x,y of the top and bottom of FC
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(fCIndex));
 				float fCTopX = coords[0]; // x-coord of top end of the FC stroke
@@ -2106,7 +2106,7 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to see if the gap between the top ends of VLINE and FC and that between
 				// the bottom ends of VLINE and FC are less than the gap threshold
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, fCTopX, fCTopY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, fCTopX, fCTopY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, fCBottomX, fCBottomY) < gapThreshold);
 			}
 		}
@@ -2141,7 +2141,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'b' are there, i.e.,
 			// bCIndex and vLineIndex are both not negative
-			if ((bCIndex >= 0) & (vLineIndex >= 0)) {
+			if ((bCIndex >= 0) && (vLineIndex >= 0)) {
 
 				// Get x,y of the top and bottom of VLINE
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(vLineIndex));
@@ -2167,7 +2167,7 @@ public class PenCharacterEn extends PenCharacter {
 				// i.  Gap between the middle of VLINE and top of BC
 				// ii. The gap between the bottom ends of VLINE and BC
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, bCTopX, bCTopY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, bCTopX, bCTopY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bCBottomX, bCBottomY) < gapThreshold);
 			}
 		}
@@ -2203,7 +2203,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'd' are there, i.e.,
 			// fCIndex and vLineIndex are both not negative
-			if ((fCIndex >= 0) & (vLineIndex >= 0)) {
+			if ((fCIndex >= 0) && (vLineIndex >= 0)) {
 				// Get the x,y of the top and bottom of FC
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(fCIndex));
 				float fCTopX = coords[0]; // x-coord of top end of the FC stroke
@@ -2227,7 +2227,7 @@ public class PenCharacterEn extends PenCharacter {
 				// i.  Gap between the middle of VLINE and top of FC
 				// ii. The gap between the bottom ends of VLINE and FC
 				matchedP =
-					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, fCTopX, fCTopY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(vLineMidX, vLineMidY, fCTopX, fCTopY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, fCBottomX, fCBottomY) < gapThreshold);
 			}
 		}
@@ -2261,7 +2261,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 'i' are there, i.e.,
 			// vLineIndex and dotIndex are both not negative
-			if ((vLineIndex >= 0) & (dotIndex >= 0)) {
+			if ((vLineIndex >= 0) && (dotIndex >= 0)) {
 				// Get x,y of the top and bottom of VLINE
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(vLineIndex));
 				float vLineTopX = coords[0]; // x-coord of top end of the VLINE stroke
@@ -2279,7 +2279,7 @@ public class PenCharacterEn extends PenCharacter {
 
 				// Check to see if the DOT is above the VLINE
 				matchedP =
-					isBetweenThresholds((vLineTopY - dotBottomY),  0, verticalGapThreshold) &
+					isBetweenThresholds((vLineTopY - dotBottomY),  0, verticalGapThreshold) &&
 					(Math.abs(vLineTopX - dotBottomX) < horizontalGapThreshold);
 			}
 		}
@@ -2331,7 +2331,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for 't' are there, i.e.,
 			// vLineIndex and hLineIndex are both not negative
-			if ((vLineIndex >= 0) & (hLineIndex >= 0)) {
+			if ((vLineIndex >= 0) && (hLineIndex >= 0)) {
 				// Get x,y of the top and bottom of VLINE
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(vLineIndex));
 				float vLineTopX = coords[0]; // x-coord of top end of the VLINE stroke
@@ -2392,7 +2392,7 @@ public class PenCharacterEn extends PenCharacter {
 			}
 			// Check to make sure that the two component strokes for 'y' are there, i.e.,
 			// fSlashIndex and bSlashIndex are both not negative
-			if ((bSlashIndex >= 0) & (fSlashIndex >= 0)) {
+			if ((bSlashIndex >= 0) && (fSlashIndex >= 0)) {
 
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(bSlashIndex));		
 				float bSlashBottomX = coords[2]; // x-coord of bottom end of the BSLASH stroke
@@ -2453,7 +2453,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for '!' are there, i.e.,
 			// vLineIndex and dotIndex are both not negative
-			if ((vLineIndex >= 0) & (dotIndex >= 0)) {
+			if ((vLineIndex >= 0) && (dotIndex >= 0)) {
 				// Get x,y of the top and bottom of VLINE
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(vLineIndex));
 				float vLineTopY = coords[1]; // y-coord of top end of the VLINE stroke
@@ -2471,7 +2471,7 @@ public class PenCharacterEn extends PenCharacter {
 
 				// Check to see if the DOT is below the VLINE
 				matchedP =
-					isBetweenThresholds((dotTopY - vLineBottomY), 0, verticalGapThreshold) &
+					isBetweenThresholds((dotTopY - vLineBottomY), 0, verticalGapThreshold) &&
 					(Math.abs(dotTopX - vLineBottomX) < horizontalGapThreshold);
 			}
 		}
@@ -2515,7 +2515,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the four component strokes for '#' are there, i.e.,
 			// hLine1Index, hLine2Index, fSlash1Index, and fSlash2Index are all not negative
-			if ((hLine1Index >= 0) & (hLine2Index >= 0) & (fSlash1Index >= 0) & (fSlash2Index >= 0)) {
+			if ((hLine1Index >= 0) && (hLine2Index >= 0) && (fSlash1Index >= 0) && (fSlash2Index >= 0)) {
 				// Get the top and bottom HLINE strokes of '#'
 				PenSegment topBottomHLineSegments[] = 
 					order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(hLine1Index),
@@ -2571,9 +2571,9 @@ public class PenCharacterEn extends PenCharacter {
 
 				// Check to see if the following gaps are close enough:
 				matchedP = 
-					(PenUtil.distanceBetween2Points(topHLine1st3rdX, topHLine1st3rdY, leftFSlash1st3rdX, leftFSlash1st3rdY) < gapThreshold) &
-					(PenUtil.distanceBetween2Points(topHLine2nd3rdX, topHLine2nd3rdY, rightFSlash1st3rdX, rightFSlash1st3rdY) < gapThreshold) &
-					(PenUtil.distanceBetween2Points(bottomHLine1st3rdX, bottomHLine1st3rdY, leftFSlash2nd3rdX, leftFSlash2nd3rdY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(topHLine1st3rdX, topHLine1st3rdY, leftFSlash1st3rdX, leftFSlash1st3rdY) < gapThreshold) &&
+					(PenUtil.distanceBetween2Points(topHLine2nd3rdX, topHLine2nd3rdY, rightFSlash1st3rdX, rightFSlash1st3rdY) < gapThreshold) &&
+					(PenUtil.distanceBetween2Points(bottomHLine1st3rdX, bottomHLine1st3rdY, leftFSlash2nd3rdX, leftFSlash2nd3rdY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(bottomHLine2nd3rdX, bottomHLine2nd3rdY, rightFSlash2nd3rdX, rightFSlash2nd3rdY) < gapThreshold);
 
 			}
@@ -2614,7 +2614,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for '%' are there, i.e.,
 			// topCircleIndex, vLineIndex, and bottomCircleIndex are all not negative
-			if ((topCircleIndex >= 0) & (fSlashIndex >= 0) & (bottomCircleIndex >= 0)) {
+			if ((topCircleIndex >= 0) && (fSlashIndex >= 0) && (bottomCircleIndex >= 0)) {
 				// Get the top and bottom CIRCLE strokes of '%'
 				PenSegment topBottomCircleSegments[] = 
 					order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(topCircleIndex),
@@ -2642,7 +2642,7 @@ public class PenCharacterEn extends PenCharacter {
 
 				// Check to see if the gaps between the mid-points of the top and bottom HLINE's are less than the gap threshold
 				matchedP =
-					(PenUtil.distanceBetween2Points(fSlashMidX, fSlashMidY, topCircleMidX, topCircleMidY) < gapThreshold) &
+					(PenUtil.distanceBetween2Points(fSlashMidX, fSlashMidY, topCircleMidX, topCircleMidY) < gapThreshold) &&
 					(PenUtil.distanceBetween2Points(fSlashMidX, fSlashMidY, bottomCircleMidX, bottomCircleMidY) < gapThreshold);
 			}
 		}
@@ -2706,7 +2706,7 @@ public class PenCharacterEn extends PenCharacter {
 			}
 			// Check to make sure that the two component strokes for '+' are there, i.e.,
 			// vLineIndex and hLineIndex are both not negative
-			if ((hLineIndex >= 0) & (vLineIndex >= 0)) {
+			if ((hLineIndex >= 0) && (vLineIndex >= 0)) {
 				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(hLineIndex));		
 				float hLineTopX = coords[0]; // x-coord of top end of the HLINE stroke
 				float hLineTopY = coords[1]; // y-coord of top end of the HLINE stroke
@@ -2794,7 +2794,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for ':' are there, i.e.,
 			// dot1Index and dot2Index are both not negative
-			if ((dot1Index >= 0) & (dot2Index >= 0)) {
+			if ((dot1Index >= 0) && (dot2Index >= 0)) {
 				PenSegment pSegments[] = order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(dot1Index), pChar.penSegments.elementAt(dot2Index));
 				// Get x,y of the top DOT
 				float topDotX = pSegments[0].avgX; // x-coord of the top DOT
@@ -2836,7 +2836,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for ';' are there, i.e.,
 			// dotIndex and bCIndex are both not negative
-			if ((dotIndex >= 0) & (bCIndex >= 0)) {
+			if ((dotIndex >= 0) && (bCIndex >= 0)) {
 				// Get x,y of the top DOT
 
 				float dotX = pChar.penSegments.elementAt(dotIndex).avgX; // x-coord of the top DOT
@@ -2880,7 +2880,7 @@ public class PenCharacterEn extends PenCharacter {
 			}
 			// Check to make sure that the two component strokes for '<' or '>' are there, i.e.,
 			// fSlashIndex and bSlashIndex are both not negative
-			if ((bSlashIndex >= 0) & (fSlashIndex >= 0)) {
+			if ((bSlashIndex >= 0) && (fSlashIndex >= 0)) {
 				PenSegment pSegments[] = order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(bSlashIndex), pChar.penSegments.elementAt(fSlashIndex));
 
 				// Get x,y of the top slash (could be an FSLASH or BSLASH)
@@ -2926,7 +2926,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the two component strokes for ':' are there, i.e.,
 			// hLine1Index and hLine2Index are both not negative
-			if ((hLine1Index >= 0) & (hLine2Index >= 0)) {
+			if ((hLine1Index >= 0) && (hLine2Index >= 0)) {
 				PenSegment pSegments[] = order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(hLine1Index), pChar.penSegments.elementAt(hLine2Index));
 				// Get x,y of the top HLINE
 				float topHLineX = pSegments[0].avgX; // x-coord of the top HLINE
@@ -2977,7 +2977,7 @@ public class PenCharacterEn extends PenCharacter {
 
 			// Check to make sure that the three component strokes for 'I', '[' or ']' are there, i.e.,
 			// topHLineIndex, vLineIndex, and bottomHLineIndex are all not negative
-			if ((topHLineIndex >= 0) & (vLineIndex >= 0) & (bottomHLineIndex >= 0)) {
+			if ((topHLineIndex >= 0) && (vLineIndex >= 0) && (bottomHLineIndex >= 0)) {
 				// Get the top and bottom HLINE strokes of '[' or ']'
 				PenSegment topBottomHLineSegments[] = 
 					order2PenSegmentsIntoTopBottom(pChar.penSegments.elementAt(topHLineIndex),
@@ -3013,15 +3013,15 @@ public class PenCharacterEn extends PenCharacter {
 				// Check to see if the gaps between the left points of the top and bottom HLINE's 
 				// and top and bottom, respectively, of VLINE are less than the gap threshold
 				if
-				((PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineMidX, topHLineMidY) < gapThreshold) &
+				((PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineMidX, topHLineMidY) < gapThreshold) &&
 						(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bottomHLineMidX, bottomHLineMidY) < gapThreshold))
 					c = 'I'; // the three strokes form a capital I
 				else if 
-				((PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineRightX, topHLineRightY) < gapThreshold) &
+				((PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineRightX, topHLineRightY) < gapThreshold) &&
 						(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bottomHLineRightX, bottomHLineRightY) < gapThreshold))
 					c = ']'; // the three strokes form a right square bracket
 				else if
-				((PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineLeftX, topHLineLeftY) < gapThreshold) &
+				((PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topHLineLeftX, topHLineLeftY) < gapThreshold) &&
 						(PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bottomHLineLeftX, bottomHLineLeftY) < gapThreshold))
 					c = '['; // the three strokes form a left square bracket
 			}

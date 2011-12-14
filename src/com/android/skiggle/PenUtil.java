@@ -19,6 +19,7 @@
 package com.android.skiggle;
 
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -142,7 +143,7 @@ public class PenUtil
 		String returnStr = "";
 		int charPos = str.indexOf(c);
 		int strLen = str.length();
-		if ((charPos >= 0) & (strLen > 0)) {
+		if ((charPos >= 0) && (strLen > 0)) {
 			resultStrBuilder.deleteCharAt(charPos);			
 		}
 		if (resultStrBuilder.length() > 0) {
@@ -172,9 +173,15 @@ public class PenUtil
 	}
 
 	public static void displayCandidateCharacterKeys(Character c, String str, Canvas canvas) {
-		CandidatesKeyBoard candidateKeys = new CandidatesKeyBoard(c, str);
+		/*
+		OldCandidatesKeyBoard candidateKeys = new OldCandidatesKeyBoard(c, str);
 		candidateKeys.draw(canvas);
+		*/
 		
+		Skiggle.sTestKeyBoard = new CandidatesKeyBoard(Skiggle.sContext, c, str);
+//		candidateKeys.draw(canvas);
+
 	}
+	
 
 }

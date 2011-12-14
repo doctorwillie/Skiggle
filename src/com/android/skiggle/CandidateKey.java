@@ -1,33 +1,36 @@
 package com.android.skiggle;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
+import android.view.View;
 
-public class CandidateKey extends Drawable {
+public class CandidateKey extends View {
 	private int mColor = 0xffcccccc; // Gray
-	private char mCandidateChar;
-	private Rect mRect;
+	private Character mChar;
+	public Rect mRect;
 	
-	public CandidateKey() {
-		super();
-	} // End of CandidateKey() constructor
+	public CandidateKey(Context context) {
+		super(context);
+	} // End of OldCandidateKey() constructor
 	
-	public CandidateKey(int left, int top, int right, int bottom, char c) {
-		super();
-		mCandidateChar = c;
+	public CandidateKey(Context context, int left, int top, int right, int bottom, char c) {
+		super(context);
+		mChar = c;
 		mRect = new Rect(left, top, right, bottom);
-	} // End of CandidateKey(), with corners and character specified, constructor
+	} // End of OldCandidateKey(), with corners and character specified, constructor
 	
-	public CandidateKey(int left, int top, int right, int bottom, char c, int color) {
-		super();
-		mCandidateChar = c;
+	public CandidateKey(Context context, int left, int top, int right, int bottom, char c, int color) {
+		super(context);
+		mChar = c;
 		mColor = color;
 		mRect = new Rect(left, top, right, bottom);
 		
-	} // End of CandidateKey(), with corners, character and color specified, constructor
+	} // End of OldCandidateKey(), with corners, character and color specified, constructor
 
 	@Override
 	public void draw(Canvas canvas) {
@@ -41,27 +44,41 @@ public class CandidateKey extends Drawable {
 		paint.setColor(0xff444444); // Dark Gray for character
 		paint.setTextSize(20);
 		//float[] widths = {15};
-		canvas.drawText(String.valueOf(mCandidateChar), (float) (mRect.left  + Math.floor((mRect.right - mRect.left - charWidth))/2), mRect.bottom - 5, paint);	
-
-
-	}
-
-	@Override
-	public int getOpacity() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setAlpha(int alpha) {
-		// TODO Auto-generated method stub
+		canvas.drawText(String.valueOf(mChar), (float) (mRect.left  + Math.floor((mRect.right - mRect.left - charWidth))/2), mRect.bottom - 5, paint);	
 
 	}
 
+	private void showChar() {
+		if (mChar != null) {
+			int left = 50;
+			int top = 300;
+			int textSize = 200;
+			
+			Paint paint = new Paint();
+			paint.setColor(0xffeeeeee);
+			paint.setTextSize(textSize);
+			Skiggle.sCanvas.drawText(mChar.toString(), left, top, paint);
+			
+		}
+	}
+	
 	@Override
-	public void setColorFilter(ColorFilter cf) {
-		// TODO Auto-generated method stub
-
+	public boolean onTouchEvent(MotionEvent event) {
+		float x = event.getX();
+		float y = event.getY();
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			showChar();
+			invalidate();
+			break;
+		case MotionEvent.ACTION_MOVE:
+			invalidate();
+			break;
+		case MotionEvent.ACTION_UP:
+			invalidate();
+			break;
+		}
+		return true;
 	}
 
 }

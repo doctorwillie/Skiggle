@@ -155,7 +155,7 @@ public class PenSegment extends Path {
 	private boolean checkLineAngle (double lineAngle, double angleThreshold) {
 
 		return 		
-		(Math.abs(lineAngle) < angleThreshold) |   // line is in one direction, e.g., left to right, W to E, or NE to SW.
+		(Math.abs(lineAngle) < angleThreshold) ||   // line is in one direction, e.g., left to right, W to E, or NE to SW.
 		(Math.abs(180 - Math.abs(lineAngle)) < angleThreshold);  // line is in the other direction, e.g. right to left, E to W, or SW to NE.
 	}
 
@@ -166,7 +166,7 @@ public class PenSegment extends Path {
 
 	private boolean isCurved(double kappa) {
 
-//		return !isStraight(kappa) & (tempMaxAbsKappaDiff < MAX_ABS_KAPPA_DIFF_THRESHOLD);
+//		return !isStraight(kappa) && (tempMaxAbsKappaDiff < MAX_ABS_KAPPA_DIFF_THRESHOLD);
 		return !isStraight(kappa);
 	}
 
@@ -178,7 +178,7 @@ public class PenSegment extends Path {
 		float endLineMidY = (posStart[1] + posEnd[1])/2;
 		float gapX = Math.abs(endLineMidX - avgX);
 
-		return ((avgX < endLineMidX) & (Math.abs(avgY - endLineMidY) < .25 * gapX));
+		return ((avgX < endLineMidX) && (Math.abs(avgY - endLineMidY) < .25 * gapX));
 	}
 
 	// Check to see if the curve's center of gravity (average x and y) is to the right of the line joining its end.
@@ -189,7 +189,7 @@ public class PenSegment extends Path {
 		float endLineMidY = (posStart[1] + posEnd[1])/2;
 		float gapX = Math.abs(endLineMidX - avgX);
 
-		return ((endLineMidX < avgX) & (Math.abs(avgY - endLineMidY) < .5 * gapX));
+		return ((endLineMidX < avgX) && (Math.abs(avgY - endLineMidY) < .5 * gapX));
 //		return ((endLineMidX < avgX));
 	}
 
@@ -199,7 +199,7 @@ public class PenSegment extends Path {
 		float endLineMidY = (posStart[1] + posEnd[1])/2;
 		float gapY = Math.abs(endLineMidY - avgY);
 
-		return ((avgY > endLineMidY) & (Math.abs(avgX - endLineMidX) < .25 * gapY));
+		return ((avgY > endLineMidY) && (Math.abs(avgX - endLineMidX) < .25 * gapY));
 	}
 
 	/*
@@ -220,57 +220,57 @@ public class PenSegment extends Path {
 	private boolean isHLine() {
 
 		// line can be left to right (W to E) or right to left (E to W)
-		return (isStraight(avgKappa) &
+		return (isStraight(avgKappa) &&
 				checkLineAngle(mAvgAngle - HLINE_ANGLE, HLINE_MAX_ANGLE_SPREAD));
 	}
 
 	private boolean isBSlash() {
 
 		// line can be NW to SE or SE to NW
-		return (isStraight(avgKappa) &
+		return (isStraight(avgKappa) &&
 				checkLineAngle(mAvgAngle - BSLASH_ANGLE, BSLASH_MAX_ANGLE_SPREAD));
 	}
 
 	private boolean isVLine() {
 
 		// line can be top to bottom (N to S) or bottom to top (S to N)
-		return (isStraight(avgKappa) &
+		return (isStraight(avgKappa) &&
 				checkLineAngle(mAvgAngle - VLINE_ANGLE, VLINE_MAX_ANGLE_SPREAD));
 	}
 
 	private boolean isFSlash() {
 
 		// line can be NE to SW or SW to NE
-		return (isStraight(avgKappa) &
+		return (isStraight(avgKappa) &&
 				checkLineAngle(mAvgAngle - FSLASH_ANGLE, FSLASH_MAX_ANGLE_SPREAD));
 	}
 
 	// Check to see if stroke is a backward C (looks like a more curved version of the left parenthesis ')' )
 	private boolean isBC() {
 
-		return (isCurved(avgKappa) & isCOGRightOfEndLine());
+		return (isCurved(avgKappa) && isCOGRightOfEndLine());
 	}
 
 	// Check to see if stroke is a regular forward C
 	private boolean isFC() {
 
-//		return (isCurved(avgKappa) & isCOGLeftOfEndLine());
-		return (isCurved(avgKappa) & isCOGLeftOfEndLine());
+//		return (isCurved(avgKappa) && isCOGLeftOfEndLine());
+		return (isCurved(avgKappa) && isCOGLeftOfEndLine());
 	}
 
 	private boolean isCircle() {
 
-		return (isClosedStroke() & isCurved(avgKappa));
+		return (isClosedStroke() && isCurved(avgKappa));
 	}
 
 	private boolean isU() {
 
-		return (isCurved(avgKappa) & isCOGBelowEndLine());
+		return (isCurved(avgKappa) && isCOGBelowEndLine());
 	}
 
 	private boolean isDot() {
 
-		return (boundingRectWidth < 2) & (boundingRectHeight < 2);
+		return (boundingRectWidth < 2) && (boundingRectHeight < 2);
 	}
 
 	/*
@@ -407,7 +407,7 @@ public class PenSegment extends Path {
 				// tanAngle[i + 1] = (float) getAbsAngle(tanEnd[1], tanEnd[0]);
 				sumAngle = sumAngle + tanAngle[i]; //tanAngle[i+1]; //Math.abs(tanAngle[i+1]);
 
-				if ((i > 1) & (i < numOfSegments - 1)) {
+				if ((i > 1) && (i < numOfSegments - 1)) {
 					// need 3 points to compute kappa so ignore start and end points
 					kappa[i-1] = PenUtil.computeCurvatureM2003(posX[i-2], posY[i-2], posX[i-1], posY[i-1], posX[i], posY[i]);
 					// kappa[i-1] = computeCurvatureHK2003(posX[i-2], posY[i-2], posX[i-1], posY[i-1], posX[i], posY[i]);
@@ -487,7 +487,7 @@ public class PenSegment extends Path {
 					Path path3 = new Path();
 					Path path4 = new Path();
 					if (penStrokeMeasure.getSegment(0, headLength1 + headLength2, path3, true)
-							& penStrokeMeasure.getSegment(headLength1 + headLength2 + 1, tailLength1, path4, true)) {
+							&& penStrokeMeasure.getSegment(headLength1 + headLength2 + 1, tailLength1, path4, true)) {
 						PenSegment pSegment3 = new PenSegment(path3);
 						PenSegment pSegment4 = new PenSegment(path4);
 

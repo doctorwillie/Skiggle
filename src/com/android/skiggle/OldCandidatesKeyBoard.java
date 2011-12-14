@@ -1,6 +1,5 @@
 package com.android.skiggle;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
@@ -8,25 +7,26 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.view.MotionEvent;
-import android.view.View;
 
-public class CandidatesKeyBoard extends View {
+public class OldCandidatesKeyBoard extends Drawable {
 	private ShapeDrawable mDrawable;
 	private String mCandidateCharacters;
-	private CandidateKey[] mKeys;
+	private OldCandidateKey[] mKeys;
 	private int mX = Skiggle.sVirtualKeyboardLeft;
 	private int mY = Skiggle.sVirutalKeyhoardTop;
 	private int mKeyWidth = 30;
 	private int mKeyHeight = 30;
 	private int mKeySpacing = 2;
-	protected Rect mRect = new Rect(mX, mY, mX + Skiggle.sDefaultWritePadWidth, mY + mKeyHeight + (2 * mKeyHeight));
+	
+//	private TestKeyView[] mTestViews;
 
-
-	public CandidatesKeyBoard(Context context, Character c, String str) {
-		super(context);
+	public OldCandidatesKeyBoard(Character c, String str) {
+		super();
 		int keyColor = 0xffcccccc; // Gray (default key color)
 		mCandidateCharacters = str;
+		
+//		mTestView = new TestKeyView(Skiggle.sContext);
+
 		
 		int width = str.length() * (mKeyWidth + mKeySpacing);
 
@@ -35,13 +35,14 @@ public class CandidatesKeyBoard extends View {
 		mDrawable.getPaint().setColor(Skiggle.sDefaultCanvasColor); // Light Gray
 		mDrawable.setBounds(mX, mY, mX + width, mY + mKeyHeight);
 		
-		mKeys= new CandidateKey[str.length()];
+		mKeys= new OldCandidateKey[str.length()];
 		
+//		mTestViews = new TestKeyView[str.length()];
 		
 		int iBase = 0;
 		if (c != null) {
 			keyColor = 0xff33cc33; // Green for best guess (first char in the string);
-			mKeys[iBase] = new CandidateKey(context, mX, mY, mX + mKeyWidth, mY + mKeyHeight, c, keyColor);
+			mKeys[iBase] = new OldCandidateKey(mX, mY, mX + mKeyWidth, mY + mKeyHeight, c, keyColor);
 			iBase = iBase + 1;
 		}
 		
@@ -50,16 +51,20 @@ public class CandidatesKeyBoard extends View {
 			int top = mY;
 			int right = left + mKeyWidth;
 			int bottom = top + mKeyHeight;
-
+			/*
 			if (i == 0) { // First char is the best guess
 				keyColor = 0xff33cc33; // Green for best guess (first char in the string);
 			}
 			else {
 				keyColor = 0xffcccccc; // Gray, default color;
 			}
-
-			mKeys[i] = new CandidateKey(context, left, top, right, bottom, mCandidateCharacters.charAt(i), keyColor);
+			*/
+			keyColor = 0xffcccccc; // Gray, default color;
+			mKeys[i] = new OldCandidateKey(left, top, right, bottom, mCandidateCharacters.charAt(i), keyColor);
 			
+//			mTestViews[i] = new TestKeyView(Skiggle.sContext, left, top, right, bottom, mCandidateCharacters.charAt(i), keyColor);
+//			Skiggle.sTestView = new TestKeyView(Skiggle.sContext, 100, 100, 110, 140, mCandidateChar, mColor);
+//			Skiggle.sTestView.draw(Skiggle.sCanvas);
 			
 		}
 	} // End of OldCandidatesKeyBoard() constructor
@@ -69,43 +74,25 @@ public class CandidatesKeyBoard extends View {
 	 */
 
 	@Override
-	public void onDraw(Canvas canvas) {
-
-		for (int i = 0; i < mKeys.length; i++ ) {
-			mKeys[i].draw(canvas);
-		}
-		
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		float x = event.getX();
-		float y = event.getY();
-		
-		if (mKeys != null) {
-			for (int i = 0; i < mKeys.length; i++) {
-				if (mKeys[i].mRect.contains((int) x, (int) y)) {
-					return (mKeys[i].onTouchEvent(event));
-				}
-			}
-		}
-		
-		return true; //true;
-	}
-	
-	/*
-	@Override
 	public void draw(Canvas canvas) {
 //		mTestView.draw(canvas);
 		
 		for (int i = 0; i < mKeys.length; i++) {
-			mKeys[i].draw(canvas);			
+			mKeys[i].draw(canvas);
+			
+/*
+		try {
+			mTestViews[i].draw(canvas);
+			}
+			catch (Exception e) {
+				e.getMessage();
+			}
+*/			
 			
 		}
 
 			
 	}
-	*/
 
 	public void oldDraw(Canvas canvas) {
 		mDrawable.draw(canvas);
@@ -134,5 +121,22 @@ public class CandidatesKeyBoard extends View {
 			canvas.drawText(mCandidateCharacters.substring(i, i+1), (float) (xI  + Math.floor((mKeyWidth - charWidth))/2), baseY - 5, tempPaint);	
 		}
 	} // End of draw() method
+
+	@Override
+	public int getOpacity() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setAlpha(int alpha) {
+		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setColorFilter(ColorFilter cf) {
+		// TODO Auto-generated method stub
+		
+	}
 } // End of OldCandidatesKeyBoard class

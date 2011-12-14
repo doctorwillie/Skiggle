@@ -83,11 +83,11 @@ public class PenStroke extends Path {
 
 	
 	/*	
-	public void printPenStrokeStatsOnScreen(BoxView boxView, Canvas canvas, Paint strokePaint, Paint textPaint) {
+	public void printPenStrokeStatsOnScreen(BoxView sBoxView, Canvas canvas, Paint strokePaint, Paint textPaint) {
 		double angle = 0.0;
 
 		PenUtil.printString(mPpenStrokeCharacter.toString(), posEnd[0], posEnd[1], boundingRectF, canvas, textPaint);
-		PenUtil.printString(boxView.mPenCharacter.mPenCharacter.toString(), posEnd[0], posEnd[1], boundingRectF, canvas, textPaint);
+		PenUtil.printString(sBoxView.mPenCharacter.mPenCharacter.toString(), posEnd[0], posEnd[1], boundingRectF, canvas, textPaint);
 
 
 	}
