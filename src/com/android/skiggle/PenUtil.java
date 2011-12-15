@@ -164,7 +164,7 @@ public class PenUtil
 			tempPaint.setStrokeWidth(Skiggle.sDefaultStrokeWidth);
 			// canvas.drawRect(boundingRectF, tempPaint);
 
-			tempPaint.setColor(0xFFFF0000);
+			tempPaint.setColor(Skiggle.RED);
 			//tempPaint.setTextSize(Math.max(boundingRectHeight, boundingRectWidth));
 
 			canvas.drawText(s, x, y, tempPaint);

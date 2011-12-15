@@ -39,19 +39,28 @@ import android.widget.Button;
 
 public class Skiggle extends Activity {
 	
+	// Global constants
+	
 	protected static final String APP_TITLE = "Skiggle"; // Title of the app
 	
-	// Global constants
 	protected static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
 	protected static final String ENGLISH_MODE = "English"; // English handwriting mode
 	protected static final boolean VIRTUAL_KEYBOARD_ON = false; // TEMPORARY: Used for testing the virtual keyboard
 	
+	// TODO: Use res/values/colors.xml?
+	// Color codes
+	public static final int AQUA = 0xFF00FFFF;
+	public static final int GRAY_26 = 0xFF424242;
+	public static final int GRAY_80 = 0xFFCCCCCC;
+	public static final int RED = 0xFFFF0000;
+	public static final int TRUE_GREEN = 0xFF00AF23;
+	public static final int WHITE = 0xFFFFFFFF;
 	
 	// Global variables
 	protected static String sLanguage = ENGLISH_MODE; // Set default language to English
 
-	protected static int sDefaultPenColor = 0xFF00FFFF;
-	protected static int sDefaultCanvasColor = 0xFFFFFFFF;  // White color
+	protected static int sDefaultPenColor = AQUA; // aqua
+	protected static int sDefaultCanvasColor = WHITE;  // White color
 	protected static float sDefaultStrokeWidth = 12.0F;	
 	protected static float sDefaultFontSize = 14.0F; //12.0F;
 

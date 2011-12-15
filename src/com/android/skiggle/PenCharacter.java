@@ -242,11 +242,11 @@ public class PenCharacter {
 			//			tempPaint.setStrokeWidth(Skiggle.sDefaultStrokeWidth);
 			//			canvas.drawRect(boundingRectF, tempPaint);
 
-			tempPaint.setColor(0xFFFFFFFF);
+			tempPaint.setColor(Skiggle.WHITE);
 			canvas.drawRect(x, y-mFontSize-3, x+200, y+3, tempPaint);
 
 			tempPaint.setTextSize(mFontSize);
-			tempPaint.setColor(0xFFFF0000);
+			tempPaint.setColor(Skiggle.RED);
 			canvas.drawText(str, x, y, tempPaint);
 		}
 	} // End of printString() method

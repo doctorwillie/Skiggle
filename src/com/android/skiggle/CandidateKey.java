@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class CandidateKey extends View {
-	private int mColor = 0xffcccccc; // Gray
+	private int mColor = Skiggle.GRAY_80; // Defaults to Gray80
 	private Character mChar;
 	public Rect mRect;
 	
@@ -37,26 +37,24 @@ public class CandidateKey extends View {
 		Paint paint = new Paint();
 		int charWidth = 15; // TODO - Need to compute this dynamically
 
-		paint.setColor(mColor); // Green;    0xff33ff00); // Bright Green
+		paint.setColor(mColor);
 		
 		canvas.drawRect(mRect, paint);
-		
-		paint.setColor(0xff444444); // Dark Gray for character
+//		paintKeyColor(mColor);
+		paint.setColor(Skiggle.GRAY_26); // Dark Gray26 for character
 		paint.setTextSize(20);
 		//float[] widths = {15};
 		canvas.drawText(String.valueOf(mChar), (float) (mRect.left  + Math.floor((mRect.right - mRect.left - charWidth))/2), mRect.bottom - 5, paint);	
 
 	}
-
-	private void showChar() {
+	
+	private void showBigChar() {
 		if (mChar != null) {
 			int textSize = 200;
 			int left = (Skiggle.sDefaultWritePadWidth - textSize)/2;
 			int top = Skiggle.sDefaultWritePadHeight - (Skiggle.sDefaultWritePadHeight - textSize)/2;
-
-			
 			Paint paint = new Paint();
-			paint.setColor(mColor);
+			paint.setColor(mColor);			
 			paint.setTextSize(textSize);
 			Skiggle.sCanvas.drawText(mChar.toString(), left, top, paint);
 			
@@ -69,14 +67,14 @@ public class CandidateKey extends View {
 		float y = event.getY();
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			showChar();
+			showBigChar();		
 			invalidate();
 			break;
 		case MotionEvent.ACTION_MOVE:
-			invalidate();
+//			invalidate();
 			break;
 		case MotionEvent.ACTION_UP:
-			invalidate();
+//			invalidate();
 			break;
 		}
 		return true;

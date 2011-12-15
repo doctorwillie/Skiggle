@@ -25,13 +25,13 @@ public class CandidatesKeyBoard extends View {
 
 	public CandidatesKeyBoard(Context context, Character c, String str) {
 		super(context);
-		int keyColor = 0xffcccccc; // Gray (default key color)
+		int keyColor = Skiggle.GRAY_80; // Gray80 (default key color)
 		mCandidateCharacters = str;
 		
 		int width = str.length() * (mKeyWidth + mKeySpacing);
 
 		mDrawable = new ShapeDrawable(new RectShape());
-		//mDrawable.getPaint().setColor(0xffcccccc); // Light Gray
+		//mDrawable.getPaint().setColor(Skiggle.GRAY_80); // Gray80
 		mDrawable.getPaint().setColor(Skiggle.sDefaultCanvasColor); // Light Gray
 		mDrawable.setBounds(mX, mY, mX + width, mY + mKeyHeight);
 		
@@ -40,7 +40,7 @@ public class CandidatesKeyBoard extends View {
 		
 		int iBase = 0;
 		if (c != null) {
-			keyColor = 0xff33cc33; // Green for best guess (first char in the string);
+			keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
 			mKeys[iBase] = new CandidateKey(context, mX, mY, mX + mKeyWidth, mY + mKeyHeight, c, keyColor);
 			iBase = iBase + 1;
 		}
@@ -52,10 +52,10 @@ public class CandidatesKeyBoard extends View {
 			int bottom = top + mKeyHeight;
 
 			if (i == 0) { // First char is the best guess
-				keyColor = 0xff33cc33; // Green for best guess (first char in the string);
+				keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
 			}
 			else {
-				keyColor = 0xffcccccc; // Gray, default color;
+				keyColor = Skiggle.GRAY_80; // Gray, default color;
 			}
 
 			mKeys[i] = new CandidateKey(context, left, top, right, bottom, mCandidateCharacters.charAt(i), keyColor);
@@ -107,32 +107,5 @@ public class CandidatesKeyBoard extends View {
 	}
 	*/
 
-	public void oldDraw(Canvas canvas) {
-		mDrawable.draw(canvas);
-		Rect rect = mDrawable.getBounds();
-		int baseX = rect.left;
-		int baseY = rect.bottom - 5;
-		int maxNumOfCandidateKeys = Math.min(5, mCandidateCharacters.length());
-		for (int i = 0; i < maxNumOfCandidateKeys; i++) {
-			Paint tempPaint = new Paint();
-			int xI = baseX + (mKeyWidth + mKeySpacing) * i;
-			int charWidth = 15; // TODO - Need to compute this dynamically
-
-			if (i == 0) { // First character is the best candidate
-				tempPaint.setColor(0xff33cc33); // Green;    0xff33ff00); // Bright Green
-			}
-			else {
-				tempPaint.setColor(0xffcccccc); // Gray
-			}
-			
-			canvas.drawRect(xI, baseY - mKeyHeight, xI + mKeyWidth, baseY, tempPaint);
-			tempPaint.setColor(0xff444444); // Gray
-
-			
-			tempPaint.setTextSize(20);
-			//float[] widths = {15};
-			canvas.drawText(mCandidateCharacters.substring(i, i+1), (float) (xI  + Math.floor((mKeyWidth - charWidth))/2), baseY - 5, tempPaint);	
-		}
-	} // End of draw() method
 		
 } // End of OldCandidatesKeyBoard class
