@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Skiggle</string>
-	<string name="cn">Chinese</string>
-	<string name="en">English</string>
+	<string name="chinese">Chinese</string>
+	<string name="english">English</string>
 </resources>

@@ -21,6 +21,7 @@ package com.android.skiggle;
 
 import com.android.skiggle.chinese.SegmentBitSetCn;
 import com.android.skiggle.english.SegmentBitSetEn;
+import com.android.skiggle.english.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,13 +30,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 public class Skiggle extends Activity {
 	
@@ -83,6 +84,8 @@ public class Skiggle extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+
 		sContext = this.getApplication().getBaseContext();
 		setContentView(new BoxView(this));
 
@@ -107,6 +110,34 @@ public class Skiggle extends Activity {
 		}
 
 		this.setTitle(APP_TITLE + "-" + sLanguage);
+
+	}
+	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.skiggle_menu, menu);
+	    return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	    case R.id.chinese:
+	        sLanguage = CHINESE_MODE;
+			SegmentBitSetCn.initializeSegmentBitSetGlobals();
+			this.setTitle(APP_TITLE + "-" + sLanguage);
+	        return true;
+	    case R.id.english:
+	        sLanguage = ENGLISH_MODE;
+			SegmentBitSetEn.initializeSegmentBitSetGlobals();
+			this.setTitle(APP_TITLE + "-" + sLanguage);
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
 	}
 	
 	public class BoxView extends View {
