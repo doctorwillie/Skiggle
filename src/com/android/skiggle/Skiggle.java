@@ -25,6 +25,7 @@ import com.android.skiggle.english.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -46,7 +47,7 @@ public class Skiggle extends Activity {
 	
 	protected static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
 	protected static final String ENGLISH_MODE = "English"; // English handwriting mode
-	protected static final boolean VIRTUAL_KEYBOARD_ON = false; // TEMPORARY: Used for testing the virtual keyboard
+	protected static final String DEFAULT_LANGUAGE_MODE = ENGLISH_MODE; // Default language mode is English
 	
 	// TODO: Use res/values/colors.xml?
 	// Color codes
@@ -72,35 +73,61 @@ public class Skiggle extends Activity {
 	protected static int sVirutalKeyhoardTop = 5; // Location of top edge of virtual keyboard (for candidate characters recognized)
 	
 	protected static CandidatesKeyBoard sCharactersVirtualKeyBoard = null;
+	
+	protected static boolean sDebugOn = false; // TEMPORARY: Used for testing the virtual keyboard
 
-//	public static BoxView sBoxView;
+	protected static BoxView sBoxView;
 	
 	protected static Canvas sCanvas;
 	private Paint mPaint;
 	private Paint mTextPaint;
 	protected static Context sContext;
 
+	public void setLanguageMode(String language) {
+		// Set language specifics globals
+		sLanguage = language;
+		if (language == CHINESE_MODE) {
+			SegmentBitSetCn.initializeSegmentBitSetGlobals();
+		}
+		else if (language == ENGLISH_MODE) {
+			SegmentBitSetEn.initializeSegmentBitSetGlobals();
+		}
+
+		this.setTitle(APP_TITLE + "-" + language);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+		super.onCreate(savedInstanceState);	
 
 		sContext = this.getApplication().getBaseContext();
-		setContentView(new BoxView(this));
+		sBoxView = new BoxView(this);
+		setContentView(sBoxView);
+		//setContentView(new BoxView(this));
 
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setDither(true);
-		mPaint.setColor(sDefaultPenColor);
 		mPaint.setStyle(Paint.Style.STROKE);
 		mPaint.setStrokeJoin(Paint.Join.ROUND);
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
+		
+		// Set canvas defaults
+		mPaint.setColor(sDefaultPenColor);
 		mPaint.setStrokeWidth(sDefaultStrokeWidth);
 
 		mTextPaint = new Paint();
+		// Set text paint defaults
 		mTextPaint.setTextSize(sDefaultFontSize);
 
+		setLanguageMode(sLanguage);
+		
+		// Restore preferences
+		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+		sLanguage = mPrefs.getString("language", DEFAULT_LANGUAGE_MODE);
+		sDebugOn = mPrefs.getBoolean("debugMode", false);
+		
+		/*
 		// Set language specifics globals
 		if (sLanguage == CHINESE_MODE) {
 			SegmentBitSetCn.initializeSegmentBitSetGlobals();
@@ -110,10 +137,38 @@ public class Skiggle extends Activity {
 		}
 
 		this.setTitle(APP_TITLE + "-" + sLanguage);
-
+		 */
 	}
 	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		// Save current settings
+		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+		SharedPreferences.Editor mPrefsEditor = mPrefs.edit();
+		mPrefsEditor.putString("language", sLanguage);
+		mPrefsEditor.putBoolean("debugMode", sDebugOn);
+		mPrefsEditor.commit();
+		/*
+		if (sCharactersVirtualKeyBoard != null) {
+			sCharactersVirtualKeyBoard.clear(Skiggle.sCanvas);
+		}
+		*/
+		sBoxView.clear(); // Need this here?
+		
+	}
+	
+/*
+	@Override
+	protected void onStop() {
+		super.onStop();
+		sBoxView.clear();
+		
+	}
+*/
 
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
@@ -126,14 +181,26 @@ public class Skiggle extends Activity {
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case R.id.chinese:
+	    	setLanguageMode(CHINESE_MODE);
+	    	/*
 	        sLanguage = CHINESE_MODE;
 			SegmentBitSetCn.initializeSegmentBitSetGlobals();
 			this.setTitle(APP_TITLE + "-" + sLanguage);
+			*/
 	        return true;
 	    case R.id.english:
+	    	setLanguageMode(ENGLISH_MODE);
+	    	/*
 	        sLanguage = ENGLISH_MODE;
 			SegmentBitSetEn.initializeSegmentBitSetGlobals();
 			this.setTitle(APP_TITLE + "-" + sLanguage);
+			*/
+	        return true;
+	    case R.id.debug_on:
+	    	sDebugOn = true; 
+	        return true;
+	    case R.id.debug_off:
+	    	sDebugOn = false; 
 	        return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
@@ -246,7 +313,7 @@ public class Skiggle extends Activity {
 			float x = event.getX();
 			float y = event.getY();
 
-			if (VIRTUAL_KEYBOARD_ON) {
+			if (sDebugOn) {
 				// Trap touch event that is inside sCharactersVirtualKeyBoard (should be taken care of by Android's nested event handlers)
 				if ((sCharactersVirtualKeyBoard != null) && sCharactersVirtualKeyBoard.mRect.contains((int) x, (int) y)) {
 

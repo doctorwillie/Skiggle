@@ -230,6 +230,7 @@ public class PenCharacter {
 
 	} // End of findMatchingCharacter() method
 	
+	// Not used - 12/16/2011
 	// Methods for printing PenCharacterEn
 	private void printString(String str, Canvas canvas, float x, float y, Paint paint) {
 

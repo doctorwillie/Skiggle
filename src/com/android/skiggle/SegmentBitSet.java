@@ -290,7 +290,8 @@ public class SegmentBitSet {
 		return sBitSet;
 	}
 
-	public static void testPrintSegmentBitSet() {
+	// Not used - 12/15/2011
+	public static void unused_testPrintSegmentBitSet() {
 		SegmentBitSet s = SegmentBitSet.sVLineBitset;
 		System.out.println("VLINE" + s.mSegmentBitSet.toString() + s.mSegmentBitSet.cardinality());
 		s.printCharSet(sVLineBitset);

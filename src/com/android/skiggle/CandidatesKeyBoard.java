@@ -62,7 +62,7 @@ public class CandidatesKeyBoard extends View {
 			
 		}
 		
-	} // End of OldCandidatesKeyBoard() constructor
+	} // End of CandidatesKeyBoard() constructor
 
 	
 	/**
@@ -93,6 +93,13 @@ public class CandidatesKeyBoard extends View {
 		return true; //true;
 	}
 	
+	protected void clear(Canvas canvas) {
+		if (mKeys != null) {
+			for (int i = 0; i < mKeys.length; i++ ) {
+				mKeys[i].clear(canvas);
+			}
+		}
+	}
 	/*
 	@Override
 	public void draw(Canvas canvas) {
@@ -108,4 +115,4 @@ public class CandidatesKeyBoard extends View {
 	*/
 
 		
-} // End of OldCandidatesKeyBoard class
+} // End of CandidatesKeyBoard class

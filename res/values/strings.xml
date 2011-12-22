@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Skiggle</string>
+	<string name="app_name">Skiggle</string>
 	<string name="chinese">Chinese</string>
 	<string name="english">English</string>
+	<string name="debug_on">Debug On</string>
+	<string name="debug_off">Debug Off</string>
 </resources>
