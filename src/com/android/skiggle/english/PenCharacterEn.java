@@ -711,6 +711,7 @@ public class PenCharacterEn extends PenCharacter {
 	 *               *
 	 *****************/
 
+	/*
 	// ???
 	private static void checkForNumber1(PenCharacter pChar) {
 		if (pChar.penSegments.size() == 1) {
@@ -723,6 +724,45 @@ public class PenCharacterEn extends PenCharacter {
 			}
 		}
 	}
+	*/
+	
+	// '1' always has VLINE ('|') and an optional FSLASH ('/') at the top and/or HLINE ('-') at the bottom
+	private static boolean checkFor1(PenCharacter pChar) {
+		boolean matchedP = false;
+		int numOfSegments = pChar.penSegments.size();
+
+		if ((numOfSegments > 0) && (numOfSegments < 4)) { // '1' can have one to three strokes
+			int topfSlashIndex = -1;
+			int vLineIndex = -1;
+			int bottomHLineIndex = -1;
+
+			for (int i = 0; i < numOfSegments; i++) {
+				// '1' has at least one pen stroke characters, a VLINE ('|') and at most two other pen stroke characters,
+				// an optional FSLASH ('/') at the top and/or HLINE ('-') at the bottom
+				switch (pChar.penSegments.elementAt(i).penSegmentCharacter) {
+				case PenSegment.VLINE_CHAR:
+					vLineIndex = i;
+					break;
+				case PenSegment.FSLASH_CHAR:
+					topfSlashIndex = i;
+					break;
+				case PenSegment.HLINE_CHAR:
+					bottomHLineIndex = i;
+					break;
+				default:
+					break;
+				}
+			}
+
+			matchedP = (vLineIndex >= 0); // Must have a VLINE ('|')
+			if (matchedP && numOfSegments > 1) {
+				matchedP = (matchedP && ((topfSlashIndex >= 0) || (bottomHLineIndex >= 0))); // More than one strokes so must have a FSLASH at the top and/or HLINE at the bottom
+			}
+		}
+		return matchedP;
+	}  // End of checkFor1
+
+
 
 	// 3 has two strokes - two BC (backward C or ')') strokes stacked on top of one another.
 	private static boolean checkFor3(PenCharacter pChar) {
@@ -3084,6 +3124,8 @@ public class PenCharacterEn extends PenCharacter {
 		case '0':
 			break;
 		case '1':
+			foundP = checkFor1(pChar);
+			if (foundP) penChar = '1';
 			break;
 		case '2':
 			//			foundP = checkFor2();

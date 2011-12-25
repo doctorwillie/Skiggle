@@ -44,6 +44,7 @@ public class Skiggle extends Activity {
 	// Global constants
 	
 	protected static final String APP_TITLE = "Skiggle"; // Title of the app
+	protected static final String PREFERENCES_FILENAME = "Skiggle_preferences";
 	
 	protected static final String CHINESE_MODE = "Chinese"; // Chinese handwriting mode
 	protected static final String ENGLISH_MODE = "English"; // English handwriting mode
@@ -96,6 +97,25 @@ public class Skiggle extends Activity {
 		this.setTitle(APP_TITLE + "-" + language);
 	}
 
+	private void restorePreferences() {
+		// Restore preferences
+//		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences(PREFERENCES_FILENAME, MODE_PRIVATE);
+		sLanguage = prefs.getString("language", DEFAULT_LANGUAGE_MODE);
+		sDebugOn = prefs.getBoolean("debugMode", false);
+	}
+	
+	private void savePreferences() {
+		// Save current Preferences
+//		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences(PREFERENCES_FILENAME, MODE_PRIVATE);
+		SharedPreferences.Editor mPrefsEditor = prefs.edit();
+		mPrefsEditor.putString("language", sLanguage);
+		mPrefsEditor.putBoolean("debugMode", sDebugOn);
+		mPrefsEditor.commit();
+	}
+	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
@@ -122,10 +142,7 @@ public class Skiggle extends Activity {
 
 		setLanguageMode(sLanguage);
 		
-		// Restore preferences
-		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
-		sLanguage = mPrefs.getString("language", DEFAULT_LANGUAGE_MODE);
-		sDebugOn = mPrefs.getBoolean("debugMode", false);
+		restorePreferences();
 		
 		/*
 		// Set language specifics globals
@@ -139,34 +156,33 @@ public class Skiggle extends Activity {
 		this.setTitle(APP_TITLE + "-" + sLanguage);
 		 */
 	}
+
+	/*
+	protected void onSaveInstanceState(Bundle bundle) {
+		savePreferences();
+	}
+	*/
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 		
-		// Save current settings
-		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
-		SharedPreferences.Editor mPrefsEditor = mPrefs.edit();
-		mPrefsEditor.putString("language", sLanguage);
-		mPrefsEditor.putBoolean("debugMode", sDebugOn);
-		mPrefsEditor.commit();
-		/*
-		if (sCharactersVirtualKeyBoard != null) {
-			sCharactersVirtualKeyBoard.clear(Skiggle.sCanvas);
-		}
-		*/
-		sBoxView.clear(); // Need this here?
+		savePreferences();
+
+		//sBoxView.clear(); // Need this here?
 		
 	}
 	
-/*
+	
+
 	@Override
 	protected void onStop() {
 		super.onStop();
-		sBoxView.clear();
+		savePreferences();
+//		sBoxView.clear();
 		
 	}
-*/
+	
 
 	
 	@Override

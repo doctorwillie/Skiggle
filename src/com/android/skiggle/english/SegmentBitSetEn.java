@@ -71,10 +71,10 @@ public class SegmentBitSetEn extends SegmentBitSet {
 		SegmentBitSet.setSDotBitset(new SegmentBitSet("00000000000000000000000000000000000000000000110000000000000000010000000000001011000100000000000"));
 		// 4 characters with U - J, U, j, u
 		SegmentBitSet.setSUBitset(new SegmentBitSet("00000000000000000001000000000010000000000000010000000000100000000000000000000000000000000000000"));
-		// 23 one-segment characters - 0, C, O, U, c, f, h, l, n, o, r, u, ', (, ), ,, -, ., /, \, _, `, | 
-		SegmentBitSet.setSOneSegmentBitset(new SegmentBitSet("10000000000010000000000010000010000000100101000101100100100000000000011100111100000000100110100"));
-		// 39 two-segment characters - 2, 3, 6, 7, 8, 9, D, G, L, P, Q, S, T, V, X, a, b, d, e, i, j, m, p, q, s, t, v, x, y, !, ", +, :, ;, <, =, >, ?, ^ 
-		SegmentBitSet.setSTwoSegmentsBitset(new SegmentBitSet("00110011110001000000010001101101010011011000110010011011010110011000000001000011111100001000000"));
+		// 23 one-segment characters - 0, 1, C, O, U, c, f, h, l, n, o, r, u, ', (, ), ,, -, ., /, \, _, `, | 
+		SegmentBitSet.setSOneSegmentBitset(new SegmentBitSet("11000000000010000000000010000010000000100101000101100100100000000000011100111100000000100110100"));
+		// 39 two-segment characters - 1, 2, 3, 6, 7, 8, 9, D, G, L, P, Q, S, T, V, X, a, b, d, e, i, j, m, p, q, s, t, v, x, y, !, ", +, :, ;, <, =, >, ?, ^ 
+		SegmentBitSet.setSTwoSegmentsBitset(new SegmentBitSet("01110011110001000000010001101101010011011000110010011011010110011000000001000011111100001000000"));
 		// 22 three-segment characters - 1, 4, 5, A, B, F, H, I, J, K, N, R, Y, Z, k, z, <space>, $, %, *, [, ] 
 		SegmentBitSet.setSThreeSegmentsBitset(new SegmentBitSet("01001100001100011111100100010000001100000000001000000000000001100011000010000000000001010000000"));
 		// 5 four-segment characters - E, M, W, w, # 
