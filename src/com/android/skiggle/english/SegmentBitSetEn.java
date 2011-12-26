@@ -52,33 +52,34 @@ public class SegmentBitSetEn extends SegmentBitSet {
 	
 	public static void initializeSegmentBitSetGlobals() {
 		// Note: " and \ are escaped with backslash - "\"" and "\\"
-		SegmentBitSet.setSAllCharactersString(new String("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~"));
-		// 42 characters with VLINE - 1, 4, 5, 9, B, D, E, F, G, H, I, J, K, L, M, N, P, R, T, Y, a, b, d, h, i, k, l, m, n, p, q, r, t, <space>, !, ", $, ', +, [, ], | 
-		SegmentBitSet.setSVLineBitset(new SegmentBitSet("01001100010101111111111101010100001011010001101111011101000000111010010001000000000001010000100"));
-		// 28 characters with HLINE - 1, 2, 4, 5, 7, A, E, F, G, H, I, J, L, T, Z, e, f, t, z, <space>, #, *, +, -, =, [, ], _ 
-		SegmentBitSet.setSHLineBitset(new SegmentBitSet("01101101001000111111010000000100000100001100000000000001000001100100000011010000010001010100000"));
-		// 24 characters with FSLASH - 1, 4, 7, A, K, M, V, W, X, Y, Z, k, v, w, x, y, z, #, %, *, /, <, >, ^ 
-		SegmentBitSet.setSFSlashBitset(new SegmentBitSet("01001001001000000000101000000001111100000000001000000000011111000101000010000100101000001000000"));
-		// 21 characters with BSLASH - A, K, M, N, Q, R, V, W, X, Y, k, v, w, x, y, *, <, >, \, ^, ` 
-		SegmentBitSet.setSBSlashBitset(new SegmentBitSet("00000000001000000000101100110001111000000000001000000000011110000000000010000000101000101010000"));
-		// 16 characters with BC (back C) - 2, 3, 5, B, D, P, R, S, b, p, s, $, ), ,, ;, ? 
-		SegmentBitSet.setSBcBitset(new SegmentBitSet("00110100000101000000000001011000000001000000000000010010000000000010000100100001000100000000000"));
-		// 7 characters with CIRCLE - 0, 6, 8, O, Q, o, % 
-		SegmentBitSet.setSCircleBitset(new SegmentBitSet("10000010100000000000000010100000000000000000000000100000000000000001000000000000000000000000000"));
-		// 13 characters with FC (regular C) - 6, 9, C, G, S, a, c, d, e, q, s, $, ( 
-		SegmentBitSet.setSFcBitset(new SegmentBitSet("00000010010010001000000000001000000010111000000000001010000000000010001000000000000000000000000"));
-		// 7 (capital letters) characters with DOT - i, j, !, ., :, ;, ? 
-		SegmentBitSet.setSDotBitset(new SegmentBitSet("00000000000000000000000000000000000000000000110000000000000000010000000000001011000100000000000"));
-		// 4 characters with U - J, U, j, u
-		SegmentBitSet.setSUBitset(new SegmentBitSet("00000000000000000001000000000010000000000000010000000000100000000000000000000000000000000000000"));
+		// The alphabet letters are sorted by frequency of appearance/use
+		SegmentBitSet.setSAllCharactersString(new String("0123456789ETAOINSHRDLCUMWFGYPBVKJXQZetaoinshrdlcumwfgypbvkjxqz␠!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"));
+		// 41 characters with VLINE - |: 1, 4, 5, 9, E, T, I, N, H, R, D, L, M, F, Y, P, B, K, J, t, a, i, n, h, r, d, l, m, p, b, k, q, ␠, !, ", $, ', +, [, ], |
+		SegmentBitSet.setSVLineBitset(new SegmentBitSet("01001100011100110111100101011101100001101101111001000011010010111010010001000000000001010000100"));
+		// 28 characters with HLINE - —: 1, 2, 4, 5, 7, E, T, A, I, H, L, F, G, J, Z, e, t, f, z, ␠, #, *, +, -, =, [, ], _
+		SegmentBitSet.setSHLineBitset(new SegmentBitSet("01101101001110100100100001100000100111000000000000010000000001100100000011010000010001010100000"));
+		// 24 characters with FSLASH - /: 1, 4, 7, A, M, W, Y, V, K, X, Z, w, y, v, k, x, z, #, %, *, /, <, >, ^
+		SegmentBitSet.setSFSlashBitset(new SegmentBitSet("01001001000010000000000110010011010100000000000000100100110101000101000010000100101000001000000"));
+		// 21 characters with BSLASH - \: A, N, R, M, W, Y, V, K, X, Q, w, y, v, k, x, *, <, >, \, ^, `
+		SegmentBitSet.setSBSlashBitset(new SegmentBitSet("00000000000010010010000110010011011000000000000000100100110100000000000010000000101000101010000"));
+		// 13 characters with FC (regular C) - (: 6, 9, S, C, G, e, a, s, d, c, q, $, (
+		SegmentBitSet.setSFcBitset(new SegmentBitSet("00000010010000001000010000100000000010100010010100000000000010000010001000000000000000000000000"));
+		// 7 characters with CIRCLE - O: 0, 6, 8, O, Q, o, %
+		SegmentBitSet.setSCircleBitset(new SegmentBitSet("10000010100001000000000000000000001000010000000000000000000000000001000000000000000000000000000"));
+		// 16 characters with BC (back C) - ): 2, 3, 5, S, R, D, P, B, s, p, b, $, ), ,, ;, ?
+		SegmentBitSet.setSBcBitset(new SegmentBitSet("00110100000000001011000000001100000000000010000000000011000000000010000100100001000100000000000"));
+		// 7 characters with DOT - .: i, j, !, ., :, ;, ?
+		SegmentBitSet.setSDotBitset(new SegmentBitSet("00000000000000000000000000000000000000001000000000000000001000010000000000001011000100000000000"));
+		// 4 characters with U - U: U, J, u, j
+		SegmentBitSet.setSUBitset(new SegmentBitSet("00000000000000000000001000000000100000000000000010000000001000000000000000000000000000000000000"));
 		// 23 one-segment characters - 0, 1, C, O, U, c, f, h, l, n, o, r, u, ', (, ), ,, -, ., /, \, _, `, | 
-		SegmentBitSet.setSOneSegmentBitset(new SegmentBitSet("11000000000010000000000010000010000000100101000101100100100000000000011100111100000000100110100"));
+		SegmentBitSet.setSOneSegmentBitset(new SegmentBitSet("11000000000001000000011000000000000000010101101110010000000000000000011100111100000000100110100"));
 		// 39 two-segment characters - 1, 2, 3, 6, 7, 8, 9, D, G, L, P, Q, S, T, V, X, a, b, d, e, i, j, m, p, q, s, t, v, x, y, !, ", +, :, ;, <, =, >, ?, ^ 
-		SegmentBitSet.setSTwoSegmentsBitset(new SegmentBitSet("01110011110001000000010001101101010011011000110010011011010110011000000001000011111100001000000"));
+		SegmentBitSet.setSTwoSegmentsBitset(new SegmentBitSet("01110011110100001001100000101010011011101010010001000111101110011000000001000011111100001000000"));
 		// 22 three-segment characters - 1, 4, 5, A, B, F, H, I, J, K, N, R, Y, Z, k, z, <space>, $, %, *, [, ] 
-		SegmentBitSet.setSThreeSegmentsBitset(new SegmentBitSet("01001100001100011111100100010000001100000000001000000000000001100011000010000000000001010000000"));
+		SegmentBitSet.setSThreeSegmentsBitset(new SegmentBitSet("01001100000010110110000001010101100100000000000000000000010001100011000010000000000001010000000"));
 		// 5 four-segment characters - E, M, W, w, # 
-		SegmentBitSet.setSFourSegmentsBitset(new SegmentBitSet("00000000000000100000001000000000100000000000000000000000001000000100000000000000000000000000000"));
+		SegmentBitSet.setSFourSegmentsBitset(new SegmentBitSet("00000000001000000000000110000000000000000000000000100000000000000100000000000000000000000000000"));
 	}
 
 	public static SegmentBitSetEn getSegmentBitSetForChar(char segmentChar) {

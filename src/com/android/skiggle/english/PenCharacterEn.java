@@ -148,7 +148,7 @@ public class PenCharacterEn extends PenCharacter {
 		return leftRightPenSegments;
 	}
 
-	// Order a pair of PenSegments into the Right and bottom and return them as an array of 2 with
+	// Order a pair of PenSegments into the right and bottom and return them as an array of 2 with
 	// top PenSegment as first element and bottom PenSegment as the second element.
 	private static PenSegment[] order2PenSegmentsIntoTopBottom(PenSegment pSegment1, PenSegment pSegment2) {
 		PenSegment topBottomPenSegments[] = {pSegment1, pSegment2}; // Assume pSegment1 is on top of pSegment2 initially.
@@ -710,21 +710,6 @@ public class PenCharacterEn extends PenCharacter {
 	 * Digits 0 to 9 *
 	 *               *
 	 *****************/
-
-	/*
-	// ???
-	private static void checkForNumber1(PenCharacter pChar) {
-		if (pChar.penSegments.size() == 1) {
-			PenSegment firstSegment = pChar.penSegments.elementAt(0);	
-
-			if (firstSegment.penSegmentCharacter == PenSegment.VLINE_CHAR) {
-
-				pChar.penCharacter = '1';
-
-			}
-		}
-	}
-	*/
 	
 	// '1' always has VLINE ('|') and an optional FSLASH ('/') at the top and/or HLINE ('-') at the bottom
 	private static boolean checkFor1(PenCharacter pChar) {
@@ -732,7 +717,7 @@ public class PenCharacterEn extends PenCharacter {
 		int numOfSegments = pChar.penSegments.size();
 
 		if ((numOfSegments > 0) && (numOfSegments < 4)) { // '1' can have one to three strokes
-			int topfSlashIndex = -1;
+			int topFSlashIndex = -1;
 			int vLineIndex = -1;
 			int bottomHLineIndex = -1;
 
@@ -742,9 +727,10 @@ public class PenCharacterEn extends PenCharacter {
 				switch (pChar.penSegments.elementAt(i).penSegmentCharacter) {
 				case PenSegment.VLINE_CHAR:
 					vLineIndex = i;
+					matchedP = true; // Must have a VLINE ('|')
 					break;
 				case PenSegment.FSLASH_CHAR:
-					topfSlashIndex = i;
+					topFSlashIndex = i;
 					break;
 				case PenSegment.HLINE_CHAR:
 					bottomHLineIndex = i;
@@ -754,9 +740,46 @@ public class PenCharacterEn extends PenCharacter {
 				}
 			}
 
-			matchedP = (vLineIndex >= 0); // Must have a VLINE ('|')
-			if (matchedP && numOfSegments > 1) {
-				matchedP = (matchedP && ((topfSlashIndex >= 0) || (bottomHLineIndex >= 0))); // More than one strokes so must have a FSLASH at the top and/or HLINE at the bottom
+			//matchedP = (vLineIndex >= 0); // Must have a VLINE ('|')
+			if (matchedP && (numOfSegments > 1)) {
+				
+				// Get x,y of top and bottom of VLINE
+				float coords[] = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(vLineIndex));
+
+				float vLineTopX = coords[0]; // x-coord of top end of the VLINE stroke
+				float vLineTopY = coords[1]; // y-coord of top end of the VLINE stroke
+				float vLineBottomX = coords[2]; // x-coord of bottom end of the VLINE stroke
+				float vLineBottomY = coords[3]; // y-coord of bottom end of the VLINE stroke
+				float vLineHeight = Math.abs(vLineBottomY - vLineTopY);
+				double gapThreshold = 0.1 * vLineHeight;
+				
+				// Check to see if the top end of the FSLASH is positioned near the top of the VLINE
+				if (matchedP && (topFSlashIndex >= 0)) {
+				
+					// Get x,y of top and bottom of the top FSLASH
+					coords = getTopBottomCoordsOfSegment(pChar.penSegments.elementAt(topFSlashIndex));
+
+					float topFSlashTopX = coords[0]; // x-coord of top end of the VLINE stroke
+					float topFSlashTopY = coords[1]; // y-coord of top end of the VLINE stroke
+					float topFSlashBottomX = coords[2]; // x-coord of bottom end of the VLINE stroke
+					float topFSlashBottomY = coords[3]; // y-coord of bottom end of the VLINE stroke
+					
+					matchedP = (PenUtil.distanceBetween2Points(vLineTopX, vLineTopY, topFSlashTopX, topFSlashTopY) < gapThreshold);
+					
+				}
+			
+				// Check to see if the middle of the HLINE at the bottom is positioned near the bottom of the VLINE
+				// (Can this be shared with checking the bottom HLINE in Capital I?)
+				if (matchedP && (bottomHLineIndex >= 0)) {
+				
+					PenSegment bottomHLineSegment = pChar.penSegments.elementAt(bottomHLineIndex);
+					float bottomHLineMidX = (bottomHLineSegment.posStart[0] + bottomHLineSegment.posEnd[0])/2;
+					float bottomHLineMidY = (bottomHLineSegment.posStart[1] + bottomHLineSegment.posEnd[1])/2;
+					
+					matchedP = (PenUtil.distanceBetween2Points(vLineBottomX, vLineBottomY, bottomHLineMidX, bottomHLineMidY) < gapThreshold);
+					
+				}
+
 			}
 		}
 		return matchedP;
