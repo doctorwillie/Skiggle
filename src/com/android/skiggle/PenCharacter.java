@@ -1,7 +1,8 @@
 /*
-*   This file is part of Skiggle, an online handwriting recognition
-*   Java application.
-*   Copyright (C) 2009-2011 Willie Lim <drwillie650@gmail.com>
+*   This file is part of Skiggle, an Android Input Method Editor (IME)
+*   for handwritten input.
+*
+*   Copyright (C) 2009-2012 Willie Lim <drwillie650@gmail.com>
 *
 *   Licensed under the Apache License, Version 2.0 (the "License");
 *   you may not use this file except in compliance with the License.
@@ -18,14 +19,14 @@
 
 package com.android.skiggle;
 
+import com.android.skiggle.english.PenCharacterEn;
 import com.android.skiggle.PenStroke;
 import com.android.skiggle.SegmentBitSet;
+import com.android.skiggle.english.SegmentBitSetEn;
 
 import com.android.skiggle.chinese.PenCharacterCn;
 import com.android.skiggle.chinese.SegmentBitSetCn;
 
-import com.android.skiggle.english.PenCharacterEn;
-import com.android.skiggle.english.SegmentBitSetEn;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

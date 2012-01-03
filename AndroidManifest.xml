@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.android.skiggle.english"
+      package="com.android.skiggle"
       android:versionCode="1"
       android:versionName="1.0">
     <uses-sdk android:minSdkVersion="3" />
@@ -8,11 +8,7 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name">
        <activity android:name="com.android.skiggle.Skiggle" 
                  android:label="@string/app_name">
-       <!--  <activity android:name="com.android.skiggle.english.Skiggle"
-           andorid:label="English Skiggle"> -->
-      	<!--  <activity android:name="com.android.skiggle.chinese.SkiggleCn"
-    	   android:label="Chinese Skiggle"> -->
-            <intent-filter>
+             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

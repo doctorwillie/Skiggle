@@ -1,7 +1,8 @@
 /*
-*   This file is part of Skiggle, an online handwriting recognition
-*   Java application.
-*   Copyright (C) 2009-2011 Willie Lim <drwillie650@gmail.com>
+*   This file is part of Skiggle, an Android Input Method Editor (IME)
+*   for handwritten input.
+*
+*   Copyright (C) 2009-2012 Willie Lim <drwillie650@gmail.com>
 *
 *   Licensed under the Apache License, Version 2.0 (the "License");
 *   you may not use this file except in compliance with the License.
@@ -19,9 +20,9 @@
 package com.android.skiggle;
 
 
-import com.android.skiggle.chinese.SegmentBitSetCn;
+import com.android.skiggle.R;
 import com.android.skiggle.english.SegmentBitSetEn;
-import com.android.skiggle.english.R;
+import com.android.skiggle.chinese.SegmentBitSetCn;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,12 +33,17 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
+import android.inputmethodservice.Keyboard;
+import android.inputmethodservice.Keyboard.Key;
+import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class Skiggle extends Activity {
 	
@@ -75,9 +81,11 @@ public class Skiggle extends Activity {
 	
 	protected static CandidatesKeyBoard sCharactersVirtualKeyBoard = null;
 	
-	protected static boolean sDebugOn = false; // TEMPORARY: Used for testing the virtual keyboard
+	public static boolean sDebugOn = false; // TEMPORARY: Used for testing the virtual keyboard
 
 	protected static BoxView sBoxView;
+	private static KeyboardView sSoftKeyboardView;
+	private static Key sCandidateKey;
 	
 	protected static Canvas sCanvas;
 	private Paint mPaint;
@@ -114,8 +122,29 @@ public class Skiggle extends Activity {
 		mPrefsEditor.putBoolean("debugMode", sDebugOn);
 		mPrefsEditor.commit();
 	}
-	
 
+	private void testSoftKeyboard() {
+		AttributeSet attrs = null;
+		sSoftKeyboardView = new KeyboardView(this, attrs);
+		sSoftKeyboardView.setKeyboard(new Keyboard(this, R.xml.default_keyboard));
+//		sSoftKeyboardView.setKeyboard(new Keyboard(this, R.xml.email_addr_keyboard));
+		
+		sSoftKeyboardView.setShifted(false);
+
+		
+		this.addContentView(sSoftKeyboardView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		
+//		if (!sDebugOn) sSoftKeyboardView.setVisibility(View.INVISIBLE);
+/*		
+		Keyboard kb = new Keyboard(this, R.xml.skiggle_soft_keyboard, "a cde", -1, 0);
+		KeyboardView kbv = new KeyboardView(this, null);
+		kbv.setKeyboard(kb);
+		
+		this.addContentView(kbv, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+*/
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
@@ -124,6 +153,8 @@ public class Skiggle extends Activity {
 		sBoxView = new BoxView(this);
 		setContentView(sBoxView);
 		//setContentView(new BoxView(this));
+		
+//		testSoftKeyboard();
 
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
@@ -367,13 +398,16 @@ public class Skiggle extends Activity {
 			penCharacter.resetStrokes();
 			penCharacter.resetSegments();
 			*/
-			
+
+/*			
 			// Clear the virtual keyboard if there is one
 			if (sCharactersVirtualKeyBoard != null) {
 				sCharactersVirtualKeyBoard = null;
 			}
+
+			sSoftKeyboardView.setKeyboard(new Keyboard(this.getContext(), R.xml.email_addr_keyboard));
 			
-			invalidate();
+*/			invalidate();
 
 
 		}

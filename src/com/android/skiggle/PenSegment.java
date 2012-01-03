@@ -1,7 +1,8 @@
 /*
-*   This file is part of Skiggle, an online handwriting recognition
-*   Java application.
-*   Copyright (C) 2009-2011 Willie Lim <drwillie650@gmail.com>
+*   This file is part of Skiggle, an Android Input Method Editor (IME)
+*   for handwritten input.
+*
+*   Copyright (C) 2009-2012 Willie Lim <drwillie650@gmail.com>
 *
 *   Licensed under the Apache License, Version 2.0 (the "License");
 *   you may not use this file except in compliance with the License.
@@ -15,6 +16,7 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 */
+
 package com.android.skiggle;
 
 
@@ -27,7 +29,7 @@ import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.util.Log;
 
-// PenStroke is a continuous path (between pen down and pen up) drawn by the pen.
+// PenSegment is part of a PenStroke???
 public class PenSegment extends Path {
 
 	// TAG for logging debugging info
@@ -273,93 +275,6 @@ public class PenSegment extends Path {
 		return (boundingRectWidth < 2) && (boundingRectHeight < 2);
 	}
 
-	/*
-	public int[] histogram(float[] dataPoints) {
-
-		int[] buckets = {0, 0, 0, 0, 0}; // 5 buckets
-		float minVal = 1000000.0F;
-		float maxVal = -minVal;
-		int numOfDataPoints = dataPoints.length;
-
-		// Get the min and max values of the data points
-		for (int i = 0; i < numOfDataPoints; i++) {
-			minVal = Math.min(minVal, Math.abs(dataPoints[i]));
-			maxVal = Math.max(maxVal, Math.abs(dataPoints[i]));
-		}
-
-		float bucketSize = (maxVal - minVal)/5;
-		// float bucketSize = 0.002F;
-
-		// Count the number of points for each bucket
-		for (int i = 0; i < numOfDataPoints; i++) {
-			float val = Math.abs(dataPoints[i]);
-			if (val <= minVal + bucketSize)
-				buckets[0] = buckets[0] + 1; // between minVal and minVal + bucketSize
-			else if (val <= minVal + 2* bucketSize)
-				buckets[1] = buckets[1] + 1; // between minVal and minVal + 2* bucketSize
-			else if (val <= minVal + 3* bucketSize)
-				buckets[2] = buckets[2] + 1; // between minVal and minVal + 3* bucketSize
-			else if (val <= minVal + 4* bucketSize)
-				buckets[3] = buckets[3] + 1; // between minVal and minVal + 4* bucketSize
-			else
-				buckets[4] = buckets[4] + 1; // greater than minVal + 4* bucketSize
-		}	
-		return buckets;
-	}
-	 */
-
-
-	/*
-// 	private float tanAngle1stDiff(double tanStart, double tanEnd, float segmentLength) {
-
-
-		// curvature is the rate of change of the tangent vector
-//		return (float) (tanStart - tanEnd)/segmentLength;
-//	}
-
-
-	// Algorithm HK2003 13 (9. S. Hermann and R. Klette. Multigrid analysis of curvature estimators. In Proc.
-	// Image Vision Computing New Zealand, pages 108–112, Massey University, 2003.) from
-	// "A Comparative Study on 2D Curvature Estimators", Simon Hermann and Reinhard Klette
-	private float computeCurvatureHK2003(float x0, float y0, float x1, float y1, float x2, float y2) {
-
-		double kappa = 0.0D;
-
-		float lB = distanceBetween2Points(x1, y1, x0, y0);
-		float lF = distanceBetween2Points(x1, y1, x2, y2);
-		float thetaB = (float) Math.atan2(x0 - x1, y0 - y1);
-		float thetaF = (float) Math.atan2(x2 - x1, y2 - y1);
-
-		float delta = Math.abs(thetaB - thetaF)/2;
-
-		kappa = (1/lB + 1/lF) * delta/2;
-		return (float) kappa;
-	}
-
-	// Algorithm M2003 (13.  M. Marji. On the detection of dominant points on digital planar curves. PhD thesis,
-	// Wayne State University, Detroit, Michigan, 2003) from "A Comparative Study on 2D Curvature Estimators",
-	// Simon Hermann and Reinhard Klette
-	private float computeCurvatureM2003(float x0, float y0, float x1, float y1, float x2, float y2) {
-
-		double kappa = 0.0D;
-
-		float a1 = (x2 - x0)/2;
-		float a2 = (x2 + x0)/2 - x1;
-		float b1 = (y2 - y0)/2;
-		float b2 = (y2 + y0)/2 - y1;
-
-		// float alpha = 0.0F;
-		// alpha = (a1*b2 - a2*b1);
-		// float beta  = 0.0F;
-		// beta = a1*a1 + b1*b1;
-		// float delta = 0.0F;
-		// delta = (float) Math.pow((a1*a1 + b1*b1), 1.5);
-
-		kappa = 2*(a1*b2 - a2*b1)/ Math.pow((a1*a1 + b1*b1), 1.5);
-		return (float) kappa;
-	}
-	 */
-
 	public void getExtremaPoint() {
 
 
@@ -401,11 +316,7 @@ public class PenSegment extends Path {
 
 			if (i > 0) {
 
-				// penStrokeMeasure.getPosTan((i + 1) * segmentLength, posEnd, tanEnd);
-				// posX[i + 1] = posEnd[0];
-				// posY[i + 1] = posEnd[1];
-				// tanAngle[i + 1] = (float) getAbsAngle(tanEnd[1], tanEnd[0]);
-				sumAngle = sumAngle + tanAngle[i]; //tanAngle[i+1]; //Math.abs(tanAngle[i+1]);
+				sumAngle = sumAngle + tanAngle[i]; 
 
 				if ((i > 1) && (i < numOfSegments - 1)) {
 					// need 3 points to compute kappa so ignore start and end points
@@ -458,7 +369,7 @@ public class PenSegment extends Path {
 
 		Vector<PenSegment> pSegments = new Vector<PenSegment>();
 
-		getCurvaturePoints(canvas, textPaint);
+		getCurvaturePoints(canvas, textPaint); // Get the curvature of each point of the segment
 
 
 		if (hasMultipleSegments()) {
@@ -491,11 +402,14 @@ public class PenSegment extends Path {
 						PenSegment pSegment3 = new PenSegment(path3);
 						PenSegment pSegment4 = new PenSegment(path4);
 
-						PenUtil.printString(String.format(".(%1$3.1f,%2$3.1f), k:%2$3.1f", pSegment3.posEnd[0], pSegment3.posEnd[1], pSegment3.mKappa),
-								pSegment3.posEnd[0], pSegment3.posEnd[1], boundingRectF, canvas, textPaint);
+						if (Skiggle.sDebugOn) {
+							PenUtil.printString(String.format(".(%1$3.1f,%2$3.1f), k:%2$3.1f", pSegment3.posEnd[0], pSegment3.posEnd[1], pSegment3.mKappa),
+									pSegment3.posEnd[0], pSegment3.posEnd[1], boundingRectF, canvas, textPaint);
+
 
 						//				PenUtil.printString(String.format("!!%1$3.1f, %2$3.1f, %3$3.1f, %4$3.1f, %5$3.1f", tempMaxAbsKappaDiff, pSegment2.mMaxAbsKappa, tailLength1 - headLength1, pSegment2.mPenStrokeLength, penStrokeLength), 100, 420, boundingRectF, canvas, textPaint);
 						pSegment2.printSegmentStats(canvas, textPaint);
+						}
 						pSegments.addAll(pSegment3.getStrokeSegments(canvas, textPaint));
 						pSegments.addAll(pSegment4.getStrokeSegments(canvas, textPaint));						
 						return pSegments;

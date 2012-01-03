@@ -1,7 +1,8 @@
 /*
-*   This file is part of Skiggle, an online handwriting recognition
-*   Java application.
-*   Copyright (C) 2009-2011 Willie Lim <drwillie650@gmail.com>
+*   This file is part of Skiggle, an Android Input Method Editor (IME)
+*   for handwritten input.
+*
+*   Copyright (C) 2009-2012 Willie Lim <drwillie650@gmail.com>
 *
 *   Licensed under the Apache License, Version 2.0 (the "License");
 *   you may not use this file except in compliance with the License.

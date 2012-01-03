@@ -1,7 +1,8 @@
 /*
-*   This file is part of Skiggle, an online handwriting recognition
-*   Java application.
-*   Copyright (C) 2009-2011 Willie Lim <drwillie650@gmail.com>
+*   This file is part of Skiggle, an Android Input Method Editor (IME)
+*   for handwritten input.
+*
+*   Copyright (C) 2009-2012 Willie Lim <drwillie650@gmail.com>
 *
 *   Licensed under the Apache License, Version 2.0 (the "License");
 *   you may not use this file except in compliance with the License.
@@ -91,7 +92,7 @@ public class PenUtil
 
 	}
 
-	// Algorithm HK2003 13 (9. S. Hermann and R. Klette. Multigrid analysis of curvature estimators. In Proc.
+	// NOT USED - Algorithm HK2003 13 (9. S. Hermann and R. Klette. Multigrid analysis of curvature estimators. In Proc.
 	// Image Vision Computing New Zealand, pages 108–112, Massey University, 2003.) from
 	// "A Comparative Study on 2D Curvature Estimators", Simon Hermann and Reinhard Klette
 	public static float computeCurvatureHK2003(float x0, float y0, float x1, float y1, float x2, float y2) {
