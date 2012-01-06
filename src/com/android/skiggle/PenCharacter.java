@@ -56,7 +56,7 @@ public class PenCharacter {
 
 	public Vector<PenSegment> penSegments;
 
-	public Character penCharacter = null;
+	public Character suggestedChar = null; // Suggested character
 	public String penCharacterCandidates = "";
 	protected float mFontSize = Skiggle.sDefaultFontSize;
 
@@ -101,18 +101,18 @@ public class PenCharacter {
 	
 	// Method for getting candidate characters
 	// Get candidates for 1-stroke character
-	private void get1SegmentCharacterCandidates(PenCharacter pChar) {
-		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
+	private String get1SegmentCharacterCandidates() {
+		char strokeChar0 = penSegments.elementAt(0).penSegmentCharacter;
 		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
 		sBitSet0.mSegmentBitSet.and(SegmentBitSet.sOneSegmentBitset.mSegmentBitSet);
-		pChar.penCharacterCandidates = sBitSet0.getCharacters();
-		// penCharacter = pChar.penSegments.elementAt(0).mPenSegmentCharacter;
+//		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+		return sBitSet0.getCharacters();
 	} // End of get1SegmentCharacterCandidates() method
 
 	// Get candidates for 2-stroke character
-	private void get2SegmentCharacterCandidates(PenCharacter pChar) {
-		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
-		char strokeChar1 = pChar.penSegments.elementAt(1).penSegmentCharacter;
+	private String get2SegmentCharacterCandidates() {
+		char strokeChar0 = penSegments.elementAt(0).penSegmentCharacter;
+		char strokeChar1 = penSegments.elementAt(1).penSegmentCharacter;
 		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
 		SegmentBitSet sBitSet1 = SegmentBitSet.getSegmentBitSetForChar(strokeChar1);
 		SegmentBitSet s2SegmentsBitSet = new SegmentBitSet();
@@ -122,15 +122,16 @@ public class PenCharacter {
 
 		sBitSet0.mSegmentBitSet.and(s2SegmentsBitSet.mSegmentBitSet);
 
-		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+//		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+		return sBitSet0.getCharacters();
 
 	} // End of get2SegmentCharacterCandidates() method
 
 	// Get candidates for 3-stroke character
-	private void get3SegmentCharacterCandidates(PenCharacter pChar) {
-		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
-		char strokeChar1 = pChar.penSegments.elementAt(1).penSegmentCharacter;
-		char strokeChar2 = pChar.penSegments.elementAt(2).penSegmentCharacter;
+	private String get3SegmentCharacterCandidates() {
+		char strokeChar0 = penSegments.elementAt(0).penSegmentCharacter;
+		char strokeChar1 = penSegments.elementAt(1).penSegmentCharacter;
+		char strokeChar2 = penSegments.elementAt(2).penSegmentCharacter;
 		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
 		SegmentBitSet sBitSet1 = SegmentBitSet.getSegmentBitSetForChar(strokeChar1);
 		SegmentBitSet sBitSet2 = SegmentBitSet.getSegmentBitSetForChar(strokeChar2);
@@ -141,16 +142,17 @@ public class PenCharacter {
 		sBitSet0.mSegmentBitSet.and(sBitSet2.mSegmentBitSet);
 		sBitSet0.mSegmentBitSet.and(s3SegmentsBitSet.mSegmentBitSet);
 
-		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+//		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+		return sBitSet0.getCharacters();
 		
 	} // End of get3SegmentCharacterCandidates() method
 
 	// Get candidates for 4-stroke character
-	private void get4SegmentCharacterCandidates(PenCharacter pChar) {
-		char strokeChar0 = pChar.penSegments.elementAt(0).penSegmentCharacter;
-		char strokeChar1 = pChar.penSegments.elementAt(1).penSegmentCharacter;
-		char strokeChar2 = pChar.penSegments.elementAt(2).penSegmentCharacter;
-		char strokeChar3 = pChar.penSegments.elementAt(3).penSegmentCharacter;
+	private String get4SegmentCharacterCandidates() {
+		char strokeChar0 = penSegments.elementAt(0).penSegmentCharacter;
+		char strokeChar1 = penSegments.elementAt(1).penSegmentCharacter;
+		char strokeChar2 = penSegments.elementAt(2).penSegmentCharacter;
+		char strokeChar3 = penSegments.elementAt(3).penSegmentCharacter;
 
 		SegmentBitSet sBitSet0 = SegmentBitSet.getSegmentBitSetForChar(strokeChar0);
 		SegmentBitSet sBitSet1 = SegmentBitSet.getSegmentBitSetForChar(strokeChar1);
@@ -164,70 +166,65 @@ public class PenCharacter {
 		sBitSet0.mSegmentBitSet.and(sBitSet3.mSegmentBitSet);
 		sBitSet0.mSegmentBitSet.and(s4SegmentsBitSet.mSegmentBitSet);
 
-		pChar.penCharacterCandidates = sBitSet0.getCharacters();
-		//}
+//		pChar.penCharacterCandidates = sBitSet0.getCharacters();
+		return sBitSet0.getCharacters();
 	} // End of get4SegmentCharacterCandidates() method
 	
 	/**
 	 * Gets the candidate characters
 	 * @param pChar: PenCharacter object with the strokes (as the character is being built up)
 	 */	
-	public void getCharacterCandidates(PenCharacter pChar) {
-
-		switch (pChar.penSegments.size()) {
+	public String getCharacterCandidates() {
+		String str = "";
+		switch (penSegments.size()) {
 		case 1: 
-			get1SegmentCharacterCandidates(pChar);
+			str = get1SegmentCharacterCandidates();
 			break;
 		case 2: 
-			get2SegmentCharacterCandidates(pChar);
+			str = get2SegmentCharacterCandidates();
 			break;
 		case 3: 
-			get3SegmentCharacterCandidates(pChar);
+			str = get3SegmentCharacterCandidates();
 			break;
 		case 4: 
-			get4SegmentCharacterCandidates(pChar);
+			str = get4SegmentCharacterCandidates();
 			break;
 		default:
-			pChar.penCharacterCandidates = "???";
+			str = "???";
 		}
+		return str;
 	} // ENd of getCharacterCandidates() method
 	
-	public boolean matcher(char c, PenCharacter pChar) {
+	public boolean matcher(char c) {
 		boolean flag = false;
 		if (Skiggle.sLanguage == Skiggle.ENGLISH_MODE) {
-			flag = PenCharacterEn.matchCharacter(c, pChar);			
+			flag = PenCharacterEn.matchCharacter(c, this);			
 		}
 		else if (Skiggle.sLanguage == Skiggle.CHINESE_MODE) {
-			flag = PenCharacterCn.matchCharacter(c, pChar);
+			flag = PenCharacterCn.matchCharacter(c, this);
 		}
 		return flag;
 	} // End of matchCharacter() method
 	
-	public void findMatchingCharacter (Canvas canvas, Paint textPaint, PenCharacter pChar, String lang) {
+	public void findMatchingCharacter (Canvas canvas, Paint textPaint, String lang) {
 
-		getCharacterCandidates(pChar);
+		penCharacterCandidates = getCharacterCandidates();
 
-		int len = pChar.penCharacterCandidates.length();
+		int len = penCharacterCandidates.length();
+		
 		for (int i = 0; i < len; i++) {
-			if (matcher(pChar.penCharacterCandidates.charAt(i), pChar)) {
+			if (matcher(penCharacterCandidates.charAt(i))) {
 				break;
 			} // Found matching character so exit the for loop
 
-//		pChar.printPenCharacter(canvas, 50.0F, 400.0F, textPaint);
-//		pChar.printPenCharacterCandidates(canvas, 60.0F, 400.0F, textPaint);
-//		String str = pChar.penCharacter + penCharacterCandidates.replace(pChar.penCharacter.toString(), "");  // Doesn't work with some strings
-//		String str = pChar.penCharacter + penCharacterCandidates;
 		}
-		if (pChar.penCharacter != null) {
-			String str = pChar.penCharacter + PenUtil.removeCharFromString(pChar.penCharacter, penCharacterCandidates);
-			drawPenCharactersInStringKeys(pChar.penCharacter, str, canvas);
+		if (suggestedChar != null) {
+			String str = suggestedChar + PenUtil.removeCharFromString(suggestedChar, penCharacterCandidates);
+			drawPenCharactersInStringKeys(suggestedChar, str, canvas);
 		}
 		else {
-			drawPenCharactersInStringKeys(pChar.penCharacter, penCharacterCandidates, canvas);
+			drawPenCharactersInStringKeys(suggestedChar, penCharacterCandidates, canvas);
 		}
-			
-//			pChar.printCharacterSegmentsData();
-
 
 	} // End of findMatchingCharacter() method
 	
@@ -261,8 +258,8 @@ public class PenCharacter {
 	
 	public void printPenCharacter(Canvas canvas, float x, float y, Paint paint) {
 
-		if (penCharacter != null) {
-			printString(penCharacter.toString(), canvas, x, y, paint);
+		if (suggestedChar != null) {
+			printString(suggestedChar.toString(), canvas, x, y, paint);
 		}
 	} // End of prinPenCharacter() method
 
@@ -296,7 +293,7 @@ public class PenCharacter {
 		int numOfSegments = penSegments.size();
 		PenSegment segment;
 		//String str = "Len:" + Integer.toString(numOfSegments);
-		//Log.i(PenCharacterEn.TAG, "Character: " + penCharacter);
+		//Log.i(PenCharacterEn.TAG, "Character: " + suggestedChar);
 		for (int i =0; i < numOfSegments; i++) {
 			segment = penSegments.elementAt(i);
 			//str = str + ", " + segment.mPenSegmentCharacter;

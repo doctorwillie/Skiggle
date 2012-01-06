@@ -83,13 +83,16 @@ public class SegmentBitSet {
 	public SegmentBitSet(){};
 
 	public SegmentBitSet(String bitString) {
+		
 		int bitStringLength = bitString.length();
+
 		for (int i = 0; i < bitStringLength; i++) {
 
 			if (bitString.charAt(i) == '1') {
 				mSegmentBitSet.set(i);
 			}
 		}
+		
 	}
 	
 	// Setter methods for SegmentBitSet class globals
@@ -255,6 +258,7 @@ public class SegmentBitSet {
 
 	public static SegmentBitSet getSegmentBitSetForChar(char segmentChar) {
 		SegmentBitSet sBitSet = new SegmentBitSet();
+
 		switch (segmentChar) {
 		case PenSegment.HLINE_CHAR:
 			sBitSet.copy(sHLineBitset);

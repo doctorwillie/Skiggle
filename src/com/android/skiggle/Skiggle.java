@@ -63,7 +63,7 @@ public class Skiggle extends Activity {
 	public static final int GRAY_80 = 0xFFCCCCCC;
 	public static final int RED = 0xFFFF0000;
 	public static final int TRUE_GREEN = 0xFF00AF23;
-	public static final int WHITE = 0xFFFFFFFF;
+	public static final int WHITE = 0xFFFFFFFF;//0xFFFFFFFF; //R.color.white;
 	
 	// Global variables
 	protected static String sLanguage = ENGLISH_MODE; // Set default language to English
@@ -88,10 +88,11 @@ public class Skiggle extends Activity {
 	private static Key sCandidateKey;
 	
 	protected static Canvas sCanvas;
-	private Paint mPaint;
-	private Paint mTextPaint;
+	protected static Paint sPaint;
+	protected static Paint sTextPaint;
 	protected static Context sContext;
 
+	// TODO - Move to the WritingArea class but keep the setTitle line (last line) in the Skiggle class
 	public void setLanguageMode(String language) {
 		// Set language specifics globals
 		sLanguage = language;
@@ -152,24 +153,24 @@ public class Skiggle extends Activity {
 		sContext = this.getApplication().getBaseContext();
 		sBoxView = new BoxView(this);
 		setContentView(sBoxView);
-		//setContentView(new BoxView(this));
+		//setContentView(new WritingArea(this));
 		
 //		testSoftKeyboard();
 
-		mPaint = new Paint();
-		mPaint.setAntiAlias(true);
-		mPaint.setDither(true);
-		mPaint.setStyle(Paint.Style.STROKE);
-		mPaint.setStrokeJoin(Paint.Join.ROUND);
-		mPaint.setStrokeCap(Paint.Cap.ROUND);
+		sPaint = new Paint();
+		sPaint.setAntiAlias(true);
+		sPaint.setDither(true);
+		sPaint.setStyle(Paint.Style.STROKE);
+		sPaint.setStrokeJoin(Paint.Join.ROUND);
+		sPaint.setStrokeCap(Paint.Cap.ROUND);
 		
 		// Set canvas defaults
-		mPaint.setColor(sDefaultPenColor);
-		mPaint.setStrokeWidth(sDefaultStrokeWidth);
+		sPaint.setColor(sDefaultPenColor);
+		sPaint.setStrokeWidth(sDefaultStrokeWidth);
 
-		mTextPaint = new Paint();
+		sTextPaint = new Paint();
 		// Set text paint defaults
-		mTextPaint.setTextSize(sDefaultFontSize);
+		sTextPaint.setTextSize(sDefaultFontSize);
 
 		setLanguageMode(sLanguage);
 		
@@ -288,7 +289,7 @@ public class Skiggle extends Activity {
 
 			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
 
-			canvas.drawPath(mPath, mPaint);
+			canvas.drawPath(mPath, sPaint);
 			
 			if (Skiggle.sCharactersVirtualKeyBoard != null) {
 				sCharactersVirtualKeyBoard.draw(canvas);			
@@ -317,7 +318,7 @@ public class Skiggle extends Activity {
 			mPath.lineTo(mX, mY);
 
 			// commit the path to our off screen
-			sCanvas.drawPath(mPath, mPaint);
+			sCanvas.drawPath(mPath, sPaint);
 
 			// If the stroke is a point of zero length , make it a filled circle of
 			// diameter Skiggle.sDefaultStrokeWidth and add it to the path
@@ -337,7 +338,7 @@ public class Skiggle extends Activity {
 			penCharacter.addStroke(mPenStroke);
 
 			// Paint the copy of the stroke with the new pen color
-			sCanvas.drawPath( mPenStroke, mPaint);
+			sCanvas.drawPath( mPenStroke, sPaint);
 			
 			// Check to see if the stroke is a jagged "clear screen" stroke
 			if ((mPenStroke.penStrokeLength/(mPenStroke.boundingRectWidth + mPenStroke.boundingRectHeight)) > 2) {
@@ -346,8 +347,8 @@ public class Skiggle extends Activity {
 			}
 			else {
 
-				penCharacter.addSegments(mPenStroke, sCanvas, mTextPaint);			
-				penCharacter.findMatchingCharacter(sCanvas, mTextPaint, penCharacter, sLanguage);
+				penCharacter.addSegments(mPenStroke, sCanvas, sTextPaint);			
+				penCharacter.findMatchingCharacter(sCanvas, sTextPaint, sLanguage);
 			}
 
 			// kill this so we don't double draw
@@ -391,35 +392,28 @@ public class Skiggle extends Activity {
 		public void clear() {
 			mBitmap.eraseColor(sDefaultCanvasColor);
 			mPath.reset();		
-			
+
 			// Create a new PenCharacter object
 			penCharacter = new PenCharacter();
-			/*
+
 			penCharacter.resetStrokes();
 			penCharacter.resetSegments();
-			*/
 
-/*			
-			// Clear the virtual keyboard if there is one
-			if (sCharactersVirtualKeyBoard != null) {
-				sCharactersVirtualKeyBoard = null;
-			}
-
-			sSoftKeyboardView.setKeyboard(new Keyboard(this.getContext(), R.xml.email_addr_keyboard));
-			
-*/			invalidate();
+			invalidate();
 
 
 		}
 
-		/*
+
 		@Override
 		protected void onLayout(boolean arg0, int arg1, int arg2, int arg3,
 				int arg4) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		*/
+
 
 	}
+
+
 }

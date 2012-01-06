@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-<!--  http://www.december.com/html/spec/colorhex.html -->
+	<!-- http://www.december.com/html/spec/colorhex.html -->
 	<color name="aqua">#FF00FFFF</color>
-		<color name="gray_26">#FF424242</color>
+	<color name="gray_26">#FF424242</color>
 	<color name="gray_80">#FFCCCCCC</color>
 	<color name="red">#FFFF0000</color>
 	<color name="true_green">#FF00AF23</color>
 	<color name="white">#FFFFFFFF</color>
-   <color name="opaque_red">#f00</color>
-   <color name="translucent_red">#80ff0000</color>
+	<color name="opaque_red">#f00</color>
+	<color name="translucent_red">#80ff0000</color>
+
+	<!-- Colors used for soft keyboard -->
+	<color name="candidate_normal">#FF000000</color>
+	<color name="candidate_recommended">#FFE35900</color>
+	<color name="candidate_other">#ff808080</color>
+	<color name="candidate_background">#bbffffff</color>
+
 </resources>

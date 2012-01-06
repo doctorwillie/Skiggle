@@ -20,6 +20,7 @@
 package com.android.skiggle;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
@@ -180,6 +181,7 @@ public class PenUtil
 		*/
 		
 		Skiggle.sCharactersVirtualKeyBoard = new CandidatesKeyBoard(Skiggle.sContext, c, str);
+
 //		candidateKeys.draw(canvas);
 
 	}
