@@ -252,7 +252,7 @@ public class PenCharacterCn extends PenCharacter {
 			break;
 
 		}
-		pChar.suggestedChar = penChar;
+		pChar.matchedChar = penChar;
 		return foundP;
 	}
 

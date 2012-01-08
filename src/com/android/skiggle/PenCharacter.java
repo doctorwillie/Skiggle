@@ -56,7 +56,7 @@ public class PenCharacter {
 
 	public Vector<PenSegment> penSegments;
 
-	public Character suggestedChar = null; // Suggested character
+	public Character matchedChar = null; // Character matched so far
 	public String penCharacterCandidates = "";
 	protected float mFontSize = Skiggle.sDefaultFontSize;
 
@@ -218,12 +218,13 @@ public class PenCharacter {
 			} // Found matching character so exit the for loop
 
 		}
-		if (suggestedChar != null) {
-			String str = suggestedChar + PenUtil.removeCharFromString(suggestedChar, penCharacterCandidates);
-			drawPenCharactersInStringKeys(suggestedChar, str, canvas);
+		
+		if (matchedChar != null) {
+			String str = matchedChar + PenUtil.removeCharFromString(matchedChar, penCharacterCandidates);
+			drawPenCharactersInStringKeys(matchedChar, str, canvas);
 		}
 		else {
-			drawPenCharactersInStringKeys(suggestedChar, penCharacterCandidates, canvas);
+			drawPenCharactersInStringKeys(matchedChar, penCharacterCandidates, canvas);
 		}
 
 	} // End of findMatchingCharacter() method
@@ -253,13 +254,14 @@ public class PenCharacter {
 	public void drawPenCharactersInStringKeys(Character c, String str, Canvas canvas) {
 
 		PenUtil.displayCandidateCharacterKeys(c, str, canvas);
+//		Skiggle.sCharactersVirtualKeyBoard.setAttributes(Skiggle.sContext, c, str);
 		
 	} // End of drawPenCharacterCandidatesKeys() method
 	
 	public void printPenCharacter(Canvas canvas, float x, float y, Paint paint) {
 
-		if (suggestedChar != null) {
-			printString(suggestedChar.toString(), canvas, x, y, paint);
+		if (matchedChar != null) {
+			printString(matchedChar.toString(), canvas, x, y, paint);
 		}
 	} // End of prinPenCharacter() method
 
@@ -293,7 +295,7 @@ public class PenCharacter {
 		int numOfSegments = penSegments.size();
 		PenSegment segment;
 		//String str = "Len:" + Integer.toString(numOfSegments);
-		//Log.i(PenCharacterEn.TAG, "Character: " + suggestedChar);
+		//Log.i(PenCharacterEn.TAG, "Character: " + matchedChar);
 		for (int i =0; i < numOfSegments; i++) {
 			segment = penSegments.elementAt(i);
 			//str = str + ", " + segment.mPenSegmentCharacter;

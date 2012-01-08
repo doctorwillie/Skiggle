@@ -174,13 +174,10 @@ public class PenUtil
 		}
 	}
 
+	// TODO: Rewrite this method using CandidatesKeyboard setAttributes and draw methods.
 	public static void displayCandidateCharacterKeys(Character c, String str, Canvas canvas) {
-		/*
-		OldCandidatesKeyBoard candidateKeys = new OldCandidatesKeyBoard(c, str);
-		candidateKeys.draw(canvas);
-		*/
-		
-		Skiggle.sCharactersVirtualKeyBoard = new CandidatesKeyBoard(Skiggle.sContext, c, str);
+
+		Skiggle.sCharactersVirtualKeyBoard = new CandidatesKeyboard(Skiggle.sContext, c, str);
 
 //		candidateKeys.draw(canvas);
 

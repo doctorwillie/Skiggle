@@ -3504,7 +3504,7 @@ public class PenCharacterEn extends PenCharacter {
 		default:
 
 		}
-		pChar.suggestedChar = penChar;
+		pChar.matchedChar = penChar;
 		return foundP;
 	}
 

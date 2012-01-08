@@ -30,7 +30,7 @@ import android.graphics.drawable.shapes.RectShape;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class CandidatesKeyBoard extends View {
+public class CandidatesKeyboard extends View {
 	private ShapeDrawable mDrawable;
 	private String mCandidateCharacters;
 	private CandidateKey[] mKeys;
@@ -42,8 +42,10 @@ public class CandidatesKeyBoard extends View {
 	protected Rect mRect = new Rect(mX, mY, mX + Skiggle.sDefaultWritePadWidth, mY + mKeyHeight + (2 * mKeyHeight));
 
 
-	public CandidatesKeyBoard(Context context, Character c, String str) {
+	public CandidatesKeyboard(Context context, Character c, String str) {
 		super(context);
+		setAttributes(context, c, str);
+/*		
 		int keyColor = Skiggle.GRAY_80; // Gray80 (default key color)
 		mCandidateCharacters = str;
 		
@@ -54,7 +56,7 @@ public class CandidatesKeyBoard extends View {
 		mDrawable.getPaint().setColor(Skiggle.sDefaultCanvasColor); // Light Gray
 		mDrawable.setBounds(mX, mY, mX + width, mY + mKeyHeight);
 		
-		mKeys= new CandidateKey[str.length()];
+		mKeys = new CandidateKey[str.length()];
 		
 		
 		int iBase = 0;
@@ -81,20 +83,66 @@ public class CandidatesKeyBoard extends View {
 			
 		}
 		
-	} // End of CandidatesKeyBoard() constructor
+*/	} // End of CandidatesKeyboard() constructor
 
+	/**
+	 * Sets the rectangular area and the keys for the keyboard
+	 * @param context
+	 * @param c - character to highlight in green (matched character)
+	 * @param str - other possible matching characters highlighted in gray
+	 */
+	public void setAttributes(Context context, Character c, String str) {
+		
+		int keyColor = Skiggle.GRAY_80; // Gray80 (default key color)
+		mCandidateCharacters = str;
+		
+		int width = str.length() * (mKeyWidth + mKeySpacing);
+
+		mDrawable = new ShapeDrawable(new RectShape());
+		mDrawable.getPaint().setColor(Skiggle.sDefaultCanvasColor); // Same background as the writing area
+		mDrawable.setBounds(mX, mY, mX + width, mY + mKeyHeight);
+		
+		mKeys = new CandidateKey[str.length()];
+		
+		int iBase = 0;
+		if (c != null) {
+			keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
+			mKeys[iBase] = new CandidateKey(context, mX, mY, mX + mKeyWidth, mY + mKeyHeight, c, keyColor);
+			iBase = iBase + 1;
+		}
+		
+		for (int i = iBase; i < str.length(); i++ ) {
+			int left = mX + (mKeyWidth + mKeySpacing) * i;
+			int top = mY;
+			int right = left + mKeyWidth;
+			int bottom = top + mKeyHeight;
+
+			if (i == 0) { // First char is the best guess
+				keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
+			}
+			else {
+				keyColor = Skiggle.GRAY_80; // Gray, default color;
+			}
+
+			mKeys[i] = new CandidateKey(context, left, top, right, bottom, str.charAt(i), keyColor);
+			
+		}
+
+	} // End of setAttributes() method
 	
 	/**
 	 * Draws the keys for the best candidate followed by the other candidates
 	 */
 	@Override
 	public void onDraw(Canvas canvas) {
-
-		for (int i = 0; i < mKeys.length; i++ ) {
+//		super.draw(canvas);
+		draw(canvas);
+		
+/*		for (int i = 0; i < mKeys.length; i++ ) {
 			mKeys[i].draw(canvas);
 		}
 		
-	}
+*/	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -119,19 +167,17 @@ public class CandidatesKeyBoard extends View {
 			}
 		}
 	}
-	/*
+	
 	@Override
 	public void draw(Canvas canvas) {
-//		mTestView.draw(canvas);
-		
+
 		for (int i = 0; i < mKeys.length; i++) {
 			mKeys[i].draw(canvas);			
 			
 		}
-
-			
+	
 	}
-	*/
+	
 
 		
-} // End of CandidatesKeyBoard class
+} // End of CandidatesKeyboard class

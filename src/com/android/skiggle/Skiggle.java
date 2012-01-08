@@ -79,7 +79,7 @@ public class Skiggle extends Activity {
 	protected static int sVirtualKeyboardLeft = 5; // Location of left edge of virtual keyboard (for candidate characters recognized)
 	protected static int sVirutalKeyhoardTop = 5; // Location of top edge of virtual keyboard (for candidate characters recognized)
 	
-	protected static CandidatesKeyBoard sCharactersVirtualKeyBoard = null;
+	protected static CandidatesKeyboard sCharactersVirtualKeyBoard = null;
 	
 	public static boolean sDebugOn = false; // TEMPORARY: Used for testing the virtual keyboard
 
