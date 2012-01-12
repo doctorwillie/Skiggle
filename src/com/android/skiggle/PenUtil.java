@@ -88,7 +88,7 @@ public class PenUtil
 		int numOfSegments = x.length;
 		for (int i =0; i < numOfSegments; i++) {
 
-			printString(String.format("%1$d, k:%2$2.4f", i, kappa[i]), x[i], y[i], mBoundingRectF, canvas, textPaint);
+			printString(String.format("%1$d, k:%2$2.4f", i, kappa[i]), x[i], y[i], canvas, textPaint);
 		}
 
 	}
@@ -154,20 +154,19 @@ public class PenUtil
 		return returnStr;
 	}
 	
-	public static void printString(String s, float x, float y, RectF boundingRectF, Canvas canvas, Paint paint) {
+	public static void printString(String s, float x, float y, Canvas canvas, Paint paint) {
 
 
 		if (s != null) {
-
+			
 			Paint tempPaint = new Paint();
 			tempPaint.set(paint);
 
-			tempPaint.setColor(Skiggle.sDefaultCanvasColor + 2);
+			tempPaint.setColor(Skiggle.sDefaultCanvasColor);
 			tempPaint.setStrokeWidth(Skiggle.sDefaultStrokeWidth);
-			// canvas.drawRect(boundingRectF, tempPaint);
+			canvas.drawRect(x, y - 12, (float) (x + (s.length() * 6.5)), y + 4, tempPaint); // Paint over old text char, if any
 
 			tempPaint.setColor(Skiggle.RED);
-			//tempPaint.setTextSize(Math.max(boundingRectHeight, boundingRectWidth));
 
 			canvas.drawText(s, x, y, tempPaint);
 

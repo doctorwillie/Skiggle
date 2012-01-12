@@ -39,7 +39,9 @@
     </application>
 </manifest>
  
-<!--  
+
+ 
+<!-- 
  <manifest xmlns:android="http://schemas.android.com/apk/res/android" 
         package="com.android.skiggle">
     <application android:label="@string/ime_name">
@@ -52,4 +54,4 @@
         </service>
     </application>
 </manifest>
-  -->
+ -->

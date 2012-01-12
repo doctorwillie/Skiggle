@@ -261,14 +261,16 @@ public class PenCharacter {
 	public void printPenCharacter(Canvas canvas, float x, float y, Paint paint) {
 
 		if (matchedChar != null) {
-			printString(matchedChar.toString(), canvas, x, y, paint);
+//			printString(matchedChar.toString(), canvas, x, y, paint);
+			PenUtil.printString(matchedChar.toString(), x, y, canvas, paint);
 		}
 	} // End of prinPenCharacter() method
 
 	public void printPenCharacterCandidates(Canvas canvas, float x, float y, Paint paint) {
 
 		if (penCharacterCandidates != null) {
-			printString(penCharacterCandidates, canvas, x, y, paint);
+//			printString(penCharacterCandidates, canvas, x, y, paint);
+			PenUtil.printString(penCharacterCandidates, x, y, canvas, paint);
 		}
 	} // End of printPenCharacter() method
 	
@@ -286,7 +288,12 @@ public class PenCharacter {
 			
 		}
 		
-		PenUtil.printString(str, 10, 420, mBoundingRectF, canvas, textPaint);
+//		PenUtil.printString(str, 10, 420, mBoundingRectF, canvas, textPaint);
+//		int y = canvas.getHeight() - 55;
+		int y = (int) Math.floor(canvas.getHeight() * .875);
+		
+		PenUtil.printString(str, 10, y, canvas, textPaint);
+
 
 	} // End of printSegmentCharacters() method
 	

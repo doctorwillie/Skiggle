@@ -41,10 +41,10 @@ public class CandidatesKeyboard extends View {
 	private int mKeySpacing = 2;
 	protected Rect mRect = new Rect(mX, mY, mX + Skiggle.sDefaultWritePadWidth, mY + mKeyHeight + (2 * mKeyHeight));
 
-
 	public CandidatesKeyboard(Context context, Character c, String str) {
 		super(context);
 		setAttributes(context, c, str);
+		
 /*		
 		int keyColor = Skiggle.GRAY_80; // Gray80 (default key color)
 		mCandidateCharacters = str;

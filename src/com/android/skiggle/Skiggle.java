@@ -81,13 +81,17 @@ public class Skiggle extends Activity {
 	
 	protected static CandidatesKeyboard sCharactersVirtualKeyBoard = null;
 	
-	public static boolean sDebugOn = false; // TEMPORARY: Used for testing the virtual keyboard
+//	public static boolean sDebugOn = false; // TEMPORARY: Used for testing the virtual keyboard
+	public static boolean sDebugOn = true; // TEMPORARY: Used for testing the virtual keyboard
 
-	protected static BoxView sBoxView;
+//	protected static BoxView sBoxView;
+	// TODO: Rename sBoxView to sWritingArea
+	protected static WritingArea sBoxView;
+	
 	private static KeyboardView sSoftKeyboardView;
 	private static Key sCandidateKey;
 	
-	protected static Canvas sCanvas;
+//	protected static Canvas sCanvas;
 	protected static Paint sPaint;
 	protected static Paint sTextPaint;
 	protected static Context sContext;
@@ -151,7 +155,8 @@ public class Skiggle extends Activity {
 		super.onCreate(savedInstanceState);	
 
 		sContext = this.getApplication().getBaseContext();
-		sBoxView = new BoxView(this);
+//		sBoxView = new BoxView(this);
+		sBoxView = new WritingArea(this, 0, 0);
 		setContentView(sBoxView);
 		//setContentView(new WritingArea(this));
 		
@@ -255,11 +260,10 @@ public class Skiggle extends Activity {
 	    }
 	}
 	
-	public class BoxView extends View {
+/*	public class BoxView extends View {
 
 		private Bitmap mBitmap;
 
-//		private Canvas mCanvas;
 		private Path mPath;
 		private Paint mBitmapPaint;
 		private float mX, mY;
@@ -270,12 +274,19 @@ public class Skiggle extends Activity {
 		//		private int mSegmentNumber = 0;
 		
 		public PenCharacter penCharacter = new PenCharacter();
+		
+		protected Canvas canvas;
 
 		public BoxView(Context context) {
 			super(context);
 
 			mBitmap = Bitmap.createBitmap(sDefaultWritePadWidth, sDefaultWritePadHeight, Bitmap.Config.ARGB_8888);
-			sCanvas = new Canvas(mBitmap);
+//			sCanvas = new Canvas(mBitmap);
+//			canvas = sCanvas;
+			canvas = new Canvas(mBitmap);
+			
+
+			
 			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 			mPath = new Path();
 
@@ -318,7 +329,8 @@ public class Skiggle extends Activity {
 			mPath.lineTo(mX, mY);
 
 			// commit the path to our off screen
-			sCanvas.drawPath(mPath, sPaint);
+//			sCanvas.drawPath(mPath, sPaint);
+			canvas.drawPath(mPath, sPaint);
 
 			// If the stroke is a point of zero length , make it a filled circle of
 			// diameter Skiggle.sDefaultStrokeWidth and add it to the path
@@ -338,7 +350,8 @@ public class Skiggle extends Activity {
 			penCharacter.addStroke(mPenStroke);
 
 			// Paint the copy of the stroke with the new pen color
-			sCanvas.drawPath( mPenStroke, sPaint);
+//			sCanvas.drawPath( mPenStroke, sPaint);
+			canvas.drawPath( mPenStroke, sPaint);
 			
 			// Check to see if the stroke is a jagged "clear screen" stroke
 			if ((mPenStroke.penStrokeLength/(mPenStroke.boundingRectWidth + mPenStroke.boundingRectHeight)) > 2) {
@@ -349,6 +362,12 @@ public class Skiggle extends Activity {
 
 				penCharacter.addSegments(mPenStroke, sCanvas, sTextPaint);			
 				penCharacter.findMatchingCharacter(sCanvas, sTextPaint, sLanguage);
+				
+				penCharacter.addSegments(mPenStroke, canvas, sTextPaint);			
+				penCharacter.findMatchingCharacter(canvas, sTextPaint, sLanguage);
+				
+
+
 			}
 
 			// kill this so we don't double draw
@@ -414,6 +433,6 @@ public class Skiggle extends Activity {
 
 
 	}
-
+*/
 
 }

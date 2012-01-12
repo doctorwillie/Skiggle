@@ -25,30 +25,33 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class CandidateKey extends View {
 	private int mColor = Skiggle.GRAY_80; // Defaults to Gray80
 	private Character mChar;
-	public Rect mRect;
-	
+	protected Rect mRect;
+/*	
 	public CandidateKey(Context context) {
 		super(context);
 	} // End of CandidateKeyCandidateKey() constructor
 	
+*/
+/*
 	public CandidateKey(Context context, int left, int top, int right, int bottom, char c) {
 		super(context);
 		mChar = c;
 		mRect = new Rect(left, top, right, bottom);
 	} // End of CandidateKey(), with corners and character specified, constructor
 	
+*/
 	public CandidateKey(Context context, int left, int top, int right, int bottom, char c, int color) {
 		super(context);
 		mChar = c;
 		mColor = color;
 		mRect = new Rect(left, top, right, bottom);
-		
 	} // End of CandidateKey(), with corners, character and color specified, constructor
 	
 	private void drawKey(Canvas canvas, int keyColor, int textColor) {
@@ -62,6 +65,7 @@ public class CandidateKey extends View {
 		paint.setColor(textColor);
 		paint.setTextSize(20);
 		canvas.drawText(String.valueOf(mChar), (float) (mRect.left  + Math.floor((mRect.right - mRect.left - charWidth))/2), mRect.bottom - 5, paint);	
+//		mCanvas.drawText(String.valueOf(mChar), (float) (mRect.left  + Math.floor((mRect.right - mRect.left - charWidth))/2), mRect.bottom - 5, paint);	
 
 	}
 
@@ -87,13 +91,32 @@ public class CandidateKey extends View {
 	private void showBigChar() {
 		if (mChar != null) {
 			int textSize = 200;
-			int left = (Skiggle.sDefaultWritePadWidth - textSize)/2;
+/*			
+			View v = (View) this.getParent();
+			Rect r = null;
+			v.getDrawingRect(r);
+			
+			int canvasWidth = r.width();
+			int canvasHeight = r.height();
+*/			
+			int canvasWidth = Skiggle.sBoxView.canvas.getWidth();
+			int canvasHeight = Skiggle.sBoxView.canvas.getHeight();			
+			int left = (canvasWidth - textSize)/2;
+			int top = canvasHeight - (canvasHeight - textSize)/2;
+
+/*			int left = (Skiggle.sDefaultWritePadWidth - textSize)/2;
 			int top = Skiggle.sDefaultWritePadHeight - (Skiggle.sDefaultWritePadHeight - textSize)/2;
+*/
 			Paint paint = new Paint();
 			paint.setColor(mColor);			
 			paint.setTextSize(textSize);
-			Skiggle.sCanvas.drawText(mChar.toString(), left, top, paint);
+
 			
+//			Skiggle.sCanvas.drawText(mChar.toString(), left, top, paint);
+			Skiggle.sBoxView.canvas.drawText(mChar.toString(), left, top, paint);
+
+//			SkiggleSoftKeyboard.testView.mCanvas.drawText(mChar.toString(), 10, 200, paint);
+
 		}
 	}
 	

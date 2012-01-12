@@ -404,7 +404,7 @@ public class PenSegment extends Path {
 
 						if (Skiggle.sDebugOn) {
 							PenUtil.printString(String.format(".(%1$3.1f,%2$3.1f), k:%2$3.1f", pSegment3.posEnd[0], pSegment3.posEnd[1], pSegment3.mKappa),
-									pSegment3.posEnd[0], pSegment3.posEnd[1], boundingRectF, canvas, textPaint);
+									pSegment3.posEnd[0], pSegment3.posEnd[1], canvas, textPaint);
 
 
 						//				PenUtil.printString(String.format("!!%1$3.1f, %2$3.1f, %3$3.1f, %4$3.1f, %5$3.1f", tempMaxAbsKappaDiff, pSegment2.mMaxAbsKappa, tailLength1 - headLength1, pSegment2.mPenStrokeLength, penStrokeLength), 100, 420, boundingRectF, canvas, textPaint);
@@ -480,7 +480,11 @@ public class PenSegment extends Path {
 		 */
 		String msg = String.format("k:%1$3.3f, maxKD:%2$3.3f, x:%3$3.3f, y:%4$3.3f",
 				avgKappa, tempMaxAbsKappaDiff, mMaxAbsKappaDiffX, mMaxAbsKappaDiffY);
-		PenUtil.printString(mTempHistBucketsStr, 10, 420, boundingRectF, canvas, textPaint);
+		
+//		int y = canvas.getHeight() - 75;
+		int y = (int) Math.floor(canvas.getHeight() * .825);
+		PenUtil.printString(mTempHistBucketsStr, 10, y, canvas, textPaint);
+//		PenUtil.printString(mTempHistBucketsStr, 10, 420, boundingRectF, canvas, textPaint);
 		canvas.drawText(msg, mMaxAbsKappaDiffX , mMaxAbsKappaDiffY, textPaint);
 		//Log.i(PenSegment.TAG, msg);
 		//printSegmentPointsData();
@@ -492,7 +496,7 @@ public class PenSegment extends Path {
 		String msg = "";
 		for (int i =0; i < numOfSegments; i++) {
 			msg = String.format("%1$d, k:%2$2.4f", i, kappa[i]);
-			PenUtil.printString(msg, x[i], y[i], mBoundingRectF, canvas, textPaint);
+			PenUtil.printString(msg, x[i], y[i], canvas, textPaint);
 			//Log.i(PenSegment.TAG, msg);
 		}
 
