@@ -156,7 +156,7 @@ public class Skiggle extends Activity {
 
 		sContext = this.getApplication().getBaseContext();
 //		sBoxView = new BoxView(this);
-		sBoxView = new WritingArea(this, 0, 0);
+		sBoxView = new WritingArea(this, 0, 0, false);
 		setContentView(sBoxView);
 		//setContentView(new WritingArea(this));
 		

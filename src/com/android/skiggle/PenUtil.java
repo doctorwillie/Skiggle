@@ -172,7 +172,7 @@ public class PenUtil
 
 		}
 	}
-
+/*
 	// TODO: Rewrite this method using CandidatesKeyboard setAttributes and draw methods.
 	public static void displayCandidateCharacterKeys(Character c, String str, Canvas canvas) {
 
@@ -182,5 +182,5 @@ public class PenUtil
 
 	}
 	
-
+*/
 }

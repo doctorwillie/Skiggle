@@ -218,7 +218,7 @@ public class PenCharacter {
 			} // Found matching character so exit the for loop
 
 		}
-		
+/*		
 		if (matchedChar != null) {
 			String str = matchedChar + PenUtil.removeCharFromString(matchedChar, penCharacterCandidates);
 			drawPenCharactersInStringKeys(matchedChar, str, canvas);
@@ -226,7 +226,7 @@ public class PenCharacter {
 		else {
 			drawPenCharactersInStringKeys(matchedChar, penCharacterCandidates, canvas);
 		}
-
+*/
 	} // End of findMatchingCharacter() method
 	
 	// Not used - 12/16/2011
@@ -250,14 +250,14 @@ public class PenCharacter {
 			canvas.drawText(str, x, y, tempPaint);
 		}
 	} // End of printString() method
-
+/*
 	public void drawPenCharactersInStringKeys(Character c, String str, Canvas canvas) {
 
 		PenUtil.displayCandidateCharacterKeys(c, str, canvas);
 //		Skiggle.sCharactersVirtualKeyBoard.setAttributes(Skiggle.sContext, c, str);
 		
 	} // End of drawPenCharacterCandidatesKeys() method
-	
+*/	
 	public void printPenCharacter(Canvas canvas, float x, float y, Paint paint) {
 
 		if (matchedChar != null) {

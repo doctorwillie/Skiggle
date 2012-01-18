@@ -111,21 +111,23 @@ public class CandidatesKeyboard extends View {
 			iBase = iBase + 1;
 		}
 		
-		for (int i = iBase; i < str.length(); i++ ) {
-			int left = mX + (mKeyWidth + mKeySpacing) * i;
-			int top = mY;
-			int right = left + mKeyWidth;
-			int bottom = top + mKeyHeight;
+		if (str.length() > 0) {
+			for (int i = iBase; i < str.length(); i++ ) {
+				int left = mX + (mKeyWidth + mKeySpacing) * i;
+				int top = mY;
+				int right = left + mKeyWidth;
+				int bottom = top + mKeyHeight;
 
-			if (i == 0) { // First char is the best guess
-				keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
-			}
-			else {
-				keyColor = Skiggle.GRAY_80; // Gray, default color;
-			}
+				if (i == 0) { // First char is the best guess
+					keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
+				}
+				else {
+					keyColor = Skiggle.GRAY_80; // Gray, default color;
+				}
 
-			mKeys[i] = new CandidateKey(context, left, top, right, bottom, str.charAt(i), keyColor);
-			
+				mKeys[i] = new CandidateKey(context, left, top, right, bottom, str.charAt(i), keyColor);
+
+			}
 		}
 
 	} // End of setAttributes() method
