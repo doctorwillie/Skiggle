@@ -297,14 +297,16 @@ public class CandidateKey extends View {
 	
 	private int mColor = Skiggle.GRAY_80; // Defaults to Gray80
 	private Character mChar;
+	private boolean mIsAppInstance = false; // Flag to indicate if Skiggle is an app or a soft key board; defaults to soft key board (not an app instance)
 	private SkiggleSoftKeyboard mSoftKeyboard = null;
 	protected Rect mRect;
 
-	public CandidateKey(Context context, int left, int top, int right, int bottom, char c, int color, SkiggleSoftKeyboard softKeyboard) {
+	public CandidateKey(Context context, int left, int top, int right, int bottom, char c, int color, SkiggleSoftKeyboard softKeyboard, boolean isAppInstance) {
 		super(context);
 		mChar = c;
 		mColor = color;
 		mRect = new Rect(left, top, right, bottom);
+		mIsAppInstance = isAppInstance;
 		mSoftKeyboard = softKeyboard;
 	} // End of CandidateKey(), with corners, character and color specified, constructor
 	
@@ -340,6 +342,7 @@ public class CandidateKey extends View {
 			paint.setTextSize(textSize);
 
 			Skiggle.sBoxView.canvas.drawText(mChar.toString(), left, top, paint);
+//			Skiggle.sBoxView.invalidate();
 
 		}
 	}
@@ -510,13 +513,16 @@ public class CandidateKey extends View {
 		float y = event.getY();
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			if (mSoftKeyboard != null) {
-				keyPressed();
-			}
-			else {
+//			if (mSoftKeyboard != null) {
+			if (mIsAppInstance) {
 				showBigChar();
+				invalidate();
 			}
-			invalidate();
+			else if (mSoftKeyboard != null) {
+					keyPressed();
+					invalidate();
+			}
+//			invalidate();
 			break;
 		case MotionEvent.ACTION_MOVE:
 //			invalidate();

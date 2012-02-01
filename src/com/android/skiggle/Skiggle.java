@@ -79,7 +79,7 @@ public class Skiggle extends Activity {
 	protected static int sVirtualKeyboardLeft = 5; // Location of left edge of virtual keyboard (for candidate characters recognized)
 	protected static int sVirutalKeyhoardTop = 5; // Location of top edge of virtual keyboard (for candidate characters recognized)
 	
-	protected static CandidatesKeyboard sCharactersVirtualKeyBoard = null;
+	private static boolean mIsAppInstance = true; // Flag to indicate whether Skiggle is running as a standalone app or as a soft keyboard
 	
 //	public static boolean sDebugOn = false; // TEMPORARY: Used for testing the virtual keyboard
 	public static boolean sDebugOn = true; // TEMPORARY: Used for testing the virtual keyboard
@@ -87,9 +87,6 @@ public class Skiggle extends Activity {
 //	protected static BoxView sBoxView;
 	// TODO: Rename sBoxView to sWritingArea
 	protected static WritingArea sBoxView;
-	
-	private static KeyboardView sSoftKeyboardView;
-	private static Key sCandidateKey;
 	
 //	protected static Canvas sCanvas;
 	protected static Paint sPaint;
@@ -128,35 +125,13 @@ public class Skiggle extends Activity {
 		mPrefsEditor.commit();
 	}
 
-	private void testSoftKeyboard() {
-		AttributeSet attrs = null;
-		sSoftKeyboardView = new KeyboardView(this, attrs);
-		sSoftKeyboardView.setKeyboard(new Keyboard(this, R.xml.default_keyboard));
-//		sSoftKeyboardView.setKeyboard(new Keyboard(this, R.xml.email_addr_keyboard));
-		
-		sSoftKeyboardView.setShifted(false);
-
-		
-		this.addContentView(sSoftKeyboardView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		
-//		if (!sDebugOn) sSoftKeyboardView.setVisibility(View.INVISIBLE);
-/*		
-		Keyboard kb = new Keyboard(this, R.xml.skiggle_soft_keyboard, "a cde", -1, 0);
-		KeyboardView kbv = new KeyboardView(this, null);
-		kbv.setKeyboard(kb);
-		
-		this.addContentView(kbv, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-*/
-	}
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
 
 		sContext = this.getApplication().getBaseContext();
 //		sBoxView = new BoxView(this);
-		sBoxView = new WritingArea(this, 0, 0, null);
+		sBoxView = new WritingArea(this, 0, 0, null, mIsAppInstance);
 		setContentView(sBoxView);
 		//setContentView(new WritingArea(this));
 		
@@ -235,19 +210,9 @@ public class Skiggle extends Activity {
 	    switch (item.getItemId()) {
 	    case R.id.chinese:
 	    	setLanguageMode(CHINESE_MODE);
-	    	/*
-	        sLanguage = CHINESE_MODE;
-			SegmentBitSetCn.initializeSegmentBitSetGlobals();
-			this.setTitle(APP_TITLE + "-" + sLanguage);
-			*/
 	        return true;
 	    case R.id.english:
 	    	setLanguageMode(ENGLISH_MODE);
-	    	/*
-	        sLanguage = ENGLISH_MODE;
-			SegmentBitSetEn.initializeSegmentBitSetGlobals();
-			this.setTitle(APP_TITLE + "-" + sLanguage);
-			*/
 	        return true;
 	    case R.id.debug_on:
 	    	sDebugOn = true; 
@@ -260,179 +225,4 @@ public class Skiggle extends Activity {
 	    }
 	}
 	
-/*	public class BoxView extends View {
-
-		private Bitmap mBitmap;
-
-		private Path mPath;
-		private Paint mBitmapPaint;
-		private float mX, mY;
-		private static final float TOUCH_TOLERANCE = 4;
-		private PenStroke mPenStroke;
-		//		private PenSegment mPenSegment;
-		//		private int mStrokeNumber = 0;
-		//		private int mSegmentNumber = 0;
-		
-		public PenCharacter penCharacter = new PenCharacter();
-		
-		protected Canvas canvas;
-
-		public BoxView(Context context) {
-			super(context);
-
-			mBitmap = Bitmap.createBitmap(sDefaultWritePadWidth, sDefaultWritePadHeight, Bitmap.Config.ARGB_8888);
-//			sCanvas = new Canvas(mBitmap);
-//			canvas = sCanvas;
-			canvas = new Canvas(mBitmap);
-			
-
-			
-			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-			mPath = new Path();
-
-			
-
-		}
-
-		@Override
-		protected void onDraw(Canvas canvas) {
-			canvas.drawColor(sDefaultCanvasColor);
-
-			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-
-			canvas.drawPath(mPath, sPaint);
-			
-			if (Skiggle.sCharactersVirtualKeyBoard != null) {
-				sCharactersVirtualKeyBoard.draw(canvas);			
-			}
-
-		}
-
-		private void touchStart(float x, float y) {
-			mPath.reset();
-			mPath.moveTo(x, y);
-			mX = x;
-			mY = y;
-		}
-
-		private void touchMove(float x, float y) {
-			float dx = Math.abs(x - mX);
-			float dy = Math.abs(y - mY);
-			if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-				mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-				mX = x;
-				mY = y;
-			}
-		}
-
-		private void touchUp() {
-			mPath.lineTo(mX, mY);
-
-			// commit the path to our off screen
-//			sCanvas.drawPath(mPath, sPaint);
-			canvas.drawPath(mPath, sPaint);
-
-			// If the stroke is a point of zero length , make it a filled circle of
-			// diameter Skiggle.sDefaultStrokeWidth and add it to the path
-			PathMeasure pMeasure = new PathMeasure(mPath, false);
-			if (pMeasure.getLength() == 0) {
-				RectF boundingRectF = new RectF(); 
-				mPath.computeBounds(boundingRectF, false);
-
-				// Create a line of 1 pixel length
-				mPath.lineTo(boundingRectF.centerX(), boundingRectF.centerY() + 1);
-
-			}
-
-			// Set pen stroke to a copy of the stroke
-			mPenStroke = new PenStroke(mPath);
-			mPenStroke.addPath(mPath);
-			penCharacter.addStroke(mPenStroke);
-
-			// Paint the copy of the stroke with the new pen color
-//			sCanvas.drawPath( mPenStroke, sPaint);
-			canvas.drawPath( mPenStroke, sPaint);
-			
-			// Check to see if the stroke is a jagged "clear screen" stroke
-			if ((mPenStroke.penStrokeLength/(mPenStroke.boundingRectWidth + mPenStroke.boundingRectHeight)) > 2) {
-				this.clear();
-
-			}
-			else {
-
-				penCharacter.addSegments(mPenStroke, sCanvas, sTextPaint);			
-				penCharacter.findMatchingCharacter(sCanvas, sTextPaint, sLanguage);
-				
-				penCharacter.addSegments(mPenStroke, canvas, sTextPaint);			
-				penCharacter.findMatchingCharacter(canvas, sTextPaint, sLanguage);
-				
-
-
-			}
-
-			// kill this so we don't double draw
-			mPath.reset();
-		}
-
-
-		@Override
-		public boolean onTouchEvent(MotionEvent event) {
-			float x = event.getX();
-			float y = event.getY();
-
-			if (sDebugOn) {
-				// Trap touch event that is inside sCharactersVirtualKeyBoard (should be taken care of by Android's nested event handlers)
-				if ((sCharactersVirtualKeyBoard != null) && sCharactersVirtualKeyBoard.mRect.contains((int) x, (int) y)) {
-
-					boolean flag =  sCharactersVirtualKeyBoard.onTouchEvent(event);
-					invalidate();
-					return flag;
-				}
-			}
-			
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:	
-				touchStart(x, y);
-				invalidate();
-				break;
-			case MotionEvent.ACTION_MOVE:
-				touchMove(x, y);
-				invalidate();
-				break;
-			case MotionEvent.ACTION_UP:
-				touchUp();
-				invalidate();
-				break;
-			}
-			return true;
-		}
-
-		
-		public void clear() {
-			mBitmap.eraseColor(sDefaultCanvasColor);
-			mPath.reset();		
-
-			// Create a new PenCharacter object
-			penCharacter = new PenCharacter();
-
-			penCharacter.resetStrokes();
-			penCharacter.resetSegments();
-
-			invalidate();
-
-
-		}
-
-
-		@Override
-		protected void onLayout(boolean arg0, int arg1, int arg2, int arg3,
-				int arg4) {
-			// TODO Auto-generated method stub
-
-		}
-
-
-	}
-*/
-
 }
