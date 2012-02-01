@@ -41,49 +41,11 @@ public class CandidatesKeyboard extends View {
 	private int mKeySpacing = 2;
 	protected Rect mRect = new Rect(mX, mY, mX + Skiggle.sDefaultWritePadWidth, mY + mKeyHeight + (2 * mKeyHeight));
 
-	public CandidatesKeyboard(Context context, Character c, String str) {
+	public CandidatesKeyboard(Context context, Character c, String str, SkiggleSoftKeyboard softKeyboard) {
 		super(context);
-		setAttributes(context, c, str);
+		setAttributes(context, c, str, softKeyboard);
 		
-/*		
-		int keyColor = Skiggle.GRAY_80; // Gray80 (default key color)
-		mCandidateCharacters = str;
-		
-		int width = str.length() * (mKeyWidth + mKeySpacing);
-
-		mDrawable = new ShapeDrawable(new RectShape());
-		//mDrawable.getPaint().setColor(Skiggle.GRAY_80); // Gray80
-		mDrawable.getPaint().setColor(Skiggle.sDefaultCanvasColor); // Light Gray
-		mDrawable.setBounds(mX, mY, mX + width, mY + mKeyHeight);
-		
-		mKeys = new CandidateKey[str.length()];
-		
-		
-		int iBase = 0;
-		if (c != null) {
-			keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
-			mKeys[iBase] = new CandidateKey(context, mX, mY, mX + mKeyWidth, mY + mKeyHeight, c, keyColor);
-			iBase = iBase + 1;
-		}
-		
-		for (int i = iBase; i < str.length(); i++ ) {
-			int left = mX + (mKeyWidth + mKeySpacing) * i;
-			int top = mY;
-			int right = left + mKeyWidth;
-			int bottom = top + mKeyHeight;
-
-			if (i == 0) { // First char is the best guess
-				keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
-			}
-			else {
-				keyColor = Skiggle.GRAY_80; // Gray, default color;
-			}
-
-			mKeys[i] = new CandidateKey(context, left, top, right, bottom, mCandidateCharacters.charAt(i), keyColor);
-			
-		}
-		
-*/	} // End of CandidatesKeyboard() constructor
+	} // End of CandidatesKeyboard() constructor
 
 	/**
 	 * Sets the rectangular area and the keys for the keyboard
@@ -91,7 +53,7 @@ public class CandidatesKeyboard extends View {
 	 * @param c - character to highlight in green (matched character)
 	 * @param str - other possible matching characters highlighted in gray
 	 */
-	public void setAttributes(Context context, Character c, String str) {
+	public void setAttributes(Context context, Character c, String str, SkiggleSoftKeyboard softKeyBoard) {
 		
 		int keyColor = Skiggle.GRAY_80; // Gray80 (default key color)
 		mCandidateCharacters = str;
@@ -107,7 +69,7 @@ public class CandidatesKeyboard extends View {
 		int iBase = 0;
 		if (c != null) {
 			keyColor = Skiggle.TRUE_GREEN; // Green for best guess (first char in the string);
-			mKeys[iBase] = new CandidateKey(context, mX, mY, mX + mKeyWidth, mY + mKeyHeight, c, keyColor);
+			mKeys[iBase] = new CandidateKey(context, mX, mY, mX + mKeyWidth, mY + mKeyHeight, c, keyColor, softKeyBoard);
 			iBase = iBase + 1;
 		}
 		
@@ -125,7 +87,7 @@ public class CandidatesKeyboard extends View {
 					keyColor = Skiggle.GRAY_80; // Gray, default color;
 				}
 
-				mKeys[i] = new CandidateKey(context, left, top, right, bottom, str.charAt(i), keyColor);
+				mKeys[i] = new CandidateKey(context, left, top, right, bottom, str.charAt(i), keyColor, softKeyBoard);
 
 			}
 		}

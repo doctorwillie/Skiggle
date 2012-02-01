@@ -218,17 +218,10 @@ public class PenCharacter {
 			} // Found matching character so exit the for loop
 
 		}
-/*		
-		if (matchedChar != null) {
-			String str = matchedChar + PenUtil.removeCharFromString(matchedChar, penCharacterCandidates);
-			drawPenCharactersInStringKeys(matchedChar, str, canvas);
-		}
-		else {
-			drawPenCharactersInStringKeys(matchedChar, penCharacterCandidates, canvas);
-		}
-*/
+
 	} // End of findMatchingCharacter() method
-	
+
+/*	
 	// Not used - 12/16/2011
 	// Methods for printing PenCharacterEn
 	private void printString(String str, Canvas canvas, float x, float y, Paint paint) {
@@ -238,10 +231,6 @@ public class PenCharacter {
 			Paint tempPaint = new Paint();
 			tempPaint.set(paint);
 
-			//tempPaint.setColor(Skiggle.sDefaultCanvasColor + 2);
-			//			tempPaint.setStrokeWidth(Skiggle.sDefaultStrokeWidth);
-			//			canvas.drawRect(boundingRectF, tempPaint);
-
 			tempPaint.setColor(Skiggle.WHITE);
 			canvas.drawRect(x, y-mFontSize-3, x+200, y+3, tempPaint);
 
@@ -250,13 +239,6 @@ public class PenCharacter {
 			canvas.drawText(str, x, y, tempPaint);
 		}
 	} // End of printString() method
-/*
-	public void drawPenCharactersInStringKeys(Character c, String str, Canvas canvas) {
-
-		PenUtil.displayCandidateCharacterKeys(c, str, canvas);
-//		Skiggle.sCharactersVirtualKeyBoard.setAttributes(Skiggle.sContext, c, str);
-		
-	} // End of drawPenCharacterCandidatesKeys() method
 */	
 	public void printPenCharacter(Canvas canvas, float x, float y, Paint paint) {
 
@@ -301,14 +283,9 @@ public class PenCharacter {
 
 		int numOfSegments = penSegments.size();
 		PenSegment segment;
-		//String str = "Len:" + Integer.toString(numOfSegments);
-		//Log.i(PenCharacterEn.TAG, "Character: " + matchedChar);
+
 		for (int i =0; i < numOfSegments; i++) {
-			segment = penSegments.elementAt(i);
-			//str = str + ", " + segment.mPenSegmentCharacter;
-			//Log.i(PenCharacterEn.TAG, "Segment " + i);
-			//segment.printSegmentPointsData();
-			
+			segment = penSegments.elementAt(i);			
 		}
 	} // End of printCharacters() method
 	
