@@ -27,7 +27,7 @@
     <uses-sdk android:minSdkVersion="3" />
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-       <activity android:name="com.android.skiggle.Skiggle" 
+       <activity android:name=".Skiggle" 
                  android:label="@string/app_name">
              <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
